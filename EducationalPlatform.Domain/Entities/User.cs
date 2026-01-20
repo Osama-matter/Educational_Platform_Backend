@@ -1,0 +1,36 @@
+﻿using EducationalPlatform.Domain.Entities;
+using EducationalPlatform.Domain.Enums;
+using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+
+namespace EducationalPlatform.Domain.Entities {
+    public class User : IdentityUser<Guid>
+    {
+        [Required]
+        [MaxLength(100)]
+        public string FirstName { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string LastName { get; set; }
+
+        [Required]
+        public UserRole Role { get; set; }
+
+        [Required]
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
+
+        // Navigation properties
+        public virtual ICollection<Course> CoursesCreated { get; set; }
+        public virtual ICollection<Enrollment> Enrollments { get; set; }
+
+        public User()
+        {
+            CreatedAt = DateTime.UtcNow;
+            CoursesCreated = new HashSet<Course>();
+            Enrollments = new HashSet<Enrollment>();
+        }
+    }
+}
