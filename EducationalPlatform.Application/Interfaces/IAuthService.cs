@@ -1,4 +1,4 @@
-﻿using EducationalPlatform.Application.DTOs;
+﻿using EducationalPlatform.Application.DTOs.Auth;
 using System.Threading.Tasks;
 
 namespace EducationalPlatform.Application.Interfaces

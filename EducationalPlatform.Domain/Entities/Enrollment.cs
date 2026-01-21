@@ -29,7 +29,7 @@ namespace EducationalPlatform.Domain.Entities
 
         // Navigation properties
         public virtual User Student { get; set; }
-        public virtual Course Course { get; set; }
+        public virtual Course.Course Course { get; set; }
         public virtual ICollection<LessonProgress> LessonProgresses { get; set; }
 
         public Enrollment()
@@ -38,6 +38,13 @@ namespace EducationalPlatform.Domain.Entities
             EnrolledAt = DateTime.UtcNow;
             IsActive = true;
             LessonProgresses = new HashSet<LessonProgress>();
+        }
+
+        public Enrollment(Guid studentId, Guid courseId)
+            : this()
+        {
+            StudentId = studentId;
+            CourseId = courseId;
         }
     }
 }

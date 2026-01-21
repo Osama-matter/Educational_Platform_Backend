@@ -1,4 +1,4 @@
-using EducationalPlatform.Application.DTOs;
+using EducationalPlatform.Application.DTOs.Auth;
 using EducationalPlatform.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -36,7 +36,7 @@ namespace EducationalPlatform.Domain.Entities
         public DateTime? UpdatedAt { get; set; }
 
         // Navigation properties
-        public virtual Course Course { get; set; }
+        public virtual Course.Course Course { get; set; }
         public virtual ICollection<LessonProgress> LessonProgresses { get; set; }
 
         public Lesson()
@@ -44,6 +44,16 @@ namespace EducationalPlatform.Domain.Entities
             Id = Guid.NewGuid();
             CreatedAt = DateTime.UtcNow;
             LessonProgresses = new HashSet<LessonProgress>();
+        }
+
+        public Lesson(Guid courseId, string title, string content, int orderIndex, int? durationMinutes)
+            : this()
+        {
+            CourseId = courseId;
+            Title = title;
+            Content = content;
+            OrderIndex = orderIndex;
+            DurationMinutes = durationMinutes;
         }
     }
 }

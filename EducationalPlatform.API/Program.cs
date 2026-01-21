@@ -1,13 +1,16 @@
-using Microsoft.EntityFrameworkCore;
-using EducationalPlatform.Infrastructure.Data;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using EducationalPlatform.Infrastructure.Services;
-using Microsoft.AspNetCore.Identity;
+using EducationalPlatform.Application.DTOs.Courses;
 using EducationalPlatform.Application.Interfaces;
 using EducationalPlatform.Application.Interfaces.Security;
+using EducationalPlatform.Infrastructure;
+using EducationalPlatform.Infrastructure.Data;
 using EducationalPlatform.Infrastructure.Security;
+using EducationalPlatform.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +46,9 @@ builder.Services.AddIdentityCore<EducationalPlatform.Domain.Entities.User>(opt =
 builder.Services.AddDbContext<EducationalPlatform.Infrastructure.Data.ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddInfrastructure();
+
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -61,6 +67,12 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key not found.")))
     };
 });
+
+
+
+
+
+
 
 var app = builder.Build();
 

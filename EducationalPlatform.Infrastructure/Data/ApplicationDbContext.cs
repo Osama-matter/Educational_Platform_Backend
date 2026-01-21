@@ -1,4 +1,5 @@
 ﻿using EducationalPlatform.Domain.Entities;
+using EducationalPlatform.Domain.Entities.Course;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

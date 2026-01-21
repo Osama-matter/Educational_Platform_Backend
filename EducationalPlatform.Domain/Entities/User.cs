@@ -1,5 +1,4 @@
-﻿using EducationalPlatform.Domain.Entities;
-using EducationalPlatform.Domain.Enums;
+﻿using EducationalPlatform.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
@@ -23,13 +22,13 @@ namespace EducationalPlatform.Domain.Entities {
         public DateTime? UpdatedAt { get; set; }
 
         // Navigation properties
-        public virtual ICollection<Course> CoursesCreated { get; set; }
+        public virtual ICollection<Course.Course> CoursesCreated { get; set; }
         public virtual ICollection<Enrollment> Enrollments { get; set; }
 
         public User()
         {
             CreatedAt = DateTime.UtcNow;
-            CoursesCreated = new HashSet<Course>();
+            CoursesCreated = new HashSet<Course.Course>();
             Enrollments = new HashSet<Enrollment>();
         }
     }

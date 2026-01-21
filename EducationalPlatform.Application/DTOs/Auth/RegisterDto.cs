@@ -1,4 +1,4 @@
-namespace EducationalPlatform.Application.DTOs
+namespace EducationalPlatform.Application.DTOs.Auth
 {
     public class RegisterDto
     {

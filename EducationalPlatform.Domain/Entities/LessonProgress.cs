@@ -35,5 +35,12 @@ namespace EducationalPlatform.Domain.Entities
             Id = Guid.NewGuid();
             IsCompleted = false;
         }
+
+        public LessonProgress(Guid enrollmentId, Guid lessonId)
+            : this()
+        {
+            EnrollmentId = enrollmentId;
+            LessonId = lessonId;
+        }
     }
 }

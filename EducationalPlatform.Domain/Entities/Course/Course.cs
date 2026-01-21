@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EducationalPlatform.Domain.Entities
+namespace EducationalPlatform.Domain.Entities.Course
 {
     public class Course
     {
@@ -38,5 +38,23 @@ namespace EducationalPlatform.Domain.Entities
         public virtual User Instructor { get; set; }
         public virtual ICollection<Lesson> Lessons { get; set; }
         public virtual ICollection<Enrollment> Enrollments { get; set; }
+
+        public Course()
+        {
+            Id = Guid.NewGuid();
+            CreatedAt = DateTime.UtcNow;
+            Lessons = new HashSet<Lesson>();
+            Enrollments = new HashSet<Enrollment>();
+        }
+
+        public Course(string title, string description, Guid instructorId, int? estimatedDurationHours, bool isActive)
+            : this()
+        {
+            Title = title;
+            Description = description;
+            InstructorId = instructorId;
+            EstimatedDurationHours = estimatedDurationHours;
+            IsActive = isActive;
+        }
     }
 }
