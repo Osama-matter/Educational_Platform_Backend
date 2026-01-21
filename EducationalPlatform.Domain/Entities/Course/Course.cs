@@ -30,9 +30,15 @@ namespace EducationalPlatform.Domain.Entities.Course
         public bool IsActive { get; set; }
 
         [Required]
+        public string Image_URl { get; set; }
+
+        [Required]
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
+
+
+
 
         // Navigation properties
         public virtual User Instructor { get; set; }
@@ -47,7 +53,7 @@ namespace EducationalPlatform.Domain.Entities.Course
             Enrollments = new HashSet<Enrollment>();
         }
 
-        public Course(string title, string description, Guid instructorId, int? estimatedDurationHours, bool isActive)
+        public Course(string title, string description, Guid instructorId, int? estimatedDurationHours, bool isActive , string imageUrl)
             : this()
         {
             Title = title;
@@ -55,6 +61,7 @@ namespace EducationalPlatform.Domain.Entities.Course
             InstructorId = instructorId;
             EstimatedDurationHours = estimatedDurationHours;
             IsActive = isActive;
+            Image_URl = imageUrl;
         }
     }
 }

@@ -13,9 +13,9 @@ namespace EducationalPlatform.API.Controllers
     public class CoursesController : ControllerBase
     {
 
-        private readonly ICourseService<CreateCourseDto, CourseDto> _courseService;
+        private readonly ICourseService  _courseService;
 
-        public CoursesController(ICourseService<CreateCourseDto, CourseDto> courseService)
+        public CoursesController(ICourseService  courseService)
         {
             _courseService = courseService;
         }
@@ -23,7 +23,7 @@ namespace EducationalPlatform.API.Controllers
 
 
         [HttpPost(Routes.Routes.Courses.CreateCourse)]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Create(CreateCourseDto coursesRequest)
         {
             // Get User ID from JWT token
@@ -64,8 +64,8 @@ namespace EducationalPlatform.API.Controllers
 
         [HttpPut(Routes.Routes.Courses.UpdateCourse)]
 
-        [Authorize]
-        public async Task<IActionResult> Update(Guid courseId, CreateCourseDto updateCourseDto)
+        //[Authorize]
+        public async Task<IActionResult> Update(Guid courseId, UpdateCourseDto updateCourseDto)
         {
             var result = await _courseService.UpdateAsync(courseId, updateCourseDto);
             return Ok(result);

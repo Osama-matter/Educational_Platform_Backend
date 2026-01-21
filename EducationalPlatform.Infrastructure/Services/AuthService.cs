@@ -37,7 +37,8 @@ namespace EducationalPlatform.Infrastructure.Services
 
             if (!result.Succeeded)
             {
-                throw new System.Exception("User creation failed");
+                var errorDetails = string.Join("; ", result.Errors.Select(e => e.Description));
+                throw new System.Exception($"User creation failed: {errorDetails}");
             }
 
             return new UserDto
@@ -90,7 +91,8 @@ namespace EducationalPlatform.Infrastructure.Services
 
             if (!result.Succeeded)
             {
-                throw new System.Exception("Admin creation failed");
+                var errorDetails = string.Join("; ", result.Errors.Select(e => e.Description));
+                throw new System.Exception($"Admin creation failed: {errorDetails}");
             }
 
             return new UserDto

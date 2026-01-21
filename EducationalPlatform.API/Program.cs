@@ -10,45 +10,78 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// -------------------- CORS --------------------
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 
+// -------------------- Controllers --------------------
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
+// -------------------- Swagger --------------------
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Educational Platform API", Version = "v1" });
+
+    // Add JWT Bearer support in Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Enter JWT token here. Example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6...",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
+// -------------------- Dependency Injection --------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
-builder.Services.AddIdentityCore<EducationalPlatform.Domain.Entities.User>(opt =>
+builder.Services.AddIdentityCore<EducationalPlatform.Domain.Entities.User>(options =>
 {
-    opt.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireNonAlphanumeric = false;
 })
-    .AddRoles<Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>>()
+    .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager<SignInManager<EducationalPlatform.Domain.Entities.User>>();
 
-builder.Services.AddDbContext<EducationalPlatform.Infrastructure.Data.ApplicationDbContext>(options =>
+// -------------------- Database --------------------
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// -------------------- Infrastructure --------------------
 builder.Services.AddInfrastructure();
 
-
+// -------------------- Authentication --------------------
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -64,19 +97,16 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key not found.")))
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key not found."))
+        )
     };
 });
 
-
-
-
-
-
-
+// -------------------- Build App --------------------
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// -------------------- Middleware Pipeline --------------------
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -87,7 +117,7 @@ app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
+app.UseAuthentication(); // Important: must be before Authorization
 app.UseAuthorization();
 
 app.MapControllers();

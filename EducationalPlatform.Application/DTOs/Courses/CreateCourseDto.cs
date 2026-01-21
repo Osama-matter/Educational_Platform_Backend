@@ -1,9 +1,10 @@
-﻿using System;
+﻿using EducationalPlatform.Domain.Entities.Course;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EducationalPlatform.Domain.Entities.Course;
 
 namespace EducationalPlatform.Application.DTOs.Courses
 {
@@ -15,9 +16,7 @@ namespace EducationalPlatform.Application.DTOs.Courses
         public int? EstimatedDurationHours { get; set; }
         public bool IsActive { get; set; }
 
-        public Course ToEntity()
-        {
-            return new Course(Title, Description, InstructorId, EstimatedDurationHours, IsActive);
-        }
+        public IFormFile imageFile { get; set; }
+  
     }
 }

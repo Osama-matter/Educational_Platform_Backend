@@ -13,7 +13,7 @@ namespace EducationalPlatform.Application.DTOs.Courses
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-
+        public string Image_URl { get; set; }
         public CourseDto()
         {
         }
@@ -28,6 +28,7 @@ namespace EducationalPlatform.Application.DTOs.Courses
             IsActive = course.IsActive;
             CreatedAt = course.CreatedAt;
             UpdatedAt = course.UpdatedAt;
+            Image_URl = course.Image_URl;
         }
     }
 }
