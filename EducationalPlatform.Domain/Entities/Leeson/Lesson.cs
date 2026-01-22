@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EducationalPlatform.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EducationalPlatform.Domain.Entities
+namespace EducationalPlatform.Domain.Entities.Leeson
 {
     public class Lesson
     {

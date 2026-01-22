@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EducationalPlatform.Application.DTOs.Lessons;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,14 @@ using System.Threading.Tasks;
 
 namespace EducationalPlatform.Application.Interfaces
 {
-    public interface ILessonService<TRequest, TResponse> : IGenericServices<TRequest, TResponse>
+    public interface ILessonService
     {
+        public Task<LessonDto> CreateAsync(CreateLessonDto request);
+        public Task<LessonDto> GetByIdAsync(Guid id);
+        public Task<IEnumerable<LessonDto>> GetAllAsync();
+        public Task<LessonDto> UpdateAsync(Guid id, UpdateLessonDto request);
+        public Task<bool> DeleteAsync(Guid id);
+
+
     }
 }

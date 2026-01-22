@@ -22,6 +22,10 @@ namespace EducationalPlatform.Infrastructure
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<ILessonService, LessonService>();
+            services.AddScoped<ILessonRepository, LessonRepository>();
+            services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
+            services.AddScoped<IEnrollmentService, EnrollmentService>();
             return services;
         }
     }

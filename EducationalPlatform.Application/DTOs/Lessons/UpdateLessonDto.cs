@@ -1,5 +1,5 @@
 using System;
-using EducationalPlatform.Domain.Entities;
+using EducationalPlatform.Domain.Entities.Leeson;
 
 namespace EducationalPlatform.Application.DTOs.Lessons
 {
