@@ -1,0 +1,53 @@
+@page
+@model Educational_Platform_Front_End.Pages.Account.DetailsModel
+@{
+    ViewData["Title"] = "Account Details";
+}
+
+<section class="section">
+    <div class="container">
+        <div class="grid" style="grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr); gap: var(--spacing-8);">
+            <div>
+                <div class="card" style="padding: var(--spacing-8);">
+                    <p class="text-small text-muted">Account profile</p>
+                    <h2 class="heading-3">@ViewData["Title"]</h2>
+
+                    @if (Model.UserDetails != null)
+                    {
+                        <div class="grid grid--cols-2 mt-6">
+                            <div>
+                                <p class="text-small text-muted">Username</p>
+                                <p class="font-medium">@Model.UserDetails.Username</p>
+                            </div>
+                            <div>
+                                <p class="text-small text-muted">Email</p>
+                                <p class="font-medium">@Model.UserDetails.Email</p>
+                            </div>
+                            <div>
+                                <p class="text-small text-muted">First name</p>
+                                <p class="font-medium">@Model.UserDetails.FirstName</p>
+                            </div>
+                            <div>
+                                <p class="text-small text-muted">Last name</p>
+                                <p class="font-medium">@Model.UserDetails.LastName</p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Loading user details...</p>
+                    }
+                </div>
+            </div>
+
+            <aside>
+                <div class="dashboard-card">
+                    <p class="text-small text-muted">Security</p>
+                    <h3 class="heading-5">Account status</h3>
+                    <p class="text-small text-muted mt-4">Multi-factor authentication</p>
+                    <span class="badge badge--success">Enabled</span>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>

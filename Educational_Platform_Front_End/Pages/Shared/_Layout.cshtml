@@ -3,48 +3,273 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Educational_Platform_Front_End</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <meta name="description" content="Enterprise Learning Management System - Courses, Lessons, and Professional Development" />
+    <title>@ViewData["Title"] - EduPlatform</title>
+
+    <!-- Preconnect to improve performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Educational_Platform_Front_End.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Educational_Platform_Front_End</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+    <!-- ============================================
+         HEADER / NAVIGATION
+         ============================================ -->
+    <header class="site-header" role="banner">
+        <div class="container">
+            <div class="site-header__container">
+                <!-- Brand Logo -->
+                <a class="site-header__brand" asp-area="" asp-page="/Index" aria-label="EduPlatform Home">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <rect width="32" height="32" rx="6" fill="currentColor" />
+                        <path d="M16 8L8 12V18L16 22L24 18V12L16 8Z" fill="white" />
+                        <path d="M16 22V16" stroke="white" stroke-width="2" />
+                    </svg>
+                    <span>EduPlatform</span>
+                </a>
+
+                <!-- Navigation -->
+                <nav class="site-header__nav" role="navigation" aria-label="Main navigation">
+                    <!-- Primary Navigation -->
+                    <ul class="nav-menu">
+                        <li class="nav-menu__item">
+                            <a class="nav-menu__link" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                        <li class="nav-menu__item">
+                            <a class="nav-menu__link" asp-area="" asp-page="/Courses/Index">Courses</a>
+                        </li>
+                        <li class="nav-menu__item">
+                            <a class="nav-menu__link" asp-area="" asp-page="/Dashboard/Index">Dashboard</a>
+                        </li>
+                        <li class="nav-menu__item">
+                            <a class="nav-menu__link" asp-area="" asp-page="/Profile/Index">Profile</a>
                         </li>
                     </ul>
+
+                    <!-- User Navigation -->
+                    <ul class="nav-menu">
+                        <li class="nav-menu__item" id="register-link" style="display: none;">
+                            <a class="nav-menu__link btn btn--secondary btn--sm" asp-area="" asp-page="/Account/Register">Sign Up</a>
+                        </li>
+                        <li class="nav-menu__item" id="RegisterAdmin-link" style="display: none;">
+                            <a class="nav-menu__link btn btn--primary btn--sm" asp-area="" asp-page="/Account/RegisterAdmin">Add New  Admin</a>
+                        </li>
+                        <li class="nav-menu__item" id="login-link" style="display: none;">
+                            <a class="nav-menu__link btn btn--primary btn--sm" asp-area="" asp-page="/Account/Login">Log In</a>
+                        </li>
+                      
+                        <li class="nav-menu__item" id="account-details-link" style="display: none;">
+                            <a class="nav-menu__link" asp-area="" asp-page="/Account/Details">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <circle cx="10" cy="7" r="3" />
+                                    <path d="M4 18C4 14.6863 6.68629 12 10 12C13.3137 12 16 14.6863 16 18" />
+                                </svg>
+                                My Account
+                            </a>
+                        </li>
+                        <li class="nav-menu__item" id="logout-link" style="display: none;">
+                            <a class="nav-menu__link" asp-area="" asp-page="/Account/Logout">Log Out</a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="site-header__actions">
+                    <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M12 3a6 6 0 1 0 6 6" />
+                            <path d="M12 3a9 9 0 0 1 9 9 9 9 0 0 1-9 9 9 9 0 0 1-9-9" />
+                        </svg>
+                    </button>
+                    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <line x1="4" y1="7" x2="20" y2="7" />
+                            <line x1="4" y1="12" x2="20" y2="12" />
+                            <line x1="4" y1="17" x2="20" y2="17" />
+                        </svg>
+                    </button>
                 </div>
             </div>
-        </nav>
+            <div class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+                <ul class="nav-menu">
+                    <li class="nav-menu__item">
+                        <a class="nav-menu__link" asp-area="" asp-page="/Index">Home</a>
+                    </li>
+                    <li class="nav-menu__item">
+                        <a class="nav-menu__link" asp-area="" asp-page="/Courses/Index">Courses</a>
+                    </li>
+                    <li class="nav-menu__item">
+                        <a class="nav-menu__link" asp-area="" asp-page="/Dashboard/Index">Dashboard</a>
+                    </li>
+                    <li class="nav-menu__item">
+                        <a class="nav-menu__link" asp-area="" asp-page="/Profile/Index">Profile</a>
+                    </li>
+                    <li class="nav-menu__item" id="mobile-register-link" style="display: none;">
+                        <a class="nav-menu__link btn btn--secondary btn--sm" asp-area="" asp-page="/Account/Register">Sign Up</a>
+                    </li>
+                    <li class="nav-menu__item" id="mobile-login-link" style="display: none;">
+                        <a class="nav-menu__link btn btn--primary btn--sm" asp-area="" asp-page="/Account/Login">Log In</a>
+                    </li>
+                    <li class="nav-menu__item" id="mobile-account-link" style="display: none;">
+                        <a class="nav-menu__link" asp-area="" asp-page="/Account/Details">My Account</a>
+                    </li>
+                    <li class="nav-menu__item" id="mobile-logout-link" style="display: none;">
+                        <a class="nav-menu__link" asp-area="" asp-page="/Account/Logout">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+    <!-- ============================================
+         MAIN CONTENT AREA
+         ============================================ -->
+    <main class="main-content" role="main">
         <div class="container">
-            &copy; 2026 - Educational_Platform_Front_End - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            @RenderBody()
+        </div>
+    </main>
+
+    <div class="toast" id="global-toast" role="status" aria-live="polite"></div>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="container">
+            <div class="site-footer__content">
+                <p class="site-footer__text">
+                    &copy; 2026 EduPlatform. All rights reserved.
+                </p>
+                <nav aria-label="Footer navigation">
+                    <ul class="nav-menu">
+                        <li class="nav-menu__item">
+                            <a class="nav-menu__link" asp-area="" asp-page="/Privacy">Privacy Policy</a>
+                        </li>
+                        <li class="nav-menu__item">
+                            <a class="nav-menu__link" asp-area="" asp-page="/Terms">Terms of Service</a>
+                        </li>
+                        <li class="nav-menu__item">
+                            <a class="nav-menu__link" asp-area="" asp-page="/Contact">Contact</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </footer>
 
+    <!-- ============================================
+         SCRIPTS
+         ============================================ -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        /**
+         * Authentication State Management
+         * Checks JWT token and updates navigation visibility
+         */
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+
+        function checkAuth() {
+            const token = getCookie('jwt_token');
+            const registerLink = document.getElementById('register-link');
+            const loginLink = document.getElementById('login-link');
+            const logoutLink = document.getElementById('logout-link');
+            const accountDetailsLink = document.getElementById('account-details-link');
+            const mobileRegisterLink = document.getElementById('mobile-register-link');
+            const mobileLoginLink = document.getElementById('mobile-login-link');
+            const mobileLogoutLink = document.getElementById('mobile-logout-link');
+            const mobileAccountLink = document.getElementById('mobile-account-link');
+
+            if (token) {
+                // Authenticated state
+                if (registerLink) registerLink.style.display = 'none';
+                if (loginLink) loginLink.style.display = 'none';
+                if (logoutLink) logoutLink.style.display = 'block';
+                if (accountDetailsLink) accountDetailsLink.style.display = 'block';
+                if (mobileRegisterLink) mobileRegisterLink.style.display = 'none';
+                if (mobileLoginLink) mobileLoginLink.style.display = 'none';
+                if (mobileLogoutLink) mobileLogoutLink.style.display = 'block';
+                if (mobileAccountLink) mobileAccountLink.style.display = 'block';
+            } else {
+                // Unauthenticated state
+                if (registerLink) registerLink.style.display = 'block';
+                if (loginLink) loginLink.style.display = 'block';
+                if (logoutLink) logoutLink.style.display = 'none';
+                if (accountDetailsLink) accountDetailsLink.style.display = 'none';
+                if (mobileRegisterLink) mobileRegisterLink.style.display = 'block';
+                if (mobileLoginLink) mobileLoginLink.style.display = 'block';
+                if (mobileLogoutLink) mobileLogoutLink.style.display = 'none';
+                if (mobileAccountLink) mobileAccountLink.style.display = 'none';
+            }
+        }
+
+        /**
+         * Active Navigation Link Highlighting
+         */
+        function setActiveNavLink() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.nav-menu__link');
+
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('nav-menu__link--active');
+                }
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('global-toast');
+            if (!toast) return;
+            toast.textContent = message;
+            toast.classList.add('is-visible');
+            clearTimeout(toast.dataset.timerId);
+            toast.dataset.timerId = setTimeout(() => {
+                toast.classList.remove('is-visible');
+            }, 3200);
+        }
+
+        function initThemeToggle() {
+            const toggle = document.querySelector('.theme-toggle');
+            if (!toggle) return;
+
+            const savedTheme = localStorage.getItem('edu-theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+
+            toggle.addEventListener('click', () => {
+                const currentTheme = document.body.getAttribute('data-theme') || 'light';
+                const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+                document.body.setAttribute('data-theme', nextTheme);
+                localStorage.setItem('edu-theme', nextTheme);
+            });
+        }
+
+        function initMobileMenu() {
+            const toggle = document.querySelector('.nav-toggle');
+            const menu = document.getElementById('mobile-nav');
+            if (!toggle || !menu) return;
+
+            toggle.addEventListener('click', () => {
+                const isOpen = menu.classList.toggle('is-open');
+                toggle.setAttribute('aria-expanded', isOpen);
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            setActiveNavLink();
+            initThemeToggle();
+            initMobileMenu();
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

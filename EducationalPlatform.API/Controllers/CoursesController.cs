@@ -36,8 +36,16 @@ namespace EducationalPlatform.API.Controllers
             coursesRequest.InstructorId = Guid.Parse(userId);
 
 
-            var result = await _courseService.CreateAsync(coursesRequest);
-            return Ok(result);
+            try
+            {
+                var result = await _courseService.CreateAsync(coursesRequest);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                // Log the detailed exception
+                return StatusCode(500, $"An internal error occurred. Please check the server logs for details. Exception: {ex.Message}");
+            }
 
         }
 

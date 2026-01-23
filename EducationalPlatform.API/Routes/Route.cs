@@ -5,38 +5,38 @@
 
         public static class Courses
         {
-            public const string GetAllCourses = "api/courses";
-            public const string GetCourseById = "api/courses/{courseId}";
-            public const string CreateCourse = "api/courses";
-            public const string UpdateCourse = "api/courses/{courseId}";
-            public const string DeleteCourse = "api/courses/{courseId}";
+            public const string GetAllCourses = "";
+            public const string GetCourseById = "{courseId}";
+            public const string CreateCourse = "";
+            public const string UpdateCourse = "{courseId}";
+            public const string DeleteCourse = "{courseId}";
         }
 
         public static class Lessons
         {
-            public const string GetAllLessons = "api/lessons";
-            public const string GetLessonById = "api/lessons/{lessonId}";
-            public const string CreateLesson = "api/lessons";
-            public const string UpdateLesson = "api/lessons/{lessonId}";
-            public const string DeleteLesson = "api/lessons/{lessonId}";
+            public const string GetAllLessons = "";
+            public const string GetLessonById = "{lessonId}";
+            public const string CreateLesson = "";
+            public const string UpdateLesson = "{lessonId}";
+            public const string DeleteLesson = "{lessonId}";
         }
 
         public static class Enrollments
         {
-            public const string GetAllEnrollments = "api/enrollments";
-            public const string GetEnrollmentById = "api/enrollments/{enrollmentId}";
-            public const string CreateEnrollment = "api/enrollments";
-            public const string UpdateEnrollment = "api/enrollments/{enrollmentId}";
-            public const string DeleteEnrollment = "api/enrollments/{enrollmentId}";
+            public const string GetAllEnrollments = "";
+            public const string GetEnrollmentById = "{enrollmentId}";
+            public const string CreateEnrollment = "";
+            public const string UpdateEnrollment = "{enrollmentId}";
+            public const string DeleteEnrollment = "{enrollmentId}";
         }
 
         public static class Progress
         {
-            public const string GetAllProgress = "api/progress";
-            public const string GetProgressById = "api/progress/{progressId}";
-            public const string CreateProgress = "api/progress";
-            public const string UpdateProgress = "api/progress/{progressId}";
-            public const string DeleteProgress = "api/progress/{progressId}";
+            public const string GetAllProgress = "";
+            public const string GetProgressById = "{progressId}";
+            public const string CreateProgress = "";
+            public const string UpdateProgress = "{progressId}";
+            public const string DeleteProgress = "{progressId}";
         }
     }
 }

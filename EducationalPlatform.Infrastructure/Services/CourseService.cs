@@ -4,6 +4,7 @@ using EducationalPlatform.Application.Interfaces;
 using EducationalPlatform.Application.Interfaces.External_services;
 using EducationalPlatform.Application.Interfaces.Repositories;
 using EducationalPlatform.Domain.Entities.Course;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,23 +14,29 @@ using System.Threading.Tasks;
 
 namespace EducationalPlatform.Infrastructure.Services
 {
-    internal class CourseService(ICourseRepository course_Repository , IImageService imageService) : ICourseService
+    internal class CourseService(ICourseRepository course_Repository, IImageService imageService, IHttpContextAccessor httpContextAccessor) : ICourseService
     {
         private readonly ICourseRepository _courseRepository = course_Repository;
         private readonly IImageService _imageService = imageService;
-        public async Task<CourseDto> CreateAsync(CreateCourseDto request)
+        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+        public async Task<CourseDto> CreateAsync(CreateCourseDto requestCourse)
         {
-            if (request is not Application.DTOs.Courses.CreateCourseDto createCourseDto)
+            if (requestCourse is not Application.DTOs.Courses.CreateCourseDto createCourseDto)
             {
-                throw new ArgumentException("Invalid request type", nameof(request));
+                throw new ArgumentException("Invalid request type", nameof(requestCourse));
             }
             // Upload image and get URL
             string  imageUrl = await _imageService.SaveCourseImageAsync(createCourseDto.imageFile);
 
-            var course = new Course(createCourseDto.Title, createCourseDto.Description, createCourseDto.InstructorId, createCourseDto.EstimatedDurationHours, createCourseDto.IsActive , imageUrl);
+            var course = new Course(createCourseDto.Title, createCourseDto.Description, createCourseDto.InstructorId, createCourseDto.EstimatedDurationHours, createCourseDto.IsActive, imageUrl);
             await _courseRepository.AddAsync(course);
 
-            return new Application.DTOs.Courses.CourseDto(course) as dynamic;
+            var request = _httpContextAccessor.HttpContext.Request;
+            var baseUrl = $"{request.Scheme}://{request.Host}";
+            var courseDto = new CourseDto(course);
+            courseDto.Image_URl = $"{baseUrl}{course.Image_URl}";
+
+            return courseDto;
         }
 
         public async Task<bool> DeleteAsync(Guid id)
@@ -57,8 +64,17 @@ namespace EducationalPlatform.Infrastructure.Services
             {
                 return Enumerable.Empty<CourseDto>();
             }
-            var OResualt = courses.Select(c => new Application.DTOs.Courses.CourseDto(c));
-            return OResualt as dynamic; 
+            var request = _httpContextAccessor.HttpContext.Request;
+            var baseUrl = $"{request.Scheme}://{request.Host}";
+
+            var courseDtos = courses.Select(c =>
+            {
+                var dto = new CourseDto(c);
+                dto.Image_URl = $"{baseUrl}{c.Image_URl}";
+                return dto;
+            });
+
+            return courseDtos; 
         }
 
         public async Task<CourseDto> GetByIdAsync(Guid id)
@@ -68,16 +84,23 @@ namespace EducationalPlatform.Infrastructure.Services
             {
                 throw new ValidationException("Course not found");
             }
-            return new Application.DTOs.Courses.CourseDto(course) as dynamic;
+            var request = _httpContextAccessor.HttpContext.Request;
+            var baseUrl = $"{request.Scheme}://{request.Host}";
+            var courseDto = new CourseDto(course);
+            if (!string.IsNullOrEmpty(course.Image_URl))
+            {
+                courseDto.Image_URl = $"{baseUrl}{course.Image_URl}";
+            }
+            return courseDto;
         }
 
 
 
-        public async  Task <CourseDto>UpdateAsync(Guid id, UpdateCourseDto request)
+        public async  Task <CourseDto>UpdateAsync(Guid id, UpdateCourseDto requestCourse)
         {
-            if (request is not Application.DTOs.Courses.UpdateCourseDto updateCourseDto)
+            if (requestCourse is not Application.DTOs.Courses.UpdateCourseDto updateCourseDto)
             {
-                throw new ArgumentException("Invalid request type", nameof(request));
+                throw new ArgumentException("Invalid request type", nameof(requestCourse));
             }
 
             var course = await _courseRepository.GetByIdAsync(id);
@@ -95,7 +118,13 @@ namespace EducationalPlatform.Infrastructure.Services
             course.Image_URl = imageUrl;
             course.UpdatedAt = DateTime.UtcNow;
             await _courseRepository.UpdateAsync(course);
-            return new Application.DTOs.Courses.CourseDto(course) as dynamic;
+
+            var request = _httpContextAccessor.HttpContext.Request;
+            var baseUrl = $"{request.Scheme}://{request.Host}";
+            var courseDto = new CourseDto(course);
+            courseDto.Image_URl = $"{baseUrl}{course.Image_URl}";
+
+            return courseDto;
         }
 
 

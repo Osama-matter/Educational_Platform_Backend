@@ -1,6 +1,7 @@
 using EducationalPlatform.Application.DTOs.Courses;
 using EducationalPlatform.Application.Interfaces;
 using EducationalPlatform.Application.Interfaces.Security;
+using EducationalPlatform.Domain.Entities;
 using EducationalPlatform.Infrastructure;
 using EducationalPlatform.Infrastructure.Data;
 using EducationalPlatform.Infrastructure.Security;
@@ -15,6 +16,10 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 // -------------------- CORS --------------------
 builder.Services.AddCors(options =>
 {
@@ -28,6 +33,7 @@ builder.Services.AddCors(options =>
 
 // -------------------- Controllers --------------------
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 
 // -------------------- Swagger --------------------
 builder.Services.AddEndpointsApiExplorer();
@@ -64,11 +70,16 @@ builder.Services.AddSwaggerGen(c =>
 // -------------------- Dependency Injection --------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddIdentityCore<EducationalPlatform.Domain.Entities.User>(options =>
 {
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
     options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 1;
 })
     .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -106,6 +117,8 @@ builder.Services.AddAuthentication(options =>
 // -------------------- Build App --------------------
 var app = builder.Build();
 
+app.UseMiddleware<EducationalPlatform.API.Middleware.ExceptionLoggingMiddleware>();
+
 // -------------------- Middleware Pipeline --------------------
 if (app.Environment.IsDevelopment())
 {
@@ -114,12 +127,21 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAll");
+app.UseStaticFiles();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthentication(); // Important: must be before Authorization
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+try
+{
+    app.Run();
+}
+catch (Exception ex)
+{
+    app.Logger.LogCritical(ex, "Application terminated unexpectedly");
+}
+

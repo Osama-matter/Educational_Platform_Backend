@@ -1,0 +1,278 @@
+@page
+@model Educational_Platform_Front_End.Pages.Dashboard.IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<section class="section">
+    <div class="container">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <p class="text-small text-muted">Welcome back</p>
+                <h1 class="heading-2">Your learning dashboard</h1>
+            </div>
+            <button class="btn btn--primary" type="button">Resume learning</button>
+        </div>
+
+        <div class="dashboard-grid mb-8">
+            <div class="dashboard-card">
+                <p class="text-small text-muted">Active courses</p>
+                <h2 class="heading-3" id="active-courses-count">0</h2>
+                <p class="text-small text-muted" id="active-courses-caption">Loading enrollments...</p>
+            </div>
+            <div class="dashboard-card">
+                <p class="text-small text-muted">Learning streak</p>
+                <h2 class="heading-3">12 days</h2>
+                <p class="text-small text-muted">Best streak so far</p>
+            </div>
+            <div class="dashboard-card">
+                <p class="text-small text-muted">Lessons completed</p>
+                <h2 class="heading-3" id="lessons-completed-count">0</h2>
+                <p class="text-small text-muted" id="lessons-completed-caption">Across all enrollments</p>
+            </div>
+            <div class="dashboard-card">
+                <p class="text-small text-muted">Weekly goal</p>
+                <div class="progress mt-4">
+                    <div class="progress__bar" id="completion-progress" style="width: 0%;"></div>
+                </div>
+                <p class="text-small text-muted mt-2" id="completion-caption">Progress loading...</p>
+            </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr); gap: var(--spacing-8);">
+            <div>
+                <div class="card mb-6" style="padding: var(--spacing-6);">
+                    <h3 class="heading-4">Your enrollments</h3>
+                    <p class="text-muted">Courses you are actively enrolled in.</p>
+                    <div class="grid grid--cols-2 mt-6" id="enrollments-grid">
+                        <div class="card">
+                            <div class="card__body">
+                                <p class="text-small text-muted">No enrollments yet</p>
+                                <h4 class="heading-5">Find a course to get started</h4>
+                                <p class="text-small text-muted">Enroll to see progress and lesson tracking here.</p>
+                            </div>
+                            <div class="card__footer">
+                                <a asp-page="/Courses/Index" class="btn btn--primary btn--full">Browse courses</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: var(--spacing-6);">
+                    <h3 class="heading-4">Admin control center</h3>
+                    <p class="text-muted">Manage courses and lessons from one place.</p>
+                    <div class="grid grid--cols-2 mt-6">
+                        <div class="card">
+                            <div class="card__body">
+                                <p class="text-small text-muted">Courses</p>
+                                <h4 class="heading-5">Course management</h4>
+                                <p class="text-small text-muted">Create, update, and review catalog entries.</p>
+                            </div>
+                            <div class="card__footer">
+                                <a asp-page="/Courses/Create" class="btn btn--primary btn--full">Create course</a>
+                                <a asp-page="/Courses/Index" class="btn btn--secondary btn--full mt-2">View courses</a>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card__body">
+                                <p class="text-small text-muted">Lessons</p>
+                                <h4 class="heading-5">Lesson management</h4>
+                                <p class="text-small text-muted">Add lessons and organize course content.</p>
+                            </div>
+                            <div class="card__footer">
+                                <a asp-page="/Lessons/Index" class="btn btn--primary btn--full">View lessons</a>
+                                <a asp-page="/Lessons/Create" class="btn btn--secondary btn--full mt-2">Add lesson</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-6" style="padding: var(--spacing-6);">
+                        <p class="text-small text-muted">Admin accounts</p>
+                        <h4 class="heading-5">Create admin access</h4>
+                        <p class="text-small text-muted">Invite a new administrator to manage the platform.</p>
+                        <a asp-page="/Account/RegisterAdmin" class="btn btn--ghost btn--full mt-4">Add admin account</a>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: var(--spacing-6);">
+                    <h3 class="heading-4">Upcoming deadlines</h3>
+                    <div class="mt-4">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <p class="font-medium">Capstone storyboard</p>
+                                <p class="text-small text-muted">Due in 3 days</p>
+                            </div>
+                            <span class="badge badge--warning">High priority</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-medium">Team case study review</p>
+                                <p class="text-small text-muted">Due in 6 days</p>
+                            </div>
+                            <span class="badge badge--neutral">Upcoming</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <aside>
+                <div class="card mb-6" style="padding: var(--spacing-6);">
+                    <h3 class="heading-5">This week</h3>
+                    <div class="calendar mt-4">
+                        <div class="calendar__cell">M</div>
+                        <div class="calendar__cell">T</div>
+                        <div class="calendar__cell">W</div>
+                        <div class="calendar__cell">T</div>
+                        <div class="calendar__cell">F</div>
+                        <div class="calendar__cell">S</div>
+                        <div class="calendar__cell">S</div>
+                        <div class="calendar__cell">10</div>
+                        <div class="calendar__cell">11</div>
+                        <div class="calendar__cell">12</div>
+                        <div class="calendar__cell">13</div>
+                        <div class="calendar__cell">14</div>
+                        <div class="calendar__cell">15</div>
+                        <div class="calendar__cell">16</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3 class="heading-5">Achievements</h3>
+                    <ul class="mt-4 text-small text-muted" style="line-height: 1.8;">
+                        <li>🏅 Completed first cohort</li>
+                        <li>🔥 10-day learning streak</li>
+                        <li>📌 Shared certificate</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+
+        function parseJwt(token) {
+            try {
+                const payload = token.split('.')[1];
+                return JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
+            } catch (error) {
+                return null;
+            }
+        }
+
+        async function loadProgress(enrollmentIds) {
+            const token = getCookie('jwt_token');
+            if (!token || !enrollmentIds.length) return;
+
+            try {
+                const response = await fetch('https://localhost:7228/api/progress', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) return;
+                const progress = await response.json();
+                const relevantProgress = progress.filter(item =>
+                    enrollmentIds.includes(item.enrollmentId));
+
+                const completedCount = relevantProgress.filter(item => item.isCompleted).length;
+                const totalCount = relevantProgress.length;
+                const completionRate = totalCount ? Math.round((completedCount / totalCount) * 100) : 0;
+
+                const completedEl = document.getElementById('lessons-completed-count');
+                const completedCaption = document.getElementById('lessons-completed-caption');
+                const progressBar = document.getElementById('completion-progress');
+                const progressCaption = document.getElementById('completion-caption');
+
+                if (completedEl) completedEl.textContent = completedCount.toString();
+                if (completedCaption) completedCaption.textContent = totalCount ? `${completedCount} of ${totalCount} lessons` : 'No lesson activity yet';
+                if (progressBar) progressBar.style.width = `${completionRate}%`;
+                if (progressCaption) progressCaption.textContent = `${completionRate}% completion rate`;
+
+                return relevantProgress;
+            } catch (error) {
+                console.error('Progress fetch error:', error);
+            }
+        }
+
+        async function loadEnrollments() {
+            const token = getCookie('jwt_token');
+            if (!token) return;
+            const payload = parseJwt(token);
+            const userId = payload?.nameid || payload?.sub;
+            if (!userId) return;
+
+            const container = document.getElementById('enrollments-grid');
+            if (!container) return;
+
+            try {
+                const response = await fetch('https://localhost:7228/api/enrollments', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) return;
+                const enrollments = await response.json();
+                const userEnrollments = enrollments.filter(enrollment =>
+                    enrollment.studentId?.toLowerCase() === userId?.toLowerCase()
+                    && enrollment.isActive);
+
+                const activeCount = document.getElementById('active-courses-count');
+                const activeCaption = document.getElementById('active-courses-caption');
+                if (activeCount) activeCount.textContent = userEnrollments.length.toString();
+                if (activeCaption) activeCaption.textContent = userEnrollments.length ? 'Currently active' : 'No enrollments yet';
+
+                if (!userEnrollments.length) return;
+
+                const courseResponse = await fetch('https://localhost:7228/api/courses', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const courses = courseResponse.ok ? await courseResponse.json() : [];
+                const progressData = await loadProgress(userEnrollments.map(enrollment => enrollment.id)) || [];
+
+                container.innerHTML = '';
+                userEnrollments.forEach(enrollment => {
+                    const course = courses.find(item => item.id?.toLowerCase() === enrollment.courseId?.toLowerCase());
+                    const enrollmentProgress = progressData.filter(item => item.enrollmentId === enrollment.id);
+                    const completed = enrollmentProgress.filter(item => item.isCompleted).length;
+                    const total = enrollmentProgress.length;
+                    const percentage = total ? Math.round((completed / total) * 100) : 0;
+                    const imageUrl = course?.image_URl || course?.imageUrl || course?.imageUrl || '/images/course-placeholder.jpg';
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <img src="${imageUrl}" class="card__image" alt="${course?.title || 'Course thumbnail'}" loading="lazy" />
+                        <div class="card__body">
+                            <p class="text-small text-muted">Course enrollment</p>
+                            <h4 class="heading-5">${course?.title || 'Course ID: ' + enrollment.courseId}</h4>
+                            <div class="progress mt-4">
+                                <div class="progress__bar" style="width: ${percentage}%;"></div>
+                            </div>
+                            <p class="text-small text-muted mt-2">${percentage}% complete · ${completed} of ${total} lessons</p>
+                            <p class="text-small text-muted">Enrolled on ${new Date(enrollment.enrolledAt).toLocaleDateString()}</p>
+                        </div>
+                        <div class="card__footer">
+                            <a href="/Courses/Details/${enrollment.courseId}" class="btn btn--secondary btn--full">View course</a>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Enrollment fetch error:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadEnrollments);
+    </script>
+}

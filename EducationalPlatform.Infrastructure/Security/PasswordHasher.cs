@@ -1,18 +1,26 @@
-﻿using EducationalPlatform.Application.Interfaces.Security;
+﻿using EducationalPlatform.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace EducationalPlatform.Infrastructure.Security
 {
-    public class PasswordHasher : IPasswordHasher
+    public class PasswordHasher : IPasswordHasher<User>
     {
-        public string HashPassword(string password)
+        public string HashPassword(User user, string password)
         {
             return BCryptNet.HashPassword(password);
         }
 
-        public bool VerifyPassword(string password, string hashedPassword)
+        public PasswordVerificationResult VerifyHashedPassword(User user, string hashedPassword, string providedPassword)
         {
-            return BCryptNet.Verify(password, hashedPassword);
+            if (BCryptNet.Verify(providedPassword, hashedPassword))
+            {
+                return PasswordVerificationResult.Success;
+            }
+            else
+            {
+                return PasswordVerificationResult.Failed;
+            }
         }
     }
 }

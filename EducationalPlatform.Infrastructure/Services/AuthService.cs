@@ -4,7 +4,9 @@ using EducationalPlatform.Application.Interfaces.Security;
 using EducationalPlatform.Domain.Entities;
 using EducationalPlatform.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EducationalPlatform.Infrastructure.Services
@@ -14,12 +16,14 @@ namespace EducationalPlatform.Infrastructure.Services
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IJwtTokenService _jwtTokenService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtTokenService jwtTokenService)
+        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtTokenService jwtTokenService, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtTokenService = jwtTokenService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<UserDto> RegisterAsync(RegisterDto registerDto)
@@ -99,6 +103,36 @@ namespace EducationalPlatform.Infrastructure.Services
             {
                 Email = user.Email,
                 Token = await _jwtTokenService.GenerateTokenAsync(user)
+            };
+        }
+
+        public Task LogoutAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public async Task<UserDetailsDto> GetUserDetailsAsync()
+        {
+            var userEmail = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Email);
+
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                throw new System.Exception("User not authenticated or email claim is missing.");
+            }
+
+            var user = await _userManager.FindByEmailAsync(userEmail);
+
+            if (user == null)
+            {
+                throw new System.Exception("User not found.");
+            }
+
+            return new UserDetailsDto
+            {
+                Username = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName
             };
         }
     }

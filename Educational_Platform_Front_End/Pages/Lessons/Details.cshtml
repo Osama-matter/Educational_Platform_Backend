@@ -1,0 +1,120 @@
+@page "{id:guid}"
+@model Educational_Platform_Front_End.Pages.Lessons.DetailsModel
+@{
+    ViewData["Title"] = Model.Lesson?.Title ?? "Lesson Details";
+}
+
+@section Scripts {
+    <script>
+        function extractYouTubeId(text) {
+            if (!text) return null;
+            const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/i;
+            const match = text.match(regex);
+            return match ? match[1] : null;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const content = document.getElementById('lesson-content');
+            const videoWrapper = document.getElementById('lesson-video');
+            const iframe = document.getElementById('youtube-embed');
+            if (!content || !videoWrapper || !iframe) return;
+
+            const videoId = extractYouTubeId(content.textContent);
+            if (!videoId) return;
+
+            iframe.src = `https://www.youtube.com/embed/${videoId}`;
+            videoWrapper.style.display = 'grid';
+        });
+    </script>
+}
+
+@if (Model.Lesson != null)
+{
+    <div class="container pt-8 pb-8">
+        <div class="lesson-layout">
+            <aside class="lesson-sidebar">
+                <p class="text-small text-muted">Course module</p>
+                <h2 class="heading-5">Lesson navigation</h2>
+                <div class="mt-4">
+                    <p class="text-small text-muted">Current lesson</p>
+                    <p class="font-medium">@Model.Lesson.Title</p>
+                </div>
+                <div class="mt-6">
+                    <button class="btn btn--primary btn--full" type="button">Mark complete</button>
+                    <a asp-page="/Lessons/Index" asp-route-courseId="@Model.Lesson.CourseId" class="btn btn--secondary btn--full mt-2">Back to lessons</a>
+                </div>
+                <div class="mt-6">
+                    <p class="text-small text-muted">Duration</p>
+                    <p class="font-medium">@(Model.Lesson.DurationMinutes?.ToString() ?? "N/A") minutes</p>
+                </div>
+            </aside>
+
+            <section>
+                <div class="lesson-player">
+                    <h1 class="heading-4">@Model.Lesson.Title</h1>
+                    <video controls poster="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80">
+                        <source src="" type="video/mp4" />
+                    </video>
+                    <div class="flex items-center gap-4">
+                        <button class="btn btn--secondary" type="button">Play 1.5x</button>
+                        <button class="btn btn--ghost" type="button">Download transcript</button>
+                    </div>
+                </div>
+
+                <div class="card mt-6" style="padding: var(--spacing-6);">
+                    <h3 class="heading-5">Lesson overview</h3>
+                    <div class="lesson-player mt-4" id="lesson-video" style="display: none;">
+                        <iframe id="youtube-embed" width="100%" height="360" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="text-muted" id="lesson-content">@Html.Raw(Model.Lesson.Content)</div>
+                </div>
+
+                <div class="resource-grid mt-6">
+                    <div class="resource-card">
+                        <p class="font-medium">Slides</p>
+                        <p class="text-small text-muted">Product strategy deck.pdf</p>
+                    </div>
+                    <div class="resource-card">
+                        <p class="font-medium">Worksheet</p>
+                        <p class="text-small text-muted">Discovery checklist.docx</p>
+                    </div>
+                    <div class="resource-card">
+                        <p class="font-medium">Template</p>
+                        <p class="text-small text-muted">Go-to-market canvas.fig</p>
+                    </div>
+                </div>
+
+                <div class="quiz-card mt-6">
+                    <h3 class="heading-5">Quick knowledge check</h3>
+                    <p class="text-small text-muted">What is the first step in a product discovery loop?</p>
+                    <div class="mt-4 flex flex-col gap-2">
+                        <label class="form__radio"><input type="radio" name="quiz" /> Define the user problem</label>
+                        <label class="form__radio"><input type="radio" name="quiz" /> Choose pricing tiers</label>
+                        <label class="form__radio"><input type="radio" name="quiz" /> Launch marketing campaign</label>
+                    </div>
+                    <button class="btn btn--primary mt-4" type="button">Submit answer</button>
+                </div>
+
+                <div class="card mt-6" style="padding: var(--spacing-6);">
+                    <h3 class="heading-5">Discussion</h3>
+                    <div class="comment-box mt-4">
+                        “Loved the real-world example about stakeholder alignment.”
+                    </div>
+                    <div class="comment-box mt-4">
+                        “Can you share more about tools for rapid prototyping?”
+                    </div>
+                    <div class="mt-4">
+                        <textarea class="form__textarea" rows="4" placeholder="Add a comment"></textarea>
+                        <button class="btn btn--secondary mt-2" type="button">Post comment</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card" style="padding: var(--spacing-8);">
+        <p>Lesson not found.</p>
+    </div>
+}

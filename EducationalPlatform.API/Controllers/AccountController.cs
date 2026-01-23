@@ -10,7 +10,7 @@ namespace EducationalPlatform.API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
-    {
+    {   
         private readonly IAuthService _authService;
 
         public AccountController(IAuthService authService)
@@ -58,6 +58,28 @@ namespace EducationalPlatform.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _authService.LogoutAsync();
+            return Ok(new { Message = "Logged out successfully." });
+        }
+
+        [HttpGet("details")]
+        [Authorize]
+        public async Task<ActionResult<UserDetailsDto>> GetUserDetails()
+        {
+            try
+            {
+                var userDetails = await _authService.GetUserDetailsAsync();
+                return Ok(userDetails);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(ex.Message);
             }
         }
     }

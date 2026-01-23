@@ -8,5 +8,8 @@ namespace EducationalPlatform.Application.Interfaces
         Task<UserDto> RegisterAsync(RegisterDto registerDto);
         Task<UserDto> LoginAsync(LoginDto loginDto);
         Task<UserDto> RegisterAdminAsync(RegisterAdminDto registerAdminDto);
+
+        Task LogoutAsync();
+        Task<UserDetailsDto> GetUserDetailsAsync();  
     }
 }
