@@ -1,4 +1,4 @@
-using EducationalPlatform.Domain.Entities;
+using EducationalPlatform.Domain.Entities.progress;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

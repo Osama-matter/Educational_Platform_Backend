@@ -29,5 +29,14 @@
             public const string UpdateEnrollment = "api/enrollments/{enrollmentId}";
             public const string DeleteEnrollment = "api/enrollments/{enrollmentId}";
         }
+
+        public static class Progress
+        {
+            public const string GetAllProgress = "api/progress";
+            public const string GetProgressById = "api/progress/{progressId}";
+            public const string CreateProgress = "api/progress";
+            public const string UpdateProgress = "api/progress/{progressId}";
+            public const string DeleteProgress = "api/progress/{progressId}";
+        }
     }
 }

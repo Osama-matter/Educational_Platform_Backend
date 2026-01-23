@@ -1,5 +1,5 @@
 using System;
-using EducationalPlatform.Domain.Entities;
+using EducationalPlatform.Domain.Entities.progress;
 
 namespace EducationalPlatform.Application.DTOs.Progress
 {

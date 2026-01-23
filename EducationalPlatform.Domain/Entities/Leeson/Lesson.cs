@@ -1,4 +1,4 @@
-﻿using EducationalPlatform.Domain.Entities;
+﻿using EducationalPlatform.Domain.Entities.progress;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
