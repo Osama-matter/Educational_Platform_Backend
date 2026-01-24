@@ -12,6 +12,7 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Educational_Platform_Front_End.styles.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <!-- ============================================
@@ -42,6 +43,9 @@
                         </li>
                         <li class="nav-menu__item">
                             <a class="nav-menu__link" asp-area="" asp-page="/Dashboard/Index">Dashboard</a>
+                        </li>
+                        <li class="nav-menu__item" id="admin-dashboard-link" style="display: none;">
+                            <a class="nav-menu__link" asp-area="" asp-page="/Dashboard/AdminDashboard">Admin</a>
                         </li>
                         <li class="nav-menu__item">
                             <a class="nav-menu__link" asp-area="" asp-page="/Profile/Index">Profile</a>
@@ -101,6 +105,9 @@
                     </li>
                     <li class="nav-menu__item">
                         <a class="nav-menu__link" asp-area="" asp-page="/Dashboard/Index">Dashboard</a>
+                    </li>
+                    <li class="nav-menu__item" id="mobile-admin-dashboard-link" style="display: none;">
+                        <a class="nav-menu__link" asp-area="" asp-page="/Dashboard/AdminDashboard">Admin</a>
                     </li>
                     <li class="nav-menu__item">
                         <a class="nav-menu__link" asp-area="" asp-page="/Profile/Index">Profile</a>
@@ -177,6 +184,22 @@
             return null;
         }
 
+        function parseJwt(token) {
+            try {
+                const payload = token.split('.')[1];
+                return JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function getUserRoles(payload) {
+            if (!payload) return [];
+            const roles = payload.role || payload.roles || payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+            if (!roles) return [];
+            return Array.isArray(roles) ? roles : [roles];
+        }
+
         function checkAuth() {
             const token = getCookie('jwt_token');
             const registerLink = document.getElementById('register-link');
@@ -187,8 +210,13 @@
             const mobileLoginLink = document.getElementById('mobile-login-link');
             const mobileLogoutLink = document.getElementById('mobile-logout-link');
             const mobileAccountLink = document.getElementById('mobile-account-link');
+            const adminLink = document.getElementById('admin-dashboard-link');
+            const mobileAdminLink = document.getElementById('mobile-admin-dashboard-link');
 
             if (token) {
+                const payload = parseJwt(token);
+                const roles = getUserRoles(payload);
+                const isAdmin = roles.some(role => role?.toLowerCase() === 'admin');
                 // Authenticated state
                 if (registerLink) registerLink.style.display = 'none';
                 if (loginLink) loginLink.style.display = 'none';
@@ -198,6 +226,8 @@
                 if (mobileLoginLink) mobileLoginLink.style.display = 'none';
                 if (mobileLogoutLink) mobileLogoutLink.style.display = 'block';
                 if (mobileAccountLink) mobileAccountLink.style.display = 'block';
+                if (adminLink) adminLink.style.display = isAdmin ? 'block' : 'none';
+                if (mobileAdminLink) mobileAdminLink.style.display = isAdmin ? 'block' : 'none';
             } else {
                 // Unauthenticated state
                 if (registerLink) registerLink.style.display = 'block';
@@ -208,6 +238,8 @@
                 if (mobileLoginLink) mobileLoginLink.style.display = 'block';
                 if (mobileLogoutLink) mobileLogoutLink.style.display = 'none';
                 if (mobileAccountLink) mobileAccountLink.style.display = 'none';
+                if (adminLink) adminLink.style.display = 'none';
+                if (mobileAdminLink) mobileAdminLink.style.display = 'none';
             }
         }
 

@@ -58,7 +58,7 @@
                     </div>
                 </div>
 
-                <div class="card" style="padding: var(--spacing-6);">
+                <div class="card" id="admin-control-center" style="padding: var(--spacing-6);">
                     <h3 class="heading-4">Admin control center</h3>
                     <p class="text-muted">Manage courses and lessons from one place.</p>
                     <div class="grid grid--cols-2 mt-6">
@@ -166,6 +166,13 @@
             }
         }
 
+        function getUserRoles(payload) {
+            if (!payload) return [];
+            const roles = payload.role || payload.roles || payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+            if (!roles) return [];
+            return Array.isArray(roles) ? roles : [roles];
+        }
+
         async function loadProgress(enrollmentIds) {
             const token = getCookie('jwt_token');
             if (!token || !enrollmentIds.length) return;
@@ -230,8 +237,6 @@
                 if (activeCount) activeCount.textContent = userEnrollments.length.toString();
                 if (activeCaption) activeCaption.textContent = userEnrollments.length ? 'Currently active' : 'No enrollments yet';
 
-                if (!userEnrollments.length) return;
-
                 const courseResponse = await fetch('https://localhost:7228/api/courses', {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -239,6 +244,32 @@
                 });
 
                 const courses = courseResponse.ok ? await courseResponse.json() : [];
+
+                if (!userEnrollments.length) {
+                    if (activeCount) activeCount.textContent = courses.length.toString();
+                    if (activeCaption) activeCaption.textContent = courses.length ? 'Available courses' : 'No courses available yet';
+
+                    container.innerHTML = '';
+                    courses.forEach(course => {
+                        const imageUrl = course?.image_URl || course?.imageUrl || '/images/course-placeholder.jpg';
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <img src="${imageUrl}" class="card__image" alt="${course?.title || 'Course thumbnail'}" loading="lazy" />
+                            <div class="card__body">
+                                <p class="text-small text-muted">Course catalog</p>
+                                <h4 class="heading-5">${course?.title || 'Course'} </h4>
+                                <p class="text-small text-muted">${course?.description || 'Explore this course to see curriculum and lessons.'}</p>
+                            </div>
+                            <div class="card__footer">
+                                <a href="/Courses/Details/${course.id}" class="btn btn--secondary btn--full">View course</a>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                    return;
+                }
+
                 const progressData = await loadProgress(userEnrollments.map(enrollment => enrollment.id)) || [];
 
                 container.innerHTML = '';
@@ -248,7 +279,7 @@
                     const completed = enrollmentProgress.filter(item => item.isCompleted).length;
                     const total = enrollmentProgress.length;
                     const percentage = total ? Math.round((completed / total) * 100) : 0;
-                    const imageUrl = course?.image_URl || course?.imageUrl || course?.imageUrl || '/images/course-placeholder.jpg';
+                    const imageUrl = course?.image_URl || course?.imageUrl || '/images/course-placeholder.jpg';
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
@@ -273,6 +304,17 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', loadEnrollments);
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = getCookie('jwt_token');
+            const adminControlCenter = document.getElementById('admin-control-center');
+            if (adminControlCenter) {
+                const payload = token ? parseJwt(token) : null;
+                const roles = getUserRoles(payload);
+                const isAdmin = roles.some(role => role?.toLowerCase() === 'admin');
+                adminControlCenter.style.display = isAdmin ? 'block' : 'none';
+            }
+
+            loadEnrollments();
+        });
     </script>
 }

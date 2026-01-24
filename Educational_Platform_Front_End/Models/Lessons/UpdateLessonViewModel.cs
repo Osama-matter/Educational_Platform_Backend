@@ -1,15 +1,22 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace Educational_Platform_Front_End.Models.Lessons
 {
-    public class LessonViewModel
+    public class UpdateLessonViewModel
     {
-        public Guid Id { get; set; }
+        [Required]
         public Guid CourseId { get; set; }
+
+        [Required]
         public string Title { get; set; }
+
+        [Required]
         public string Content { get; set; }
+
+        [Required]
         public int OrderIndex { get; set; }
+
         public int? DurationMinutes { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public string Status => string.IsNullOrWhiteSpace(Content) ? "Draft" : "Published";
     }
 }

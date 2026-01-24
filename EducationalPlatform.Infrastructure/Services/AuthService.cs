@@ -15,15 +15,30 @@ namespace EducationalPlatform.Infrastructure.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtTokenService jwtTokenService, IHttpContextAccessor httpContextAccessor)
+        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole<Guid>> roleManager, IJwtTokenService jwtTokenService, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _jwtTokenService = jwtTokenService;
             _httpContextAccessor = httpContextAccessor;
+        }
+
+        private async Task EnsureRoleExistsAsync(string roleName)
+        {
+            if (!await _roleManager.RoleExistsAsync(roleName))
+            {
+                var result = await _roleManager.CreateAsync(new IdentityRole<Guid>(roleName));
+                if (!result.Succeeded)
+                {
+                    var errorDetails = string.Join("; ", result.Errors.Select(e => e.Description));
+                    throw new System.Exception($"Role creation failed: {errorDetails}");
+                }
+            }
         }
 
         public async Task<UserDto> RegisterAsync(RegisterDto registerDto)
@@ -43,6 +58,14 @@ namespace EducationalPlatform.Infrastructure.Services
             {
                 var errorDetails = string.Join("; ", result.Errors.Select(e => e.Description));
                 throw new System.Exception($"User creation failed: {errorDetails}");
+            }
+
+            await EnsureRoleExistsAsync(UserRole.Student.ToString());
+            var addRoleResult = await _userManager.AddToRoleAsync(user, UserRole.Student.ToString());
+            if (!addRoleResult.Succeeded)
+            {
+                var errorDetails = string.Join("; ", addRoleResult.Errors.Select(e => e.Description));
+                throw new System.Exception($"Assign role failed: {errorDetails}");
             }
 
             return new UserDto
@@ -73,6 +96,14 @@ namespace EducationalPlatform.Infrastructure.Services
                 throw new System.Exception("User email is missing");
             }
 
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            if (currentRoles.Count == 0)
+            {
+                var roleName = user.Role.ToString();
+                await EnsureRoleExistsAsync(roleName);
+                await _userManager.AddToRoleAsync(user, roleName);
+            }
+
             return new UserDto
             {
                 Email = user.Email,
@@ -99,6 +130,14 @@ namespace EducationalPlatform.Infrastructure.Services
                 throw new System.Exception($"Admin creation failed: {errorDetails}");
             }
 
+            await EnsureRoleExistsAsync(UserRole.Admin.ToString());
+            var addRoleResult = await _userManager.AddToRoleAsync(user, UserRole.Admin.ToString());
+            if (!addRoleResult.Succeeded)
+            {
+                var errorDetails = string.Join("; ", addRoleResult.Errors.Select(e => e.Description));
+                throw new System.Exception($"Assign role failed: {errorDetails}");
+            }
+
             return new UserDto
             {
                 Email = user.Email,
@@ -108,7 +147,7 @@ namespace EducationalPlatform.Infrastructure.Services
 
         public Task LogoutAsync()
         {
-            return Task.CompletedTask;
+            return _signInManager.SignOutAsync();
         }
 
         public async Task<UserDetailsDto> GetUserDetailsAsync()

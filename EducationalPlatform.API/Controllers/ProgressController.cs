@@ -3,6 +3,7 @@ using EducationalPlatform.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace EducationalPlatform.API.Controllers
 {
@@ -33,8 +34,22 @@ namespace EducationalPlatform.API.Controllers
         [HttpPost(Routes.Routes.Progress.CreateProgress)]
         public async Task<IActionResult> CreateProgress([FromBody] CreateLessonProgressDto createLessonProgressDto)
         {
-            var result = await _progressService.CreateAsync(createLessonProgressDto);
-            return Ok(result);
+            try
+            {
+                var result = await _progressService.CreateAsync(createLessonProgressDto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message ?? string.Empty;
+                if (message.Contains("duplicate", StringComparison.OrdinalIgnoreCase) ||
+                    message.Contains("UNIQUE", StringComparison.OrdinalIgnoreCase))
+                {
+                    return Conflict("Lesson progress already exists.");
+                }
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating progress.");
+            }
         }
 
         [HttpDelete(Routes.Routes.Progress.DeleteProgress)]

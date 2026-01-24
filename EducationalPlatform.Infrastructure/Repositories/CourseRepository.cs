@@ -43,9 +43,15 @@ namespace EducationalPlatform.Infrastructure.Repositories
 
         public async Task DeleteAsync(Guid id)
         {
-            var course = await GetByIdAsync(id);
+            var course = await _context.Courses
+                .Include(c => c.Enrollments)
+                .FirstOrDefaultAsync(c => c.Id == id);
             if (course != null)
             {
+                if (course.Enrollments?.Count > 0)
+                {
+                    _context.Enrollments.RemoveRange(course.Enrollments);
+                }
                 _context.Courses.Remove(course);
                 await _context.SaveChangesAsync();
             }

@@ -1,34 +1,192 @@
 @page
 @model Educational_Platform_Front_End.Pages.Lessons.IndexModel
+
 @{
-    ViewData["Title"] = "Lessons";
+    ViewData["Title"] = "Course Catalog";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Lessons</h1>
-    <a asp-page="/Lessons/Create" asp-route-courseId="@Model.CourseId" class="btn btn-primary">Add New Lesson</a>
-</div>
+<section class="hero">
+    <div class="container">
+        <div class="hero__content">
+            <div>
+                <p class="text-small text-muted">Enterprise learning catalog</p>
+                <h1 class="hero__title">Course catalog</h1>
+                <p class="text-lead">
+                    Discover @(Model.TotalCourses?.ToString("N0") ?? "hundreds of") courses and structured lessons designed for measurable growth.
+                </p>
 
-@if (Model.Lessons != null && Model.Lessons.Any())
-{
-    <ul class="list-group">
-        @foreach (var lesson in Model.Lessons)
-        {
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <h5 class="mb-1">@lesson.Title</h5>
-                    <small>Duration: @(lesson.DurationMinutes?.ToString() ?? "N/A") minutes</small>
+                <div class="flex items-center gap-4 mt-6">
+                    <a asp-page="/Courses/Index" class="btn btn--primary">Browse courses</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-page="/Courses/Create" class="btn btn--secondary">Create course</a>
+                    }
                 </div>
-                <a asp-page="/Lessons/Details" asp-route-id="@lesson.Id" class="btn btn-sm btn-info">View</a>
-            </li>
-        }
-    </ul>
-}
-else
-{
-    <p>No lessons found for this course.</p>
+            </div>
+
+            <div class="hero__panel">
+                <p class="text-small text-muted">Platform snapshot</p>
+                <div class="stat-grid mt-6">
+                    <div class="stat-card">
+                        <p class="stat-card__value">@(Model.Stats?.TotalCourses ?? (Model.TotalCourses ?? 0))</p>
+                        <p class="text-small text-muted">Courses</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-card__value">@(Model.Stats?.TotalStudents ?? 0)</p>
+                        <p class="text-small text-muted">Learners</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-card__value">@(Model.Stats?.CompletionRate ?? 0)%</p>
+                        <p class="text-small text-muted">Completion rate</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="catalog">
+            <aside class="filter-panel">
+                <div class="filter-panel__group">
+                    <label class="form__label" for="searchInput">Search</label>
+                    <div class="search-bar">
+                        <input id="searchInput" type="search" placeholder="Search by title or description..." autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="filter-panel__group">
+                    <label class="form__label" for="categoryFilter">Category</label>
+                    <select class="form__select" id="categoryFilter">
+                        <option value="">All categories</option>
+                        @if (Model.CourseTypes != null)
+                        {
+                            foreach (var type in Model.CourseTypes)
+                            {
+                                <option value="@type">@type</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="filter-panel__group">
+                    <label class="form__label" for="durationFilter">Duration</label>
+                    <select class="form__select" id="durationFilter">
+                        <option value="">Any duration</option>
+                        <option value="short">Under 5 hours</option>
+                        <option value="medium">5-15 hours</option>
+                        <option value="long">15+ hours</option>
+                    </select>
+                </div>
+
+                <div class="filter-panel__group">
+                    <p class="text-small text-muted">Quick categories</p>
+                    <div class="lesson-type-chips mt-4" id="typeChips">
+                        <button type="button" class="lesson-type-chip is-active" data-type="">All</button>
+                        @if (Model.CourseTypes != null)
+                        {
+                            foreach (var type in Model.CourseTypes)
+                            {
+                                <button type="button" class="lesson-type-chip" data-type="@type">@type</button>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="filter-panel__group">
+                    <button type="button" class="btn btn--secondary btn--full" id="resetFiltersBtn">Reset filters</button>
+                </div>
+            </aside>
+
+            <div>
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="heading-4">Browse by category</h2>
+                        <p class="text-muted">Select a category to narrow down the catalog.</p>
+                    </div>
+                </div>
+
+                <div id="coursesContent">
+                    @if (Model.CoursesByType != null && Model.CoursesByType.Any())
+                    {
+                        foreach (var courseSection in Model.CoursesByType)
+                        {
+                            if (courseSection.Courses != null && courseSection.Courses.Any())
+                            {
+                                <section class="course-section" data-course-section data-type="@courseSection.Type">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h3 class="heading-5">@courseSection.Type</h3>
+                                        <button type="button" class="btn btn--ghost btn--sm view-all-link" data-type="@courseSection.Type">View all</button>
+                                    </div>
+
+                                    <div class="grid grid--cols-3 lesson-course-grid">
+                                        @foreach (var course in courseSection.Courses)
+                                        {
+                                            var imageUrl = string.IsNullOrWhiteSpace(course.ImageUrl)
+                                                ? "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                                                : course.ImageUrl;
+                                            var duration = course.EstimatedDurationHours ?? 0;
+                                            <article class="card lesson-course-card" data-course-card data-title="@course.Title" data-description="@course.Description" data-type="@courseSection.Type" data-duration="@duration">
+                                                <img src="@imageUrl" alt="@(string.IsNullOrWhiteSpace(course.Title) ? "Course thumbnail" : course.Title)" class="card__image" loading="lazy" />
+                                                <div class="card__body">
+                                                    <p class="text-small text-muted">@courseSection.Type</p>
+                                                    <h4 class="heading-6">@course.Title</h4>
+                                                    <p class="text-small text-muted lesson-course-desc">@course.Description</p>
+                                                    <div class="flex items-center justify-between mt-4">
+                                                        <span class="badge badge--neutral">@duration h</span>
+                                                        <a asp-page="/Courses/Details" asp-route-id="@course.Id" class="btn btn--primary btn--sm">View</a>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        }
+                                    </div>
+                                </section>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <div class="card" style="padding: var(--spacing-8);">
+                            <h3 class="heading-5">No courses available</h3>
+                            <p class="text-muted">The catalog is currently empty. Please check back later.</p>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-page="/Courses/Create" class="btn btn--primary mt-4">Create the first course</a>
+                            }
+                        </div>
+                    }
+
+                    <div class="card lesson-no-results" id="noResultsMessage">
+                        <h3 class="heading-5">No results</h3>
+                        <p class="text-muted">No courses match your current filters. Try resetting filters or selecting another category.</p>
+                        <button type="button" class="btn btn--secondary mt-4" id="resetFiltersBtnInline">Reset filters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/js/pages/lessons-index.js" asp-append-version="true" defer></script>
 }
 
-<div class="mt-4">
-    <a asp-page="/Courses/Details" asp-route-id="@Model.CourseId" class="btn btn-secondary">Back to Course</a>
-</div>
+@if (false)
+{
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewData["Title"] - LearnSphere</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            /* ... */
+        </style>
+    </head>
+    <body>
+        <!-- ... -->
+    </body>
+    </html>
+}

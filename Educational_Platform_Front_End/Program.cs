@@ -2,6 +2,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddAuthentication("Cookies")
+    .AddCookie("Cookies", options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+    });
+builder.Services.AddScoped<Educational_Platform_Front_End.Services.Admin.IAdminAuthService, Educational_Platform_Front_End.Services.Admin.AdminAuthService>();
+builder.Services.AddScoped<Educational_Platform_Front_End.Services.Admin.ILessonAdminService, Educational_Platform_Front_End.Services.Admin.LessonAdminService>();
+builder.Services.AddScoped<Educational_Platform_Front_End.Services.Admin.ICourseAdminService, Educational_Platform_Front_End.Services.Admin.CourseAdminService>();
 
 var app = builder.Build();
 
@@ -18,6 +27,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();

@@ -40,7 +40,13 @@
                     <p class="font-medium">@Model.Lesson.Title</p>
                 </div>
                 <div class="mt-6">
-                    <button class="btn btn--primary btn--full" type="button">Mark complete</button>
+                    <form method="post" asp-page-handler="Complete" asp-route-id="@Model.Lesson.Id">
+                        <button class="btn btn--primary btn--full" type="submit">Mark complete</button>
+                    </form>
+                    @if (TempData["StatusMessage"] != null)
+                    {
+                        <p class="text-small text-muted mt-2">@TempData["StatusMessage"]</p>
+                    }
                     <a asp-page="/Lessons/Index" asp-route-courseId="@Model.Lesson.CourseId" class="btn btn--secondary btn--full mt-2">Back to lessons</a>
                 </div>
                 <div class="mt-6">
@@ -52,22 +58,12 @@
             <section>
                 <div class="lesson-player">
                     <h1 class="heading-4">@Model.Lesson.Title</h1>
-                    <video controls poster="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80">
-                        <source src="" type="video/mp4" />
-                    </video>
-                    <div class="flex items-center gap-4">
-                        <button class="btn btn--secondary" type="button">Play 1.5x</button>
-                        <button class="btn btn--ghost" type="button">Download transcript</button>
-                    </div>
-                </div>
-
-                <div class="card mt-6" style="padding: var(--spacing-6);">
-                    <h3 class="heading-5">Lesson overview</h3>
                     <div class="lesson-player mt-4" id="lesson-video" style="display: none;">
                         <iframe id="youtube-embed" width="100%" height="360" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
-                    <div class="text-muted" id="lesson-content">@Html.Raw(Model.Lesson.Content)</div>
                 </div>
+
+                <div class="text-muted" id="lesson-content" style="display: none;">@Html.Raw(Model.Lesson.Content)</div>
 
                 <div class="resource-grid mt-6">
                     <div class="resource-card">

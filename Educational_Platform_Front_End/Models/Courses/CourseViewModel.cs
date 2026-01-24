@@ -11,5 +11,20 @@ namespace Educational_Platform_Front_End.Models.Courses
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string Image_URl { get; set; }
+
+        public string ImageUrl
+        {
+            get => Image_URl;
+            set => Image_URl = value;
+        }
+
+        public int? DurationHours
+        {
+            get => EstimatedDurationHours;
+            set => EstimatedDurationHours = value;
+        }
+
+        public string InstructorName { get; set; }
+        public string Type { get; set; }
     }
 }

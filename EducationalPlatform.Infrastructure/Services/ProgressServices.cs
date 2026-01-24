@@ -23,6 +23,8 @@ namespace EducationalPlatform.Infrastructure.Services
         public async Task<LessonProgressDto> CreateAsync(CreateLessonProgressDto createLessonProgress)
         {
             var  lessonProgressEntity = createLessonProgress.ToEntity();
+            lessonProgressEntity.IsCompleted = true;
+            lessonProgressEntity.CompletedAt = DateTime.UtcNow;
             await _lessonProgressRepository.AddAsync(lessonProgressEntity);
             var dto = new LessonProgressDto
             {
