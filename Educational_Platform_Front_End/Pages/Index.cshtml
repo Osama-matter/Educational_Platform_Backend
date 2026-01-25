@@ -4,451 +4,501 @@
     ViewData["Title"] = "All Courses";
 }
 
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LearnSphere | Enterprise Learning Management System</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/enterprise-design-system.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    
 
 </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPlatform Enterprise - Transform Your Organization</title>
+    <meta name="description" content="Enterprise learning solutions with custom integrations, white-label options, and dedicated support for organizations that demand excellence.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="enterprise.css">
+</head>
 <body>
-    <!-- Skip to main content for accessibility -->
-    <a href="#main-content" class="sr-only">Skip to main content</a>
 
-    <!-- ===== Header ===== -->
-    <header>
-        <div class="container header-container">
-            <a href="#" class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                <span>LearnSphere</span>
-            </a>
-
-            <nav class="nav-menu" aria-label="Main Navigation">
-                <a href="#" class="nav-link">Home</a>
-                <a href="#" class="nav-link">Courses</a>
-                <a href="#" class="nav-link">Categories</a>
-                <a href="#" class="nav-link">About</a>
-                <a href="#" class="nav-link">Contact</a>
-            </nav>
-
-            <div class="auth-buttons">
-                <a href="#" class="btn btn-outline btn-login">Login</a>
-                <a href="#" class="btn btn-primary btn-register">Register</a>
-            </div>
-
-            <button class="mobile-menu-btn" aria-label="Toggle mobile menu">
-                <i class="fas fa-bars"></i>
-            </button>
+    <!-- ===== ENTERPRISE HERO SECTION ===== -->
+    <section class="enterprise-hero">
+        <div class="enterprise-hero__background">
+            <div class="enterprise-hero__gradient"></div>
+            <div class="enterprise-hero__grid"></div>
         </div>
-    </header>
 
-    <!-- ===== Hero Section ===== -->
-    <section class="hero" id="main-content">
-        <div class="container hero-container">
-            <div class="hero-content">
-                <h1>Advance Your Career with Expert-Led Courses</h1>
-                <p class="hero-subtitle">Master in-demand skills through our comprehensive learning platform. Join 250,000+ professionals accelerating their careers.</p>
-                <div class="hero-cta">
-                    <a href="#" class="btn btn-primary">Start Learning Free</a>
-                    <a href="#" class="btn btn-secondary">Browse Courses</a>
-                </div>
-            </div>
-            <div class="hero-illustration">
-                <img src="https://images.unsplash.com/photo-1497636577773-f1231844b336?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="Students learning together in a modern workspace" class="hero-image">
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== Search Section ===== -->
-    <section class="search-section">
-        <div class="container search-container">
-            <h2 class="sr-only">Course Search</h2>
-            <div class="search-box">
-                <input type="text" class="search-input" placeholder="What do you want to learn today?" aria-label="Search courses">
-                <div class="search-category">
-                    <select class="category-select" aria-label="Select course category">
-                        <option value="">All Categories</option>
-                        <option value="tech">Technology</option>
-                        <option value="business">Business</option>
-                        <option value="design">Design</option>
-                        <option value="data">Data Science</option>
-                        <option value="marketing">Marketing</option>
-                    </select>
-                </div>
-                <button class="btn btn-primary search-btn">
-                    <i class="fas fa-search"></i> Search
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== Featured Courses ===== -->
-    <section class="courses-section">
         <div class="container">
-            <div class="section-header">
-                <h2>Featured Courses</h2>
-                <p class="section-subtitle">Hand-picked courses from industry experts to boost your skills</p>
+            <div class="enterprise-hero__content">
+                <!-- Badge Label -->
+                <div class="enterprise-hero__label">
+                    <span class="enterprise-hero__label-text">Enterprise Solutions</span>
+                    <div class="enterprise-hero__label-glow"></div>
+                </div>
+
+                <!-- Main Title -->
+                <h1 class="enterprise-hero__title">
+                    <span class="enterprise-hero__title-line">Transform Your</span>
+                    <span class="enterprise-hero__title-line enterprise-hero__title-line--accent">Organization's Learning</span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="enterprise-hero__subtitle">
+                    Deploy enterprise-grade learning infrastructure that scales with your team.
+                    Custom integrations, white-label solutions, and dedicated support for organizations that demand excellence.
+                </p>
+
+                <!-- CTA Buttons -->
+                <div class="enterprise-hero__cta">
+                    <button class="btn-enterprise btn-enterprise--primary">
+                        Schedule Consultation
+                        <svg class="btn-enterprise__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <button class="btn-enterprise btn-enterprise--secondary">
+                        View Case Studies
+                    </button>
+                </div>
+
+                <!-- Hero Stats -->
+                <div class="enterprise-hero__stats">
+                    <div class="enterprise-stat">
+                        <div class="enterprise-stat__value">500K+</div>
+                        <div class="enterprise-stat__label">Enterprise Users</div>
+                    </div>
+                    <div class="enterprise-stat">
+                        <div class="enterprise-stat__value">98.7%</div>
+                        <div class="enterprise-stat__label">Satisfaction Rate</div>
+                    </div>
+                    <div class="enterprise-stat">
+                        <div class="enterprise-stat__value">24/7</div>
+                        <div class="enterprise-stat__label">Dedicated Support</div>
+                    </div>
+                </div>
             </div>
 
-            <div class="courses-grid">
-                @if (Model.Courses != null && Model.Courses.Any())
-                {
-                    foreach (var course in Model.Courses.Take(6))
-                    {
-                        <article class="course-card">
-                            <img src="@(string.IsNullOrWhiteSpace(course.Image_URl) ? "/images/course-placeholder.jpg" : course.Image_URl)" alt="@course.Title" class="course-image">
-                            <div class="course-content">
-                                <h3 class="course-title">@course.Title</h3>
-                                <p class="course-description">
-                                    @if (!string.IsNullOrWhiteSpace(course.Description) && course.Description.Length > 140)
-                                    {
-                                        @course.Description.Substring(0, 140)
-                            
-                                        <text>...</text>
-                                    }
-                                    else
-                                    {
-                                        @course.Description
-                                    }
-                                </p>
-                                <div class="course-meta">
-                                    <div class="course-instructor">
-                                        <div class="instructor-avatar">EP</div>
-                                        <span>EduPlatform</span>
-                                    </div>
-                                    <div class="course-duration">
-                                        <i class="far fa-clock"></i> @(course.EstimatedDurationHours?.ToString() ?? "N/A") hours
-                                    </div>
-                                </div>
-                                <div class="course-actions">
-                                    <a asp-page="/Courses/Details" asp-route-id="@course.Id" class="btn btn-primary btn-enroll">View course</a>
-                                </div>
-                            </div>
-                        </article>
-                    }
-                }
-                else
-                {
-                    <div class="course-card" style="grid-column: 1 / -1;">
-                        <div class="course-content">
-                            <h3 class="course-title">No courses available</h3>
-                            <p class="course-description">Courses will appear here once they are published.</p>
-                            <a asp-page="/Courses/Create" class="btn btn-primary btn-enroll">Create a course</a>
+            <!-- Floating Dashboard Card -->
+            <div class="enterprise-hero__visual">
+                <div class="enterprise-card enterprise-card--floating">
+                    <div class="enterprise-card__header">
+                        <div class="enterprise-card__icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" />
+                                <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" />
+                                <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" />
+                                <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="enterprise-card__title">Learning Dashboard</div>
+                            <div class="enterprise-card__subtitle">Real-time Analytics</div>
                         </div>
                     </div>
-                }
-            </div>
-
-            <div class="view-all-courses">
-                <a asp-page="/Courses/Index" class="btn btn-secondary">View All Courses <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== Platform Benefits ===== -->
-    <section class="benefits-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Why Learn With Us</h2>
-                <p class="section-subtitle">Experience learning designed for modern professionals</p>
-            </div>
-
-            <div class="benefits-grid">
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <i class="fas fa-laptop-house"></i>
+                    <div class="enterprise-card__metric">
+                        <div class="enterprise-card__metric-value">+47%</div>
+                        <div class="enterprise-card__metric-trend">↗ Engagement Growth</div>
                     </div>
-                    <h3>Learn Anytime, Anywhere</h3>
-                    <p>Access courses on any device with our responsive platform. Learn at your own pace with lifetime access.</p>
-                </div>
-
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <i class="fas fa-chalkboard-teacher"></i>
+                    <div class="enterprise-card__chart">
+                        <div class="chart-bar" style="--height: 40%; --delay: 0s;"></div>
+                        <div class="chart-bar" style="--height: 55%; --delay: 0.1s;"></div>
+                        <div class="chart-bar" style="--height: 70%; --delay: 0.2s;"></div>
+                        <div class="chart-bar" style="--height: 85%; --delay: 0.3s;"></div>
+                        <div class="chart-bar" style="--height: 100%; --delay: 0.4s;"></div>
                     </div>
-                    <h3>Expert Instructors</h3>
-                    <p>Learn from industry professionals with years of experience and proven teaching methods.</p>
-                </div>
-
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <i class="fas fa-road"></i>
-                    </div>
-                    <h3>Structured Learning Paths</h3>
-                    <p>Follow curated career tracks that guide you from beginner to job-ready in your chosen field.</p>
-                </div>
-
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Progress Tracking</h3>
-                    <p>Monitor your advancement with detailed analytics, quizzes, and milestone achievements.</p>
-                </div>
-
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <i class="fas fa-certificate"></i>
-                    </div>
-                    <h3>Industry Certificates</h3>
-                    <p>Earn recognized certificates that validate your skills and boost your career prospects.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== Statistics ===== -->
-    <section class="stats-section">
+    <!-- ===== TRUST BANNER ===== -->
+    <section class="trust-banner">
         <div class="container">
-            <div class="section-header">
-                <h2 class="text-center">Trusted by Learners Worldwide</h2>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <h3>250K+</h3>
-                    <p>Active Students</p>
-                </div>
-
-                <div class="stat-item">
-                    <h3>1,200+</h3>
-                    <p>Expert Courses</p>
-                </div>
-
-                <div class="stat-item">
-                    <h3>850+</h3>
-                    <p>Industry Instructors</p>
-                </div>
-
-                <div class="stat-item">
-                    <h3>94%</h3>
-                    <p>Completion Rate</p>
-                </div>
+            <p class="trust-banner__label">Trusted by Industry Leaders</p>
+            <div class="trust-banner__logos">
+                <div class="trust-logo">TechCorp</div>
+                <div class="trust-logo">InnovateCo</div>
+                <div class="trust-logo">GlobalBank</div>
+                <div class="trust-logo">MedHealth</div>
+                <div class="trust-logo">EduGlobal</div>
+                <div class="trust-logo">FinanceHub</div>
             </div>
         </div>
     </section>
 
-    <!-- ===== Testimonials ===== -->
-    <section class="testimonials-section">
+    <!-- ===== FEATURES SHOWCASE ===== -->
+    <section class="enterprise-features">
         <div class="container">
-            <div class="section-header">
-                <h2>Student Success Stories</h2>
-                <p class="section-subtitle">See how our platform has transformed careers</p>
+            <!-- Section Header -->
+            <div class="section-header section-header--centered">
+                <span class="section-label">Platform Capabilities</span>
+                <h2 class="section-title">Built for Enterprise Scale</h2>
+                <p class="section-description">
+                    Advanced features engineered for organizations with complex learning requirements
+                </p>
             </div>
 
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p>"The data science course completely changed my career trajectory. I went from an analyst to a senior data scientist in just 9 months."</p>
+            <!-- Features Grid -->
+            <div class="features-grid">
+
+                <!-- Feature 1: SSO & Security -->
+                <div class="feature-showcase">
+                    <div class="feature-showcase__visual">
+                        <div class="feature-icon feature-icon--large">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                            </svg>
+                        </div>
                     </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">SD</div>
-                        <div class="author-info">
-                            <h4>Sarah Davis</h4>
-                            <p class="author-role">Senior Data Scientist at TechCorp</p>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
+                    <div class="feature-showcase__content">
+                        <h3 class="feature-showcase__title">SSO & Advanced Security</h3>
+                        <p class="feature-showcase__description">
+                            Seamless single sign-on integration with SAML 2.0, OAuth 2.0, and Active Directory.
+                            Role-based access control, audit logs, and SOC 2 Type II compliance.
+                        </p>
+                        <ul class="feature-showcase__list">
+                            <li>Multi-factor authentication</li>
+                            <li>Data encryption at rest and in transit</li>
+                            <li>Compliance reporting dashboard</li>
+                            <li>Custom security policies</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Feature 2: Custom Integration Hub -->
+                <div class="feature-showcase feature-showcase--reverse">
+                    <div class="feature-showcase__visual">
+                        <div class="feature-icon feature-icon--large">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" />
+                                <path d="M3 9H21" stroke="currentColor" stroke-width="2" />
+                                <path d="M9 21V9" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="feature-showcase__content">
+                        <h3 class="feature-showcase__title">Custom Integration Hub</h3>
+                        <p class="feature-showcase__description">
+                            Connect EduPlatform to your existing tech stack with our comprehensive API suite.
+                            Pre-built integrations for Salesforce, Slack, Microsoft Teams, and 50+ tools.
+                        </p>
+                        <ul class="feature-showcase__list">
+                            <li>RESTful API with 99.99% uptime</li>
+                            <li>Webhooks for real-time events</li>
+                            <li>Custom LMS integrations</li>
+                            <li>Dedicated integration support</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Feature 3: White-Label & Branding -->
+                <div class="feature-showcase">
+                    <div class="feature-showcase__visual">
+                        <div class="feature-icon feature-icon--large">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                                <path d="M21 16V8C21 6.89543 20.1046 6 19 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18H19C20.1046 18 21 17.1046 21 16Z" stroke="currentColor" stroke-width="2" />
+                                <path d="M3 10H21" stroke="currentColor" stroke-width="2" />
+                                <circle cx="7" cy="14" r="1" fill="currentColor" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="feature-showcase__content">
+                        <h3 class="feature-showcase__title">White-Label & Branding</h3>
+                        <p class="feature-showcase__description">
+                            Deploy a fully branded learning experience that matches your corporate identity.
+                            Custom domains, branded certificates, and personalized email templates.
+                        </p>
+                        <ul class="feature-showcase__list">
+                            <li>Custom domain and SSL</li>
+                            <li>Brand guidelines enforcement</li>
+                            <li>Personalized learner journeys</li>
+                            <li>Branded mobile applications</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ANALYTICS SHOWCASE ===== -->
+    <section class="analytics-showcase">
+        <div class="container">
+            <div class="analytics-grid">
+
+                <!-- Analytics Content -->
+                <div class="analytics-content">
+                    <span class="section-label">Enterprise Analytics</span>
+                    <h2 class="section-title">Data-Driven Learning Intelligence</h2>
+                    <p class="section-description">
+                        Transform learning data into actionable insights with our advanced analytics engine.
+                        Track engagement, measure ROI, and identify skill gaps across your organization.
+                    </p>
+
+                    <div class="analytics-features">
+                        <div class="analytics-feature">
+                            <div class="analytics-feature__icon">📊</div>
+                            <div>
+                                <h4 class="analytics-feature__title">Custom Dashboards</h4>
+                                <p class="analytics-feature__text">Build department-specific views with drag-and-drop widgets</p>
+                            </div>
+                        </div>
+                        <div class="analytics-feature">
+                            <div class="analytics-feature__icon">🎯</div>
+                            <div>
+                                <h4 class="analytics-feature__title">Skill Gap Analysis</h4>
+                                <p class="analytics-feature__text">Identify competency gaps and recommend targeted learning paths</p>
+                            </div>
+                        </div>
+                        <div class="analytics-feature">
+                            <div class="analytics-feature__icon">📈</div>
+                            <div>
+                                <h4 class="analytics-feature__title">ROI Measurement</h4>
+                                <p class="analytics-feature__text">Calculate training impact on business performance metrics</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p>"As a working professional, I needed flexibility. The self-paced courses allowed me to upskill without leaving my job."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">MJ</div>
-                        <div class="author-info">
-                            <h4>Michael Johnson</h4>
-                            <p class="author-role">Product Manager at InnovateCo</p>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
+                <!-- Analytics Visual Dashboard -->
+                <div class="analytics-visual">
+                    <div class="analytics-dashboard">
+                        <div class="analytics-dashboard__header">
+                            <div class="analytics-dashboard__title">Learning Performance</div>
+                            <div class="analytics-dashboard__controls">
+                                <span class="analytics-pill">Live</span>
+                                <span class="analytics-pill">Q4 2025</span>
+                            </div>
+                        </div>
+                        <div class="analytics-dashboard__metrics">
+                            <div class="metric-card">
+                                <div class="metric-card__label">Completion Rate</div>
+                                <div class="metric-card__value">94.3%</div>
+                                <div class="metric-card__change">+12.4%</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-card__label">Active Learners</div>
+                                <div class="metric-card__value">12,847</div>
+                                <div class="metric-card__change">+8.7%</div>
+                            </div>
+                        </div>
+                        <div class="analytics-dashboard__chart">
+                            <div class="progress-ring">
+                                <svg viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="45" class="progress-ring__background" />
+                                    <circle cx="50" cy="50" r="45" class="progress-ring__progress" style="--progress: 0.78;" />
+                                </svg>
+                                <div class="progress-ring__label">78%<br><span>Engagement</span></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p>"The UI/UX design masterclass gave me the confidence to switch careers. I now work at a leading design agency."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">ET</div>
-                        <div class="author-info">
-                            <h4>Emma Thompson</h4>
-                            <p class="author-role">UX Designer at CreativeMinds</p>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== CTA Section ===== -->
-    <section class="cta-section">
-        <div class="container cta-container">
-            <h2>Start Your Learning Journey Today</h2>
-            <p class="text-lead">Join thousands of professionals transforming their careers with our expert-led courses. No commitment, cancel anytime.</p>
-            <a href="#" class="btn btn-primary" style="padding: 18px 48px; font-size: 1.125rem;">
-                Get Started Free <i class="fas fa-arrow-right"></i>
-            </a>
-        </div>
-    </section>
-
-    <!-- ===== Footer ===== -->
-    <footer>
+    <!-- ===== PRICING TIERS ===== -->
+    <section class="enterprise-pricing">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <div class="footer-logo">
-                        <i class="fas fa-graduation-cap"></i> LearnSphere
-                    </div>
-                    <p class="footer-description">Empowering professionals worldwide with accessible, high-quality education for career advancement.</p>
-                    <div class="social-links">
-                        <a href="#" aria-label="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="Follow us on Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="Follow us on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" aria-label="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
 
-                <div class="footer-col">
-                    <h3 class="footer-heading">Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Courses</a></li>
-                        <li><a href="#">Categories</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contact</a></li>
+            <!-- Section Header -->
+            <div class="section-header section-header--centered">
+                <span class="section-label">Flexible Plans</span>
+                <h2 class="section-title">Enterprise Pricing</h2>
+                <p class="section-description">
+                    Transparent, scalable pricing designed for organizations of all sizes
+                </p>
+            </div>
+
+            <!-- Pricing Cards Grid -->
+            <div class="pricing-grid">
+
+                <!-- Team Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3 class="pricing-card__name">Team</h3>
+                        <p class="pricing-card__description">For growing departments</p>
+                    </div>
+                    <div class="pricing-card__price">
+                        <span class="pricing-card__amount">$49</span>
+                        <span class="pricing-card__period">per user/month</span>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>Up to 250 users</li>
+                        <li>SSO integration</li>
+                        <li>Basic analytics</li>
+                        <li>Email support</li>
+                        <li>Standard integrations</li>
                     </ul>
+                    <button class="btn-pricing">Start Free Trial</button>
                 </div>
 
-                <div class="footer-col">
-                    <h3 class="footer-heading">Resources</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Career Guide</a></li>
-                        <li><a href="#">Scholarships</a></li>
-                        <li><a href="#">For Business</a></li>
-                        <li><a href="#">Help Center</a></li>
+                <!-- Business Plan (Featured) -->
+                <div class="pricing-card pricing-card--featured">
+                    <div class="pricing-card__badge">Most Popular</div>
+                    <div class="pricing-card__header">
+                        <h3 class="pricing-card__name">Business</h3>
+                        <p class="pricing-card__description">For mid-size organizations</p>
+                    </div>
+                    <div class="pricing-card__price">
+                        <span class="pricing-card__amount">$89</span>
+                        <span class="pricing-card__period">per user/month</span>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>Up to 1,000 users</li>
+                        <li>Advanced SSO & MFA</li>
+                        <li>Custom analytics dashboards</li>
+                        <li>Priority support</li>
+                        <li>API access</li>
+                        <li>White-label options</li>
+                        <li>Custom integrations</li>
                     </ul>
+                    <button class="btn-pricing btn-pricing--primary">Request Demo</button>
                 </div>
 
-                <div class="footer-col">
-                    <h3 class="footer-heading">Contact Info</h3>
-                    <ul class="footer-links">
-                        <li><i class="fas fa-map-marker-alt"></i> 123 Education St, San Francisco, CA</li>
-                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
-                        <li><i class="fas fa-envelope"></i> support@learnsphere.com</li>
+                <!-- Enterprise Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3 class="pricing-card__name">Enterprise</h3>
+                        <p class="pricing-card__description">For large organizations</p>
+                    </div>
+                    <div class="pricing-card__price">
+                        <span class="pricing-card__amount">Custom</span>
+                        <span class="pricing-card__period">tailored to your needs</span>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>Unlimited users</li>
+                        <li>Dedicated infrastructure</li>
+                        <li>Custom analytics & reporting</li>
+                        <li>24/7 dedicated support</li>
+                        <li>Full API suite</li>
+                        <li>Complete white-label</li>
+                        <li>Custom development</li>
+                        <li>SLA guarantees</li>
                     </ul>
+                    <button class="btn-pricing">Contact Sales</button>
                 </div>
-            </div>
 
-            <div class="footer-bottom">
-                <p>&copy; 2023 LearnSphere. All rights reserved.</p>
-                <div class="footer-legal">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Cookie Policy</a>
-                </div>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <!-- ===== JavaScript for Mobile Menu ===== -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            const navMenu = document.querySelector('.nav-menu');
-            const authButtons = document.querySelector('.auth-buttons');
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="enterprise-testimonials">
+        <div class="container">
 
-            mobileMenuBtn.addEventListener('click', function() {
-                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            <!-- Section Header -->
+            <div class="section-header section-header--centered">
+                <span class="section-label">Client Success</span>
+                <h2 class="section-title">What Enterprise Leaders Say</h2>
+            </div>
 
-                if (navMenu.style.display === 'flex') {
-                    navMenu.style.display = 'none';
-                    authButtons.style.display = 'none';
-                    this.setAttribute('aria-expanded', 'false');
-                    this.innerHTML = '<i class="fas fa-bars"></i>';
-                } else {
-                    navMenu.style.display = 'flex';
-                    authButtons.style.display = 'flex';
-                    this.setAttribute('aria-expanded', 'true');
-                    this.innerHTML = '<i class="fas fa-times"></i>';
-                }
-            });
+            <!-- Testimonials Showcase -->
+            <div class="testimonials-showcase">
 
-            // Initialize mobile menu state
-            if (window.innerWidth <= 768) {
-                navMenu.style.display = 'none';
-                authButtons.style.display = 'none';
-                mobileMenuBtn.setAttribute('aria-expanded', 'false');
-            }
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card-enterprise">
+                    <div class="testimonial-card-enterprise__quote">
+                        "EduPlatform transformed how we train our global workforce. The analytics alone
+                        have helped us save 40% on training costs while improving completion rates."
+                    </div>
+                    <div class="testimonial-card-enterprise__author">
+                        <div class="testimonial-card-enterprise__avatar">KM</div>
+                        <div>
+                            <div class="testimonial-card-enterprise__name">Karen Mitchell</div>
+                            <div class="testimonial-card-enterprise__role">Chief Learning Officer, TechCorp</div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card-enterprise__metrics">
+                        <div class="testimonial-metric">
+                            <div class="testimonial-metric__value">40%</div>
+                            <div class="testimonial-metric__label">Cost Reduction</div>
+                        </div>
+                        <div class="testimonial-metric">
+                            <div class="testimonial-metric__value">15K+</div>
+                            <div class="testimonial-metric__label">Active Users</div>
+                        </div>
+                    </div>
+                </div>
 
-            // Handle window resize
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 768) {
-                    navMenu.style.display = 'flex';
-                    authButtons.style.display = 'flex';
-                    mobileMenuBtn.setAttribute('aria-expanded', 'false');
-                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-                } else {
-                    navMenu.style.display = 'none';
-                    authButtons.style.display = 'none';
-                    mobileMenuBtn.setAttribute('aria-expanded', 'false');
-                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-                }
-            });
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card-enterprise">
+                    <div class="testimonial-card-enterprise__quote">
+                        "The seamless integration with our existing systems was impressive. Our team
+                        was up and running within days, not months."
+                    </div>
+                    <div class="testimonial-card-enterprise__author">
+                        <div class="testimonial-card-enterprise__avatar">RS</div>
+                        <div>
+                            <div class="testimonial-card-enterprise__name">Robert Singh</div>
+                            <div class="testimonial-card-enterprise__role">VP of Engineering, InnovateCo</div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card-enterprise__metrics">
+                        <div class="testimonial-metric">
+                            <div class="testimonial-metric__value">3 Days</div>
+                            <div class="testimonial-metric__label">Setup Time</div>
+                        </div>
+                        <div class="testimonial-metric">
+                            <div class="testimonial-metric__value">98%</div>
+                            <div class="testimonial-metric__label">User Satisfaction</div>
+                        </div>
+                    </div>
+                </div>
 
-            // Add smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
+            </div>
+        </div>
+    </section>
 
-                    if (href === '#') return;
+    <!-- ===== FINAL CTA SECTION ===== -->
+    <section class="enterprise-cta">
+        <div class="container">
+            <div class="enterprise-cta__content">
+                <h2 class="enterprise-cta__title">Ready to Transform Your Learning Strategy?</h2>
+                <p class="enterprise-cta__subtitle">
+                    Join 500+ organizations using EduPlatform to build world-class learning programs
+                </p>
+                <div class="enterprise-cta__actions">
+                    <button class="btn-enterprise btn-enterprise--primary btn-enterprise--large">
+                        Schedule a Demo
+                        <svg class="btn-enterprise__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <button class="btn-enterprise btn-enterprise--ghost btn-enterprise--large">
+                        Download Enterprise Guide
+                    </button>
+                </div>
+                <p class="enterprise-cta__note">
+                    No credit card required • 30-day trial • Free migration support
+                </p>
+            </div>
+        </div>
+        <div class="enterprise-cta__background">
+            <div class="enterprise-cta__glow enterprise-cta__glow--1"></div>
+            <div class="enterprise-cta__glow enterprise-cta__glow--2"></div>
+        </div>
+    </section>
 
-                    e.preventDefault();
-                    const target = document.querySelector(href);
+    <!-- JavaScript -->
+    <script src="enterprise.js"></script>
 
-                    if (target) {
-                        window.scrollTo({
-                            top: target.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-
-                        // Close mobile menu if open
-                        if (window.innerWidth <= 768 && navMenu.style.display === 'flex') {
-                            navMenu.style.display = 'none';
-                            authButtons.style.display = 'none';
-                            mobileMenuBtn.setAttribute('aria-expanded', 'false');
-                            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-                        }
-                    }
-                });
-            });
-        });
-    </script>
 </body>
+</html>
