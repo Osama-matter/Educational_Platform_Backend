@@ -1,53 +1,80 @@
 @page
 @model Educational_Platform_Front_End.Pages.Account.DetailsModel
 @{
-    ViewData["Title"] = "Account Details";
+    ViewData["Title"] = "My Account";
 }
 
-<section class="section">
-    <div class="container">
-        <div class="grid" style="grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr); gap: var(--spacing-8);">
-            <div>
-                <div class="card" style="padding: var(--spacing-8);">
-                    <p class="text-small text-muted">Account profile</p>
-                    <h2 class="heading-3">@ViewData["Title"]</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/css/account-details.css" asp-append-version="true" />
+}
 
-                    @if (Model.UserDetails != null)
-                    {
-                        <div class="grid grid--cols-2 mt-6">
-                            <div>
-                                <p class="text-small text-muted">Username</p>
-                                <p class="font-medium">@Model.UserDetails.Username</p>
+<div class="account-page-wrapper">
+    <div class="container">
+        <header class="account-header">
+            <h1>@ViewData["Title"]</h1>
+            <p>Manage your profile, settings, and security.</p>
+        </header>
+
+        <div class="account-layout">
+            <main>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Profile Information</h3>
+                        <button class="btn btn--secondary btn--sm">Edit Profile</button>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.UserDetails != null)
+                        {
+                            <div class="profile-details">
+                                <div class="profile-avatar">
+                                    @Model.UserDetails.Username.FirstOrDefault().ToString().ToUpper()
+                                </div>
+                                <div class="profile-info">
+                                    <dl>
+                                        <div>
+                                            <dt>Username</dt>
+                                            <dd>@Model.UserDetails.Username</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Email</dt>
+                                            <dd>@Model.UserDetails.Email</dd>
+                                        </div>
+                                        <div>
+                                            <dt>First Name</dt>
+                                            <dd>@Model.UserDetails.FirstName</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Last Name</dt>
+                                            <dd>@Model.UserDetails.LastName</dd>
+                                        </div>
+                                    </dl>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-small text-muted">Email</p>
-                                <p class="font-medium">@Model.UserDetails.Email</p>
-                            </div>
-                            <div>
-                                <p class="text-small text-muted">First name</p>
-                                <p class="font-medium">@Model.UserDetails.FirstName</p>
-                            </div>
-                            <div>
-                                <p class="text-small text-muted">Last name</p>
-                                <p class="font-medium">@Model.UserDetails.LastName</p>
-                            </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <p class="text-muted">Loading user details...</p>
-                    }
+                        }
+                        else
+                        {
+                            <p>Loading user details...</p>
+                        }
+                    </div>
                 </div>
-            </div>
+            </main>
 
             <aside>
-                <div class="dashboard-card">
-                    <p class="text-small text-muted">Security</p>
-                    <h3 class="heading-5">Account status</h3>
-                    <p class="text-small text-muted mt-4">Multi-factor authentication</p>
-                    <span class="badge badge--success">Enabled</span>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Security</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="setting-item">
+                            <div>
+                                <h4>Multi-Factor Authentication</h4>
+                                <p>Protect your account with an extra layer of security.</p>
+                            </div>
+                            <span class="badge badge--success">Enabled</span>
+                        </div>
+                    </div>
                 </div>
             </aside>
         </div>
     </div>
-</section>
+</div>

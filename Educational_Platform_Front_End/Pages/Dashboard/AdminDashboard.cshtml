@@ -105,13 +105,19 @@
     </header>
 
     <main class="admin-layout__main">
-        <div style="margin-bottom: var(--space-8);">
-            <h1 style="font-family: var(--font-display); font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); color: var(--text-primary); margin-bottom: var(--space-2);">
-                Dashboard Overview
-            </h1>
-            <p style="font-size: var(--font-size-base); color: var(--text-secondary);">
-                Welcome back! Here's what's happening with your platform today.
-            </p>
+        <div class="flex justify-between items-center" style="margin-bottom: var(--space-8);">
+            <div>
+                <h1 style="font-family: var(--font-display); font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); color: var(--text-primary); margin-bottom: var(--space-2);">
+                    Dashboard Overview
+                </h1>
+                <p style="font-size: var(--font-size-base); color: var(--text-secondary);">
+                    Welcome back! Here's what's happening with your platform today.
+                </p>
+            </div>
+            <a asp-page="/Account/RegisterAdmin" class="btn btn--primary">
+                <i data-lucide="plus" class="btn__icon"></i>
+                Add Admin
+            </a>
         </div>
 
         <div class="dashboard-stats">
@@ -186,6 +192,40 @@
                         <div class="activity-log__time">Just now</div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="course-management-section mt-8">
+            <h2 class="heading-3 mb-4">Course Management</h2>
+            <div class="card">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Course Title</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Courses != null && Model.Courses.Any())
+                        {
+                            foreach (var course in Model.Courses)
+                            {
+                                <tr>
+                                    <td>@course.Title</td>
+                                    <td>
+                                        <a asp-page="/Lessons/Index" asp-route-courseId="@course.Id" class="btn btn--secondary btn--sm">View Lessons</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="2">No courses available.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>

@@ -47,9 +47,7 @@
                         <li class="nav-menu__item" id="admin-dashboard-link" style="display: none;">
                             <a class="nav-menu__link" asp-area="" asp-page="/Dashboard/AdminDashboard">Admin</a>
                         </li>
-                        <li class="nav-menu__item">
-                            <a class="nav-menu__link" asp-area="" asp-page="/Profile/Index">Profile</a>
-                        </li>
+                    
                     </ul>
 
                     <!-- User Navigation -->
@@ -133,9 +131,16 @@
          MAIN CONTENT AREA
          ============================================ -->
     <main class="main-content" role="main">
-        <div class="container">
+        @if (ViewData["Title"] as string == "Home")
+        {
             @RenderBody()
-        </div>
+        }
+        else
+        {
+            <div class="container">
+                @RenderBody()
+            </div>
+        }
     </main>
 
     <div class="toast" id="global-toast" role="status" aria-live="polite"></div>
@@ -143,26 +148,39 @@
     <!-- ============================================
          FOOTER
          ============================================ -->
-    <footer class="site-footer" role="contentinfo">
-        <div class="container">
-            <div class="site-footer__content">
-                <p class="site-footer__text">
-                    &copy; 2026 EduPlatform. All rights reserved.
-                </p>
-                <nav aria-label="Footer navigation">
-                    <ul class="nav-menu">
-                        <li class="nav-menu__item">
-                            <a class="nav-menu__link" asp-area="" asp-page="/Privacy">Privacy Policy</a>
-                        </li>
-                        <li class="nav-menu__item">
-                            <a class="nav-menu__link" asp-area="" asp-page="/Terms">Terms of Service</a>
-                        </li>
-                        <li class="nav-menu__item">
-                            <a class="nav-menu__link" asp-area="" asp-page="/Contact">Contact</a>
-                        </li>
-                    </ul>
-                </nav>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>EduLearn.</h4>
+                <p style="font-size: 0.9rem; line-height: 1.6;">Empowering learners worldwide with accessible, high-quality education.</p>
             </div>
+            <div class="footer-section">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="#">Browse Courses</a></li>
+                    <li><a href="#">Mentorship</a></li>
+                    <li><a href="#">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <div class="social-links">
+                    <a href="#">Facebook</a> |
+                    <a href="#">Twitter</a> |
+                    <a href="#">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 EduLearn. All rights reserved.</p>
         </div>
     </footer>
 

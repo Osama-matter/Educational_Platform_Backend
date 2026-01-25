@@ -1,7 +1,10 @@
+using System.Text.Json.Serialization;
+
 namespace Educational_Platform_Front_End.Models.Courses
 {
     public class CourseViewModel
     {
+        [JsonPropertyName("id")]
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

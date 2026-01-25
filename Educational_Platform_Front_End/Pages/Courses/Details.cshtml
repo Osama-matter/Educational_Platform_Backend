@@ -23,7 +23,7 @@
 
                 <div class="tabs mt-8" role="tablist">
                     <button class="tabs__button is-active" data-tab="overview" type="button">Overview</button>
-                    <button class="tabs__button" data-tab="curriculum" type="button">Curriculum</button>
+                    <button class="tabs__button" data-tab="curriculum" type="button">Lessons</button>
                     <button class="tabs__button" data-tab="instructor" type="button">Instructor</button>
                     <button class="tabs__button" data-tab="reviews" type="button">Reviews</button>
                 </div>
@@ -105,7 +105,7 @@
                     </div>
                     <p class="text-small text-muted mt-2">2 of 9 chapters completed</p>
                     <button class="btn btn--primary btn--full mt-4" type="button" id="enroll-button" data-course-id="@Model.Course.Id">Enroll and continue</button>
-                    <a asp-page="/Lessons/Create" asp-route-courseId="@Model.Course.Id" class="btn btn--secondary btn--full mt-2">Add new lesson</a>
+                    <a id="add-lesson-button" asp-page="/Lessons/Create" asp-route-courseId="@Model.Course.Id" class="btn btn--secondary btn--full mt-2" style="display: none;">Add new lesson</a>
                     <a asp-page="/Courses/Index" class="btn btn--ghost btn--full mt-2">Back to catalog</a>
                 </div>
             </aside>
@@ -156,6 +156,27 @@ else
                 return decoded;
             } catch (error) {
                 return null;
+            }
+        }
+
+        function getUserRoles(payload) {
+            if (!payload) return [];
+            const roles = payload.role || payload.roles || payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+            if (!roles) return [];
+            return Array.isArray(roles) ? roles : [roles];
+        }
+
+        function checkAdminRole() {
+            const token = getCookie('jwt_token');
+            const addLessonButton = document.getElementById('add-lesson-button');
+            if (!token || !addLessonButton) return;
+
+            const payload = parseJwt(token);
+            const roles = getUserRoles(payload);
+            const isAdmin = roles.some(role => role?.toLowerCase() === 'admin');
+
+            if (isAdmin) {
+                addLessonButton.style.display = 'block';
             }
         }
 
@@ -232,5 +253,6 @@ else
         }
 
         checkEnrollmentStatus();
+        checkAdminRole();
     </script>
 }

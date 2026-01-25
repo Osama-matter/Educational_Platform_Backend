@@ -1,6 +1,6 @@
 using Educational_Platform_Front_End.Models.Courses;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
@@ -12,30 +12,32 @@ namespace Educational_Platform_Front_End.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public IEnumerable<CourseViewModel> Courses { get; set; }
+        public IEnumerable<CourseViewModel> Courses { get; set; } = new List<CourseViewModel>();
 
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task OnGetAsync()
         {
             using (var client = new HttpClient())
             {
-                var response = await client.GetAsync("https://localhost:7228/api/courses");
+                try
+                {
+                    var response = await client.GetAsync("https://localhost:7228/api/courses");
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    Courses = JsonSerializer.Deserialize<IEnumerable<CourseViewModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        Courses = JsonSerializer.Deserialize<IEnumerable<CourseViewModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    }
                 }
-                else
+                catch (HttpRequestException ex)
                 {
+                    _logger.LogError(ex, "Error fetching courses from API.");
                     Courses = new List<CourseViewModel>();
                 }
-
-                return Page();
             }
         }
     }

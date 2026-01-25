@@ -1,0 +1,15 @@
+using Educational_Platform_Front_End.Models.Courses;
+using System;
+
+namespace Educational_Platform_Front_End.Models.Enrollment
+{
+    public class EnrollmentViewModel
+    {
+        public Guid Id { get; set; }
+        public string StudentId { get; set; }
+        public Guid CourseId { get; set; }
+        public DateTime EnrollmentDate { get; set; }
+        public CourseViewModel Course { get; set; }
+        public double Progress { get; set; }
+    }
+}
