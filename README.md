@@ -98,6 +98,9 @@ The solution is organized into four distinct layers, following Clean Architectur
 ## 📄 License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+
+
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d86e169b-2472-4e7c-9b40-4bb9d8cc0be1" />
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/aef05100-9dca-4cc8-b2e2-b9badacbec38" />
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/91e89938-c8d8-4203-9d18-269553c51e6d" />
