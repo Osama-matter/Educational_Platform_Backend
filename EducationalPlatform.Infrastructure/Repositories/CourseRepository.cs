@@ -19,10 +19,24 @@ namespace EducationalPlatform.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Course> GetByIdAsync(Guid id)
+        public async Task<Course?> GetByIdAsync(Guid id)
         {
-            return  await _context.Courses.FirstOrDefaultAsync(e=>e.Id == id);
+            var course = await _context.Courses
+                .AsNoTracking()
+                .Include(c => c.Lessons)
+                .Include(c => c.CourseFiles)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (course == null)
+                return null;
+
+            course.Lessons = course.Lessons
+                .OrderBy(l => l.OrderIndex)
+                .ToList();
+
+            return course;
         }
+
 
         public async Task<IEnumerable<Course>> GetAllAsync()
         {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EducationalPlatform.Infrastructure.Data.Configurations
 {
-    internal class LessonProgressConfiguration : IEntityTypeConfiguration<LessonProgress>
+    public class LessonProgressConfiguration : IEntityTypeConfiguration<LessonProgress>
     {
         public void Configure(EntityTypeBuilder<LessonProgress> builder)
         {

@@ -1,10 +1,11 @@
+using EducationalPlatform.Domain.Entities;
 using EducationalPlatform.Domain.Entities.Course;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EducationalPlatform.Infrastructure.Data.Configurations
 {
-    internal class CourseConfiguration : IEntityTypeConfiguration<Course>
+    public class CourseConfiguration : IEntityTypeConfiguration<Course>
     {
         public void Configure(EntityTypeBuilder<Course> builder)
         {

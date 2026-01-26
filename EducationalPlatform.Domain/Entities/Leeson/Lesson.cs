@@ -40,6 +40,7 @@ namespace EducationalPlatform.Domain.Entities.Leeson
         public virtual Course.Course Course { get; set; }
         public virtual ICollection<LessonProgress> LessonProgresses { get; set; }
 
+        public virtual ICollection<EducationalPlatform.Domain.Entities.Course_File.CourseFile> CourseFiles { get; set; }
         public Lesson()
         {
             Id = Guid.NewGuid();

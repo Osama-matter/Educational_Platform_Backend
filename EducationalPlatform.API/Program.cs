@@ -1,11 +1,13 @@
 using EducationalPlatform.Application.DTOs.Courses;
 using EducationalPlatform.Application.Interfaces;
+using EducationalPlatform.Application.Interfaces.External_services;
 using EducationalPlatform.Application.Interfaces.Security;
 using EducationalPlatform.Domain.Entities;
 using EducationalPlatform.Infrastructure;
 using EducationalPlatform.Infrastructure.Data;
 using EducationalPlatform.Infrastructure.Security;
 using EducationalPlatform.Infrastructure.Services;
+using EducationalPlatform.Infrastructure.Services.External_services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
@@ -71,6 +73,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher>();
+builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddIdentityCore<EducationalPlatform.Domain.Entities.User>(options =>

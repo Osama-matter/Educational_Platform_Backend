@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using EducationalPlatform.Domain.Entities;
+using EducationalPlatform.Domain.Entities.Course;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EducationalPlatform.Infrastructure.Data.Configurations
 {
-    internal class EnrollmentConfiguration : IEntityTypeConfiguration<Enrollment>
+    public class EnrollmentConfiguration : IEntityTypeConfiguration<Enrollment>
     {
         public void Configure(EntityTypeBuilder<Enrollment> builder)
         {
-            builder.HasIndex(e => new { e.StudentId, e.CourseId })
-                   .IsUnique();
+            builder.HasIndex(e => new { e.StudentId, e.CourseId }).IsUnique();
 
             builder.HasOne(e => e.Student)
                    .WithMany(u => u.Enrollments)

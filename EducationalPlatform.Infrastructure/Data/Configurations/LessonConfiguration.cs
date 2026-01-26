@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EducationalPlatform.Infrastructure.Data.Configurations
 {
-    internal class LessonConfiguration : IEntityTypeConfiguration<Lesson>
+    public class LessonConfiguration : IEntityTypeConfiguration<Lesson>
     {
         public void Configure(EntityTypeBuilder<Lesson> builder)
         {

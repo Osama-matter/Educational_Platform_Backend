@@ -1,4 +1,5 @@
 ﻿using EducationalPlatform.Application.Interfaces.Repositories;
+using EducationalPlatform.Domain.Entities.Course;
 using EducationalPlatform.Domain.Entities.Leeson;
 using EducationalPlatform.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -41,11 +42,23 @@ namespace EducationalPlatform.Infrastructure.Repositories
             
         }
 
-        public async Task<Lesson> GetByIdAsync(Guid id)
+        public async Task<Lesson?> GetByIdAsync(Guid id)
         {
-            var lesson = await _context.Lessons.FirstOrDefaultAsync(e => e.Id == id);
-            return lesson;
+            var Lesson = await _context.Lessons
+                .AsNoTracking()
+                
+                .Include(c => c.CourseFiles)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (Lesson == null)
+                return null;
+
+            Lesson.CourseFiles = Lesson.CourseFiles
+            .ToList();
+
+            return Lesson;
         }
+
 
         public async Task UpdateAsync(Lesson Lesson)
         {

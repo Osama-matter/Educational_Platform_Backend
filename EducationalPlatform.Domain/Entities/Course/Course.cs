@@ -1,4 +1,5 @@
-﻿using EducationalPlatform.Domain.Entities.Leeson;
+﻿using EducationalPlatform.Domain.Entities.Course_File;
+using EducationalPlatform.Domain.Entities.Leeson;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -45,6 +46,8 @@ namespace EducationalPlatform.Domain.Entities.Course
         public virtual User Instructor { get; set; }
         public virtual ICollection<Lesson> Lessons { get; set; }
         public virtual ICollection<Enrollment> Enrollments { get; set; }
+
+        public virtual ICollection<CourseFile> CourseFiles { get; set; }
 
         public Course()
         {
