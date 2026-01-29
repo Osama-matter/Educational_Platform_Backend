@@ -1,0 +1,46 @@
+@page "/quiz/{id:guid}"
+@model Educational_Platform_Front_End.Pages.Quizzes.TakeQuizModel
+
+@{ 
+    ViewData["Title"] = Model.QuizAttempt?.QuizTitle ?? "Take Quiz";
+}
+
+@if (Model.QuizAttempt != null)
+{
+    <h1>@Model.QuizAttempt.QuizTitle</h1>
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        @foreach (var question in Model.QuizAttempt.Questions)
+        {
+            <div class="card my-4">
+                <div class="card-header">
+                    <h5>@question.Text</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        @foreach (var option in question.Options)
+                        {
+                            <label class="list-group-item">
+                                <input type="radio" name="SelectedAnswers[@question.Id]" value="@option.Id" />
+                                @option.Text
+                            </label>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+
+        <button type="submit" class="btn btn-success">Submit Quiz</button>
+    </form>
+}
+else
+{
+    <p>Loading quiz...</p>
+}
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger mt-3">@Model.ErrorMessage</div>
+}

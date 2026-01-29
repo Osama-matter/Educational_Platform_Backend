@@ -2,6 +2,7 @@
 using EducationalPlatform.Application.Interfaces;
 using EducationalPlatform.Application.Interfaces.External_services;
 using EducationalPlatform.Application.Interfaces.Repositories;
+using EducationalPlatform.Application.Interfaces.Services;
 using EducationalPlatform.Application.Interfaces.Security;
 using EducationalPlatform.Domain.Entities.Course;
 using EducationalPlatform.Infrastructure.Repositories;
@@ -31,6 +32,16 @@ namespace EducationalPlatform.Infrastructure
             services.AddScoped<ICourseFileService, CourseFileService>();
             services.AddScoped<ICourseFileRepository, CourseFileRepository>();
             services.AddScoped<IFileStorageService, FileStorageService>();
+            services.AddScoped<IQuizService, QuizService>();
+            services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<IQuizAttemptService, QuizAttemptService>();
+            services.AddScoped<IQuizRepository, QuizRepository>();
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped<IQuizAttemptRepository, QuizAttemptRepository>();
+            services.AddScoped<IQuestionOptionRepository, QuestionOptionRepository>();
+            services.AddScoped<IQuestionOptionService, QuestionOptionService>();
+            services.AddScoped<IAnswerRepository, AnswerRepository>();
+            services.AddScoped<IAnswerService, AnswerService>();
 
             return services;
         }

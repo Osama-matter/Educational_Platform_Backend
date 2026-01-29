@@ -1,0 +1,33 @@
+@page "/quizzes"
+@model Educational_Platform_Front_End.Pages.Quizzes.AvailableQuizzesModel
+
+@{ 
+    ViewData["Title"] = "Available Quizzes";
+}
+
+<h1>Available Quizzes</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+
+@if (!Model.Quizzes.Any())
+{
+    <p>No quizzes are available at the moment.</p>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var quiz in Model.Quizzes)
+        {
+            <div class="list-group-item">
+                <h5 class="mb-1">@quiz.Title</h5>
+                <p class="mb-1">@quiz.Description</p>
+                <form method="post" asp-page-handler="StartAttempt" asp-route-quizId="@quiz.Id">
+                    <button type="submit" class="btn btn-primary">Start Quiz</button>
+                </form>
+            </div>
+        }
+    </div>
+}

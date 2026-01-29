@@ -1,0 +1,96 @@
+@page "/admin/quizzes/new"
+@model Educational_Platform_Front_End.Pages.Admin.Quizzes.CreateModel
+
+@{ 
+    ViewData["Title"] = "Create New Quiz";
+}
+
+<h1>Create New Quiz - Step 1</h1>
+<p>First, create the quiz container. You will add questions and answers in the next step.</p>
+
+<hr />
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Quiz.Title" class="form-label"></label>
+        <input asp-for="Quiz.Title" class="form-control" />
+        <span asp-validation-for="Quiz.Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Quiz.Description" class="form-label"></label>
+        <textarea asp-for="Quiz.Description" class="form-control"></textarea>
+        <span asp-validation-for="Quiz.Description" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="Quiz.DurationMinutes" class="form-label">Duration (Minutes)</label>
+            <input asp-for="Quiz.DurationMinutes" type="number" class="form-control" />
+            <span asp-validation-for="Quiz.DurationMinutes" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Quiz.TotalScore" class="form-label"></label>
+            <input asp-for="Quiz.TotalScore" type="number" class="form-control" />
+            <span asp-validation-for="Quiz.TotalScore" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Quiz.PassingScore" class="form-label"></label>
+            <input asp-for="Quiz.PassingScore" type="number" class="form-control" />
+            <span asp-validation-for="Quiz.PassingScore" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Quiz.AvailableFrom" class="form-label"></label>
+            <input asp-for="Quiz.AvailableFrom" type="datetime-local" class="form-control" />
+            <span asp-validation-for="Quiz.AvailableFrom" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Quiz.AvailableTo" class="form-label"></label>
+            <input asp-for="Quiz.AvailableTo" type="datetime-local" class="form-control" />
+            <span asp-validation-for="Quiz.AvailableTo" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="SelectedCourseId" class="form-label">Course</label>
+        <select asp-for="SelectedCourseId" asp-items="Model.Courses" class="form-control" id="courseSelector">
+            <option value="">-- Select a Course --</option>
+        </select>
+    </div>
+
+    @if (Model.Lessons != null && Model.Lessons.Any())
+    {
+        <div class="mb-3">
+            <label asp-for="Quiz.LessonId" class="form-label">Lesson</label>
+            <select asp-for="Quiz.LessonId" asp-items="Model.Lessons" class="form-control">
+                <option value="">-- Select a Lesson --</option>
+            </select>
+            <span asp-validation-for="Quiz.LessonId" class="text-danger"></span>
+        </div>
+    }
+
+
+    <button type="submit" class="btn btn-primary">Save and Add Questions</button>
+    <a asp-page="./QuizManagement" class="btn btn-secondary">Cancel</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger mt-3">@Model.ErrorMessage</div>
+}
+
+@section Scripts {
+    <script>
+        document.getElementById('courseSelector').addEventListener('change', function () {
+            var courseId = this.value;
+            if (courseId) {
+                window.location.href = "/admin/quizzes/new?SelectedCourseId=" + courseId;
+            }
+        });
+    </script>
+}

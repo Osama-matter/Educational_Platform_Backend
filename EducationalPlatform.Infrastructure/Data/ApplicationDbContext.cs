@@ -26,6 +26,14 @@ namespace EducationalPlatform.Infrastructure.Data
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<LessonProgress> LessonProgresses { get; set; }
         public DbSet<CourseFile> CourseFiles { get; set; }
+        public DbSet<Quiz> Quizzes { get; set; }
+
+        public DbSet<Question> Questions { get; set; }
+
+        public DbSet<QuizAttempt> QuizAttempts { get; set; }
+        public DbSet<QuestionOption> QuestionOptions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

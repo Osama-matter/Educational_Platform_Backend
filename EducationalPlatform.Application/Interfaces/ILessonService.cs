@@ -1,4 +1,5 @@
 ﻿using EducationalPlatform.Application.DTOs.Lessons;
+using System.Collections.Generic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,10 @@ namespace EducationalPlatform.Application.Interfaces
     {
         public Task<LessonDto> CreateAsync(CreateLessonDto request);
         public Task<LessonDto> GetByIdAsync(Guid id);
+   
+        public Task<IEnumerable<LessonDto>> GetAllLessonsForCourseAsync(Guid courseId);
         public Task<IEnumerable<LessonDto>> GetAllAsync();
         public Task<LessonDto> UpdateAsync(Guid id, UpdateLessonDto request);
         public Task<bool> DeleteAsync(Guid id);
-
-
     }
 }

@@ -13,11 +13,13 @@ namespace EducationalPlatform.API.Controllers
     public class CoursesController : ControllerBase
     {
 
-        private readonly ICourseService  _courseService;
+        private readonly ICourseService _courseService;
+        private readonly ILessonService _lessonService;
 
-        public CoursesController(ICourseService  courseService)
+        public CoursesController(ICourseService courseService, ILessonService lessonService)
         {
             _courseService = courseService;
+            _lessonService = lessonService;
         }
 
 
@@ -67,6 +69,13 @@ namespace EducationalPlatform.API.Controllers
                 return NotFound();
             }
             return Ok(result);
+        }
+
+        [HttpGet("{courseId}/lessons")]
+        public async Task<IActionResult> GetLessonsForCourse(Guid courseId)
+        {
+            var lessons = await _lessonService.GetAllLessonsForCourseAsync(courseId);
+            return Ok(lessons);
         }
 
 

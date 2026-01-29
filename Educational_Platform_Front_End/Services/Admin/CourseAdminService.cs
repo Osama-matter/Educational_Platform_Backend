@@ -1,38 +1,34 @@
 using Educational_Platform_Front_End.Models.Courses;
+using Microsoft.AspNetCore.Http;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text.Json;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Educational_Platform_Front_End.Services.Admin
 {
     public class CourseAdminService : ICourseAdminService
     {
-        private const string CoursesApiBase = "https://localhost:7228/api/courses";
+        private readonly HttpClient _httpClient;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public CourseAdminService(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
+        {
+            _httpClient = httpClient;
+            _httpContextAccessor = httpContextAccessor;
+        }
 
         public async Task<IReadOnlyList<CourseViewModel>> GetCoursesAsync(string token)
         {
-            using var client = CreateClient(token);
-            var response = await client.GetAsync(CoursesApiBase);
-            if (!response.IsSuccessStatusCode)
-            {
-                return new List<CourseViewModel>();
-            }
-
-            var content = await response.Content.ReadAsStringAsync();
-            var courses = JsonSerializer.Deserialize<List<CourseViewModel>>(
-                content,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            return courses ?? new List<CourseViewModel>();
+            // This method might be obsolete now but is kept to satisfy the interface.
+            // The new approach uses a centrally configured HttpClient.
+            return await _httpClient.GetFromJsonAsync<IReadOnlyList<CourseViewModel>>("api/courses");
         }
 
-        private static HttpClient CreateClient(string token)
+        public async Task<IEnumerable> GetAllCoursesAsync()
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            return client;
+            return await _httpClient.GetFromJsonAsync<List<CourseViewModel>>("api/courses");
         }
     }
 }

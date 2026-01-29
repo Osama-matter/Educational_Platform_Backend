@@ -65,5 +65,12 @@ namespace EducationalPlatform.Infrastructure.Repositories
             _context.Lessons.Update(Lesson);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Lesson>> GetAllByCourseIdAsync(Guid courseId)
+        {
+            return await _context.Lessons
+                .Where(l => l.CourseId == courseId)
+                .ToListAsync();
+        }
     }
 }

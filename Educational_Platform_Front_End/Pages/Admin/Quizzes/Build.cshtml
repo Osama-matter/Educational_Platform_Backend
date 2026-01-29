@@ -1,0 +1,111 @@
+@page "/admin/quizzes/build/{id:guid}"
+@model Educational_Platform_Front_End.Pages.Admin.Quizzes.BuildModel
+
+@{ 
+    ViewData["Title"] = "Build Quiz";
+}
+
+<h1>Build Quiz: @Model.Quiz?.Title</h1>
+<p>Add questions and their answer options below. Remember to mark one option as correct for each question.</p>
+
+<hr />
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+
+@if (Model.Quiz != null)
+{
+    <!-- Add New Question Form -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Add New Question</h4>
+        </div>
+        <div class="card-body">
+            <form method="post" asp-page-handler="AddQuestion" asp-route-id="@Model.Quiz.Id">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-3">
+                    <label asp-for="NewQuestion.Text" class="form-label"></label>
+                    <input asp-for="NewQuestion.Text" class="form-control" />
+                    <span asp-validation-for="NewQuestion.Text" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="NewQuestion.Score" class="form-label"></label>
+                    <input asp-for="NewQuestion.Score" type="number" class="form-control" />
+                    <span asp-validation-for="NewQuestion.Score" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Question</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Existing Questions -->
+    <h2>Existing Questions</h2>
+    @if (!Model.Quiz.Questions.Any())
+    {
+        <p>No questions have been added yet.</p>
+    }
+    else
+    {
+        @foreach (var question in Model.Quiz.Questions)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <p><strong>@question.Text</strong> (Score: @question.Score)</p>
+                        <form method="post" asp-page-handler="DeleteQuestion" asp-route-id="@Model.Quiz.Id" asp-route-questionId="@question.Id">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete Question</button>
+                        </form>
+                    </div>
+                    
+                    <!-- Answer Options Section -->
+                    <hr />
+                    <h6>Answer Options</h6>
+                    @if (question.Options != null && question.Options.Any())
+                    {
+                        <ul class="list-group mb-3">
+                            @foreach (var option in question.Options)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>
+                                        @option.Text
+                                        @if (option.IsCorrect)
+                                        {
+                                            <span class="badge bg-success ms-2">Correct</span>
+                                        }
+                                    </span>
+                                    <form method="post" asp-page-handler="DeleteOption" asp-route-id="@Model.Quiz.Id" asp-route-optionId="@option.Id">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                    </form>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>No answer options added yet.</p>
+                    }
+
+                    <!-- Add New Option Form -->
+                    <form method="post" asp-page-handler="AddOption" asp-route-id="@Model.Quiz.Id" asp-route-questionId="@question.Id" class="mt-2">
+                        <div class="input-group">
+                            <input asp-for="NewOption.Text" class="form-control" placeholder="New option text" />
+                            <div class="input-group-text">
+                                <input asp-for="NewOption.IsCorrect" type="checkbox" class="form-check-input mt-0" title="Mark as correct" />
+                            </div>
+                            <button type="submit" class="btn btn-secondary">Add Option</button>
+                        </div>
+                        <span asp-validation-for="NewOption.Text" class="text-danger"></span>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+
+    <hr />
+    <div class="mt-4">
+        <a asp-page="./Review" asp-route-id="@Model.Quiz.Id" class="btn btn-success">Review and Publish</a>
+        <a asp-page="./QuizManagement" class="btn btn-secondary">Back to Quiz List</a>
+    </div>
+}

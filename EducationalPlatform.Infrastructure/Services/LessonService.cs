@@ -117,6 +117,22 @@ namespace EducationalPlatform.Infrastructure.Services
         //4- Calls the repository to save the updated Lesson entity to the data store.
         //5- Converts the updated Lesson entity to a LessonDto and returns it.
         //summary>
+        public async Task<IEnumerable<LessonDto>> GetAllLessonsForCourseAsync(Guid courseId)
+        {
+            var lessons = await _lessonRepository.GetAllByCourseIdAsync(courseId);
+            return lessons.Select(lesson => new LessonDto
+            {
+                Id = lesson.Id,
+                CourseId = lesson.CourseId,
+                Title = lesson.Title,
+                Content = lesson.Content,
+                OrderIndex = lesson.OrderIndex,
+                DurationMinutes = lesson.DurationMinutes,
+                CreatedAt = lesson.CreatedAt,
+                UpdatedAt = lesson.UpdatedAt
+            });
+        }
+
         public  async Task<LessonDto> UpdateAsync(Guid id, UpdateLessonDto request)
         {
             var OData = _lessonRepository.GetByIdAsync(id).Result;
@@ -144,5 +160,7 @@ namespace EducationalPlatform.Infrastructure.Services
             };
             return OResultDto;
         }
+
+    
     }
 }

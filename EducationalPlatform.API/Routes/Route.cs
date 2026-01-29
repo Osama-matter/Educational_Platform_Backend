@@ -38,5 +38,43 @@
             public const string UpdateProgress = "{progressId}";
             public const string DeleteProgress = "{progressId}";
         }
+
+        public static class Quizzes
+        {
+            public const string GetAllQuizzes = "";
+            public const string GetQuizById = "{quizId}";
+            public const string CreateQuiz = "";
+            public const string UpdateQuiz = "{quizId}";
+            public const string DeleteQuiz = "{quizId}";
+        }
+
+        public static class Questions
+        {
+            public const string GetAllQuestions = "";
+            public const string GetQuestionById = "{questionId}";
+            public const string CreateQuestion = "";
+            public const string UpdateQuestion = "{questionId}";
+            public const string DeleteQuestion = "{questionId}";
+        }
+
+        public static class QuizAttempts
+        {
+            public const string GetAllQuizAttempts = "";
+            public const string GetQuizAttemptById = "{quizAttemptId}";
+            public const string CreateQuizAttempt = "";
+            public const string UpdateQuizAttempt = "{quizAttemptId}";
+            public const string DeleteQuizAttempt = "{quizAttemptId}";
+            public const string SubmitAnswers = "{quizAttemptId}/submit";
+        }
+
+        public static class QuestionOptions
+        {
+            public const string GetAllQuestionOptions = "";
+            public const string GetQuestionOptionById = "{questionOptionId}";
+            public const string CreateQuestionOption = "";
+            public const string UpdateQuestionOption = "{questionOptionId}";
+            public const string DeleteQuestionOption = "{questionOptionId}";
+        }
     }
 }
+

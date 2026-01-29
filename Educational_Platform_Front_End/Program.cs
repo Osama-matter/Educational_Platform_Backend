@@ -1,16 +1,57 @@
+using Educational_Platform_Front_End.Services.Courses;
+using Educational_Platform_Front_End.Services.Questions;
+using Educational_Platform_Front_End.Services.QuizAttempts;
+using Educational_Platform_Front_End.Services.Quizzes;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>
     {
         options.LoginPath = "/Account/Login";
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
-builder.Services.AddScoped<Educational_Platform_Front_End.Services.Admin.IAdminAuthService, Educational_Platform_Front_End.Services.Admin.AdminAuthService>();
-builder.Services.AddScoped<Educational_Platform_Front_End.Services.Admin.ILessonAdminService, Educational_Platform_Front_End.Services.Admin.LessonAdminService>();
-builder.Services.AddScoped<Educational_Platform_Front_End.Services.Admin.ICourseAdminService, Educational_Platform_Front_End.Services.Admin.CourseAdminService>();
+builder.Services.AddTransient<AuthHeaderHandler>();
+
+builder.Services.AddHttpClient<Educational_Platform_Front_End.Services.Admin.IAdminAuthService, Educational_Platform_Front_End.Services.Admin.AdminAuthService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7228");
+});
+
+builder.Services.AddHttpClient<Educational_Platform_Front_End.Services.Admin.ICourseAdminService, Educational_Platform_Front_End.Services.Admin.CourseAdminService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7228");
+}).AddHttpMessageHandler<AuthHeaderHandler>();
+
+builder.Services.AddHttpClient<Educational_Platform_Front_End.Services.Admin.ILessonAdminService, Educational_Platform_Front_End.Services.Admin.LessonAdminService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7228");
+}).AddHttpMessageHandler<AuthHeaderHandler>();
+
+// Configure HttpClient for API services
+builder.Services.AddHttpClient<IQuizService, QuizService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7228");
+}).AddHttpMessageHandler<AuthHeaderHandler>();
+builder.Services.AddHttpClient<IQuizAttemptService, QuizAttemptService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7228");
+}).AddHttpMessageHandler<AuthHeaderHandler>();
+builder.Services.AddHttpClient<ICourseService, CourseService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7228");
+}).AddHttpMessageHandler<AuthHeaderHandler>();
+builder.Services.AddHttpClient<IQuestionService, QuestionService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7228");
+}).AddHttpMessageHandler<AuthHeaderHandler>();
+builder.Services.AddHttpClient<IQuestionOptionService, QuestionOptionService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7228");
+}).AddHttpMessageHandler<AuthHeaderHandler>();
 
 var app = builder.Build();
 

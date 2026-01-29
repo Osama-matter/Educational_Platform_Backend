@@ -49,6 +49,8 @@ namespace EducationalPlatform.Domain.Entities.Course
 
         public virtual ICollection<CourseFile> CourseFiles { get; set; }
 
+        public virtual ICollection<Quiz> Quizzes  { get; set; }
+
         public Course()
         {
             Id = Guid.NewGuid();

@@ -1,5 +1,6 @@
 using Educational_Platform_Front_End.Models.Lessons;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,5 +13,6 @@ namespace Educational_Platform_Front_End.Services.Admin
         Task CreateLessonAsync(string token, CreateLessonViewModel lesson);
         Task UpdateLessonAsync(string token, Guid lessonId, UpdateLessonViewModel lesson);
         Task DeleteLessonAsync(string token, Guid lessonId);
+        Task<IEnumerable> GetLessonsForCourseAsync(Guid selectedCourseId);
     }
 }

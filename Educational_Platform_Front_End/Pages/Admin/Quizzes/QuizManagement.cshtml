@@ -1,0 +1,66 @@
+@page "/admin/quizzes"
+@model Educational_Platform_Front_End.Pages.Admin.Quizzes.QuizManagementModel
+
+@{ 
+    ViewData["Title"] = "Quiz Management";
+}
+
+<h1>Quiz Management</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+
+<p>
+    <a asp-page="./Create" class="btn btn-primary">Create New Quiz</a>
+</p>
+
+@if (!Model.Quizzes.Any())
+{
+    <p>No quizzes found.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var quiz in Model.Quizzes)
+            {
+                <tr>
+                    <td>@quiz.Title</td>
+                    <td>
+                        @if (quiz.IsPublished)
+                        {
+                            <span class="badge bg-success">Published</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Draft</span>
+                        }
+                    </td>
+                    <td>
+                        @if (quiz.IsPublished)
+                        {
+                            <a asp-page="./Build" asp-route-id="@quiz.Id" class="btn btn-sm btn-info">View</a>
+                        }
+                        else
+                        {
+                            <a asp-page="./Build" asp-route-id="@quiz.Id" class="btn btn-sm btn-secondary">Build / Edit</a>
+                            <a asp-page="./Review" asp-route-id="@quiz.Id" class="btn btn-sm btn-primary">Review & Publish</a>
+                        }
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@quiz.Id" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

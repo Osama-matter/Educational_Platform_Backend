@@ -1,0 +1,47 @@
+using Educational_Platform_Front_End.DTOs.Quizzes;
+using Educational_Platform_Front_End.Services.Quizzes;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace Educational_Platform_Front_End.Pages.Admin.Quizzes
+{
+    public class QuizManagementModel : PageModel
+    {
+        private readonly IQuizService _quizService;
+
+        public QuizManagementModel(IQuizService quizService)
+        {
+            _quizService = quizService;
+        }
+
+        public List<QuizDto> Quizzes { get; set; } = new();
+
+        [TempData]
+        public string ErrorMessage { get; set; }
+
+        public async Task OnGetAsync()
+        {
+            try
+            {
+                Quizzes = await _quizService.GetAllQuizzesAsync();
+            }
+            catch (System.Exception ex)
+            {
+                ErrorMessage = $"Failed to load quizzes: {ex.Message}";
+            }
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync(System.Guid id)
+        {
+            try
+            {
+                await _quizService.DeleteQuizAsync(id);
+            }
+            catch (System.Exception ex)
+            {
+                ErrorMessage = $"Failed to delete quiz: {ex.Message}";
+            }
+            return RedirectToPage();
+        }
+    }
+}
