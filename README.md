@@ -110,3 +110,5 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a5bd2986-0783-42df-9885-cf1d73039d2e" />
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/009298a1-cf67-4008-bf9b-05e1fb4f8519" />
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/f11008e4-7ffa-49a8-ad30-2271267587bc" />
+<img width="553" height="1075" alt="quiz_system_uml" src="https://github.com/user-attachments/assets/30c8e0ff-905f-43e1-88a6-a84a755d4a4b" />
+
