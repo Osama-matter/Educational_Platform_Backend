@@ -1,3 +1,5 @@
+using EducationalPlatform.Application.DTOs.Question;
+using EducationalPlatform.Application.DTOs.QuestionOption;
 using EducationalPlatform.Application.DTOs.QuizAttempt;
 using EducationalPlatform.Application.Interfaces.Repositories;
 using EducationalPlatform.Application.Interfaces.Services;
@@ -14,11 +16,13 @@ namespace EducationalPlatform.Infrastructure.Services
     {
         private readonly IQuizAttemptRepository _quizAttemptRepository;
         private readonly IQuizRepository _quizRepository;
+        private readonly IQuestionRepository _questionRepository;
 
-        public QuizAttemptService(IQuizAttemptRepository quizAttemptRepository, IQuizRepository quizRepository)
+        public QuizAttemptService(IQuizAttemptRepository quizAttemptRepository, IQuizRepository quizRepository, IQuestionRepository questionRepository)
         {
             _quizAttemptRepository = quizAttemptRepository;
             _quizRepository = quizRepository;
+            _questionRepository = questionRepository;
         }
 
         public async Task<Guid> CreateQuizAttemptAsync(CreateQuizAttemptDto createQuizAttemptDto)
@@ -34,7 +38,7 @@ namespace EducationalPlatform.Infrastructure.Services
             {
                 throw new ArgumentException("Quiz not found");
             }
-            if(quiz.AvailableFrom > DateTime.UtcNow || quiz.AvailableTo < DateTime.UtcNow)
+            if (quiz.AvailableFrom > DateTime.UtcNow || quiz.AvailableTo < DateTime.UtcNow)
             {
                 throw new InvalidOperationException("Quiz is not currently available.");
             }
@@ -65,15 +69,38 @@ namespace EducationalPlatform.Infrastructure.Services
         public async Task<QuizAttemptDto> GetQuizAttemptByIdAsync(Guid id)
         {
             var quizAttempt = await _quizAttemptRepository.GetByIdAsync(id);
-            return quizAttempt == null ? null : new QuizAttemptDto
+            if (quizAttempt == null)
+            {
+                return null;
+            }
+
+            var quiz = await _quizRepository.GetByIdAsync(quizAttempt.QuizId);
+            var questions = await _questionRepository.GetByQuizIdAsync(quizAttempt.QuizId);
+
+            return new QuizAttemptDto
             {
                 Id = quizAttempt.Id,
                 UserId = quizAttempt.UserId,
                 QuizId = quizAttempt.QuizId,
+                QuizTitle = quiz?.Title,
                 StartedAt = quizAttempt.StartedAt,
                 SubmittedAt = quizAttempt.SubmittedAt,
                 TotalScore = quizAttempt.TotalScore,
-                Status = quizAttempt.Status
+                Status = quizAttempt.Status,
+                Questions = questions.Select(question => new QuestionDto
+                {
+                    Id = question.Id,
+                    Content = question.Content,
+                    QuestionType = question.QuestionType,
+                    Score = question.Score,
+                    QuizId = question.QuizId,
+                    Options = question.Options.Select(option => new QuestionOptionDto
+                    {
+                        Id = option.Id,
+                        Text = option.Text,
+                        IsCorrect = option.IsCorrect
+                    }).ToList()
+                }).ToList()
             };
         }
 

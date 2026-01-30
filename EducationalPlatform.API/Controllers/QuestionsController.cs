@@ -23,13 +23,24 @@ namespace EducationalPlatform.API.Controllers
         public async Task<IActionResult> Create(CreateQuestionDto createQuestionDto)
         {
             var questionId = await _questionService.CreateQuestionAsync(createQuestionDto);
-            return CreatedAtAction(nameof(GetById), new { questionId }, createQuestionDto);
+            return Ok(questionId);
         }
 
         [HttpGet(Routes.Routes.Questions.GetAllQuestions)]
         public async Task<IActionResult> GetAll()
         {
             var questions = await _questionService.GetQuestionsAsync();
+            return Ok(questions);
+        }
+        [HttpGet(Routes.Routes.Questions.GetQuestionsByQuizId)]
+
+        public async Task<IActionResult> GetByQuizId(Guid quizId)
+        {
+            var questions = await _questionService.GetQuestionByQuizeIdAsync(quizId);
+            if(questions == null)
+            {
+                return NotFound();
+            }
             return Ok(questions);
         }
 

@@ -72,6 +72,22 @@ namespace EducationalPlatform.Infrastructure.Services
             });
         }
 
+        public Task<IEnumerable<QuestionOptionDto>> GetQuestionOptionsByQuestionIdAsync(Guid questionId)
+        {
+            var QuestionOptions = _questionOptionRepository.GetByQuestionIdAsync(questionId);
+            if (QuestionOptions == null)
+            {
+                return Task.FromResult<IEnumerable<QuestionOptionDto>>(null);
+            }
+            return Task.FromResult(QuestionOptions.Result.Select(questionOption => new QuestionOptionDto
+            {
+                Id = questionOption.Id,
+                Text = questionOption.Text,
+                IsCorrect = questionOption.IsCorrect,
+                QuestionId = questionOption.QuestionId
+            }));
+        }
+
         public async Task UpdateQuestionOptionAsync(Guid id, UpdateQuestionOptionDto updateQuestionOptionDto)
         {
             var questionOption = await _questionOptionRepository.GetByIdAsync(id);

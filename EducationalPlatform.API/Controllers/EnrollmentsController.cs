@@ -1,10 +1,8 @@
 ﻿using EducationalPlatform.API.Routes;
-using EducationalPlatform.Application.DTOs.Enrollments;
-using EducationalPlatform.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-
+    
 namespace EducationalPlatform.API.Controllers
 {
     [Route("api/[controller]")]
@@ -12,16 +10,16 @@ namespace EducationalPlatform.API.Controllers
     public class EnrollmentsController : ControllerBase
     {
 
-        private readonly IEnrollmentService _enrollmentService;
+        private readonly EducationalPlatform.Application.Interfaces.IEnrollmentService _enrollmentService;
 
-        public EnrollmentsController(IEnrollmentService enrollmentService)
+        public EnrollmentsController(EducationalPlatform.Application.Interfaces.IEnrollmentService enrollmentService)
         {
             _enrollmentService = enrollmentService;
         }
 
         // POST: api/enrollments
         [HttpPost(Routes.Routes.Enrollments.CreateEnrollment)]
-        public async Task<ActionResult<EnrollmentDto>> Create(
+        public async Task<ActionResult<EducationalPlatform.Application.DTOs.Enrollments.EnrollmentDto>> Create(
             [FromQuery] Guid studentId,
             [FromQuery] Guid courseId)
         {
@@ -39,7 +37,7 @@ namespace EducationalPlatform.API.Controllers
 
         // GET: api/enrollments
         [HttpGet(Routes.Routes.Enrollments.GetAllEnrollments)]
-        public async Task<ActionResult<IEnumerable<EnrollmentDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<EducationalPlatform.Application.DTOs.Enrollments.EnrollmentDto>>> GetAll()
         {
             var result = await _enrollmentService.GetAllAsync();
             return Ok(result);
@@ -47,7 +45,7 @@ namespace EducationalPlatform.API.Controllers
 
         // GET: api/enrollments/{id}
         [HttpGet(Routes.Routes.Enrollments.GetEnrollmentById)]
-        public async Task<ActionResult<EnrollmentDto>> GetById(Guid enrollmentId)
+        public async Task<ActionResult<EducationalPlatform.Application.DTOs.Enrollments.EnrollmentDto>> GetById(Guid enrollmentId)
         {
             var result = await _enrollmentService.GetByIdAsync(enrollmentId);
             return Ok(result);
@@ -55,9 +53,9 @@ namespace EducationalPlatform.API.Controllers
 
         // PUT: api/enrollments/{id}
         [HttpPut(Routes.Routes.Enrollments.UpdateEnrollment)]
-        public async Task<ActionResult<EnrollmentDto>> Update(
+        public async Task<ActionResult<EducationalPlatform.Application.DTOs.Enrollments.EnrollmentDto>> Update(
             Guid enrollmentId,
-            [FromBody] UpdateEnrollmentDto request)
+            [FromBody] EducationalPlatform.Application.DTOs.Enrollments.UpdateEnrollmentDto request)
         {
             var result = await _enrollmentService.UpdateAsync(enrollmentId, request);
             return Ok(result);

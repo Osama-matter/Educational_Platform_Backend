@@ -22,6 +22,14 @@ namespace EducationalPlatform.Infrastructure.Repositories
             return await _context.Questions.FirstOrDefaultAsync(e=>e.Id == id);
         }
 
+        public async Task<IEnumerable<Question>> GetByQuizIdAsync(Guid quizId)
+        {
+            return await _context.Questions
+                .Include(q => q.Options)
+                .Where(q => q.QuizId == quizId)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Question>> GetAllAsync()
         {
             return await _context.Questions.ToListAsync();

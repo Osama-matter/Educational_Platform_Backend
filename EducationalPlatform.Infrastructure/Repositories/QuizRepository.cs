@@ -19,7 +19,10 @@ namespace EducationalPlatform.Infrastructure.Repositories
 
         public async Task<Quiz> GetByIdAsync(Guid id)
         {
-            return await _context.Quizzes.FirstOrDefaultAsync(e=>e.Id == id);
+            return await _context.Quizzes
+                .Include(q => q.Questions)
+                    .ThenInclude(q => q.Options)
+                .FirstOrDefaultAsync(e=>e.Id == id);
         }
 
         public async Task<IEnumerable<Quiz>> GetAllAsync()

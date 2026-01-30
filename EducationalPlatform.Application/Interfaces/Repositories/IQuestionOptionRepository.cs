@@ -9,6 +9,7 @@ namespace EducationalPlatform.Application.Interfaces.Repositories
     {
         Task<QuestionOption> GetByIdAsync(Guid id);
         Task<IEnumerable<QuestionOption>> GetAllAsync();
+        Task <IEnumerable<QuestionOption>> GetByQuestionIdAsync(Guid questionId);   
         Task AddAsync(QuestionOption questionOption);
         Task UpdateAsync(QuestionOption questionOption);
         Task DeleteAsync(QuestionOption questionOption);

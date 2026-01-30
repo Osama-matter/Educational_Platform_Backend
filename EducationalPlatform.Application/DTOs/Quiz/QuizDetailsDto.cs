@@ -1,13 +1,14 @@
-using Educational_Platform_Front_End.DTOs.Questions;
+using EducationalPlatform.Application.DTOs.Question;
+using System.Collections.Generic;
 
-namespace Educational_Platform_Front_End.DTOs.Quizzes.Admin
+namespace EducationalPlatform.Application.DTOs.Quiz
 {
     public class QuizDetailsDto
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public int Duration { get; set; }
+        public int DurationMinutes { get; set; }
         public bool IsPublished { get; set; }
         public List<QuestionDto> Questions { get; set; } = new();
     }

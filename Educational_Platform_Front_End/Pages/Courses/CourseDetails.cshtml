@@ -39,7 +39,7 @@
                             @foreach (var attempt in lesson.QuizAttempts)
                             {
                                 <li>
-                                    <span>Score: @attempt.TotalScore, Submitted: @attempt.SubmittedAt.ToString("g")</span>
+                                    <span>Score: @attempt.TotalScore, Submitted: @(attempt.SubmittedAt?.ToString("g") ?? "N/A")</span>
                                     <a asp-page="../Quizzes/QuizResult" asp-route-id="@attempt.Id" class="ms-2">View Result</a>
                                 </li>
                             }

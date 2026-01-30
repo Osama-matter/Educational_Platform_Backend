@@ -8,6 +8,7 @@ namespace EducationalPlatform.Application.Interfaces.Repositories
     public interface IQuestionRepository
     {
         Task<Question> GetByIdAsync(Guid id);
+        Task<IEnumerable<Question>> GetByQuizIdAsync(Guid quizId);
         Task<IEnumerable<Question>> GetAllAsync();
         Task AddAsync(Question question);
         Task UpdateAsync(Question question);

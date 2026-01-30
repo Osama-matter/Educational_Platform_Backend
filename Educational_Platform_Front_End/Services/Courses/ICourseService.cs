@@ -1,4 +1,4 @@
-using Educational_Platform_Front_End.DTOs.Courses;
+using EducationalPlatform.Application.DTOs.Courses;
 
 namespace Educational_Platform_Front_End.Services.Courses
 {

@@ -1,3 +1,5 @@
+using EducationalPlatform.Application.DTOs.Question;
+using EducationalPlatform.Application.DTOs.QuestionOption;
 using EducationalPlatform.Application.DTOs.Quiz;
 using EducationalPlatform.Application.Interfaces.Repositories;
 using EducationalPlatform.Application.Interfaces.Services;
@@ -12,9 +14,9 @@ namespace EducationalPlatform.Infrastructure.Services
     public class QuizService : IQuizService
     {
         private readonly IQuizRepository _quizRepository;
-        private readonly ILessonRepository _lessonRepository ; 
+        private readonly ILessonRepository _lessonRepository;
 
-        public QuizService(IQuizRepository quizRepository , ILessonRepository lessonRepository)
+        public QuizService(IQuizRepository quizRepository, ILessonRepository lessonRepository)
         {
             _quizRepository = quizRepository;
             _lessonRepository = lessonRepository;
@@ -106,6 +108,38 @@ namespace EducationalPlatform.Infrastructure.Services
 
                 await _quizRepository.UpdateAsync(quiz);
             }
+        }
+
+        public async Task<QuizDetailsDto> GetQuizDetailsForAdminAsync(Guid id)
+        {
+            var quiz = await _quizRepository.GetByIdAsync(id);
+            if (quiz == null)
+            {
+                return null;
+            }
+
+            return new QuizDetailsDto
+            {
+                Id = quiz.Id,
+                Title = quiz.Title,
+                Description = quiz.Description,
+                DurationMinutes = quiz.DurationMinutes,
+                IsPublished = quiz.IsPublished,
+                Questions = quiz.Questions.Select(question => new QuestionDto
+                {
+                    Id = question.Id,
+                    Content = question.Content,
+                    QuestionType = question.QuestionType,
+                    Score = question.Score,
+                    QuizId = question.QuizId,
+                    Options = question.Options.Select(option => new QuestionOptionDto
+                    {
+                        Id = option.Id,
+                        Text = option.Text,
+                        IsCorrect = option.IsCorrect
+                    }).ToList()
+                }).ToList()
+            };
         }
     }
 }

@@ -1,5 +1,4 @@
-using Educational_Platform_Front_End.DTOs.Quizzes;
-using Educational_Platform_Front_End.DTOs.Quizzes.Admin;
+using EducationalPlatform.Application.DTOs.Quiz;
 using System.Net.Http.Json;
 
 namespace Educational_Platform_Front_End.Services.Quizzes

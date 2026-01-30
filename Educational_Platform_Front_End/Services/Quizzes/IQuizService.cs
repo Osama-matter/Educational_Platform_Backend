@@ -1,5 +1,4 @@
-using Educational_Platform_Front_End.DTOs.Quizzes;
-using Educational_Platform_Front_End.DTOs.Quizzes.Admin;
+using EducationalPlatform.Application.DTOs.Quiz;
 
 namespace Educational_Platform_Front_End.Services.Quizzes
 {

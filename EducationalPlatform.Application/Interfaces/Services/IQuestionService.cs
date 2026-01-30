@@ -8,6 +8,7 @@ namespace EducationalPlatform.Application.Interfaces.Services
     public interface IQuestionService
     {
         Task<QuestionDto> GetQuestionByIdAsync(Guid id);
+        Task<IEnumerable<QuestionDto>> GetQuestionByQuizeIdAsync(Guid id);
         Task<IEnumerable<QuestionDto>> GetQuestionsAsync();
         Task<Guid> CreateQuestionAsync(CreateQuestionDto createQuestionDto);
         Task UpdateQuestionAsync(Guid id, UpdateQuestionDto updateQuestionDto);

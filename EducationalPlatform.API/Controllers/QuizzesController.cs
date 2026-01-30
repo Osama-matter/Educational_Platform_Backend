@@ -45,6 +45,17 @@ namespace EducationalPlatform.API.Controllers
             return Ok(quiz);
         }
 
+        [HttpGet("admin/{quizId}")]
+        public async Task<IActionResult> GetQuizDetailsForAdmin(Guid quizId)
+        {
+            var quiz = await _quizService.GetQuizDetailsForAdminAsync(quizId);
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+            return Ok(quiz);
+        }
+
         [HttpPut(Routes.Routes.Quizzes.UpdateQuiz)]
         [Authorize]
         public async Task<IActionResult> Update(Guid quizId, UpdateQuizDto updateQuizDto)

@@ -10,7 +10,7 @@ namespace EducationalPlatform.API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
-    {   
+    {
         private readonly IAuthService _authService;
 
         public AccountController(IAuthService authService)

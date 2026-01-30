@@ -9,6 +9,7 @@ namespace EducationalPlatform.Application.Interfaces.Services
     {
         Task<QuestionOptionDto> GetQuestionOptionByIdAsync(Guid id);
         Task<IEnumerable<QuestionOptionDto>> GetQuestionOptionsAsync();
+        Task <IEnumerable<QuestionOptionDto>> GetQuestionOptionsByQuestionIdAsync(Guid questionId);
         Task<Guid> CreateQuestionOptionAsync(CreateQuestionOptionDto createQuestionOptionDto);
         Task UpdateQuestionOptionAsync(Guid id, UpdateQuestionOptionDto updateQuestionOptionDto);
         Task DeleteQuestionOptionAsync(Guid id);

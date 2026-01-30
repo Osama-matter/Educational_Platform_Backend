@@ -1,4 +1,4 @@
-using Educational_Platform_Front_End.DTOs.Courses;
+using EducationalPlatform.Application.DTOs.Courses;
 using System.Net.Http.Json;
 
 namespace Educational_Platform_Front_End.Services.Courses

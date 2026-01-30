@@ -1,4 +1,4 @@
-using Educational_Platform_Front_End.DTOs.Questions;
+using EducationalPlatform.Application.DTOs.QuestionOption;
 
 namespace Educational_Platform_Front_End.Services.Questions
 {

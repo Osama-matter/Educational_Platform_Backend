@@ -1,4 +1,4 @@
-using Educational_Platform_Front_End.DTOs.QuizAttempts;
+using EducationalPlatform.Application.DTOs.QuizAttempt;
 using Educational_Platform_Front_End.Services.QuizAttempts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

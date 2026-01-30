@@ -1,4 +1,4 @@
-using EducationalPlatform.Application.DTOs.Quiz;
+﻿using EducationalPlatform.Application.DTOs.Quiz;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,5 +12,6 @@ namespace EducationalPlatform.Application.Interfaces.Services
         Task<Guid> CreateQuizAsync(CreateQuizDto createQuizDto);
         Task UpdateQuizAsync(Guid id, UpdateQuizDto updateQuizDto);
         Task DeleteQuizAsync(Guid id);
+        Task<QuizDetailsDto> GetQuizDetailsForAdminAsync(Guid id);
     }
 }

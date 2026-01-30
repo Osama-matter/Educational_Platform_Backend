@@ -55,6 +55,7 @@
             public const string CreateQuestion = "";
             public const string UpdateQuestion = "{questionId}";
             public const string DeleteQuestion = "{questionId}";
+            public const string GetQuestionsByQuizId = "quiz/{quizId}";
         }
 
         public static class QuizAttempts
@@ -74,6 +75,7 @@
             public const string CreateQuestionOption = "";
             public const string UpdateQuestionOption = "{questionOptionId}";
             public const string DeleteQuestionOption = "{questionOptionId}";
+            public const string GetQuestionOptionsByQuestionId = "question/{questionId}";
         }
     }
 }

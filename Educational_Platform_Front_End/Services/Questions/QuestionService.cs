@@ -1,4 +1,4 @@
-using Educational_Platform_Front_End.DTOs.Questions;
+using EducationalPlatform.Application.DTOs.Question;
 using System.Net.Http.Json;
 
 namespace Educational_Platform_Front_End.Services.Questions

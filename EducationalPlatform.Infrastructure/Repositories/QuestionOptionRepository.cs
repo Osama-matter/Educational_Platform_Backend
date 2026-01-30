@@ -44,5 +44,13 @@ namespace EducationalPlatform.Infrastructure.Repositories
             _context.QuestionOptions.Remove(questionOption);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<QuestionOption>> GetByQuestionIdAsync(Guid questionId)
+        {
+            return await _context.QuestionOptions
+                .AsNoTracking()
+                .Where(qo => qo.QuestionId == questionId)
+                .ToListAsync();
+        }
     }
 }

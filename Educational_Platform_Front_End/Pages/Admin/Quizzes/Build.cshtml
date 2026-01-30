@@ -24,6 +24,7 @@
         </div>
         <div class="card-body">
             <form method="post" asp-page-handler="AddQuestion" asp-route-id="@Model.Quiz.Id">
+                <input type="hidden" asp-for="NewQuestion.QuizId" value="@Model.Quiz.Id" />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="mb-3">
                     <label asp-for="NewQuestion.Text" class="form-label"></label>
@@ -34,6 +35,13 @@
                     <label asp-for="NewQuestion.Score" class="form-label"></label>
                     <input asp-for="NewQuestion.Score" type="number" class="form-control" />
                     <span asp-validation-for="NewQuestion.Score" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="NewQuestion.QuestionType" class="form-label"></label>
+                    <select asp-for="NewQuestion.QuestionType" asp-items="Html.GetEnumSelectList<EducationalPlatform.Domain.Enums.QuestionType>()" class="form-select">
+                        <option value="">Select type</option>
+                    </select>
+                    <span asp-validation-for="NewQuestion.QuestionType" class="text-danger"></span>
                 </div>
                 <button type="submit" class="btn btn-primary">Add Question</button>
             </form>

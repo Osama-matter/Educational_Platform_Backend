@@ -43,6 +43,17 @@ namespace EducationalPlatform.API.Controllers
             }
             return Ok(questionOption);
         }
+        [HttpGet(Routes.Routes.QuestionOptions.GetQuestionOptionsByQuestionId)]
+
+        public  async Task<IActionResult> GetByQuestionId(Guid questionId)
+        {
+            var questionOptions = await _questionOptionService.GetQuestionOptionsByQuestionIdAsync(questionId);
+            if (questionOptions == null)
+            {
+                return NotFound();
+            }
+            return Ok(questionOptions);
+        }
 
         [HttpPut(Routes.Routes.QuestionOptions.UpdateQuestionOption)]
         [Authorize]

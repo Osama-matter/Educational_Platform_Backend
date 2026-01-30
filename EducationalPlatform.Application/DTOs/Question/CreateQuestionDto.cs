@@ -9,6 +9,12 @@ namespace EducationalPlatform.Application.DTOs.Question
         [Required]
         public string Content { get; set; }
 
+        public string Text
+        {
+            get => Content;
+            set => Content = value;
+        }
+
         [Required]
         public QuestionType QuestionType { get; set; }
 

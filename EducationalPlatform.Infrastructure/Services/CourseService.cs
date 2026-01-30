@@ -26,7 +26,7 @@ namespace EducationalPlatform.Infrastructure.Services
                 throw new ArgumentException("Invalid request type", nameof(requestCourse));
             }
             // Upload image and get URL
-            string  imageUrl = await _imageService.SaveCourseImageAsync(createCourseDto.imageFile);
+            string imageUrl = await _imageService.SaveCourseImageAsync(createCourseDto.imageFile);
 
             var course = new Course(createCourseDto.Title, createCourseDto.Description, createCourseDto.InstructorId, createCourseDto.EstimatedDurationHours, createCourseDto.IsActive, imageUrl);
             await _courseRepository.AddAsync(course);
@@ -48,7 +48,7 @@ namespace EducationalPlatform.Infrastructure.Services
             }
             // Delete associated image
             bool isDeleted = await _imageService.DeleteCourseImageAsync(course.Image_URl);
-            if(!isDeleted)
+            if (!isDeleted)
             {
                 throw new Exception("Failed to delete course image");
             }
@@ -74,7 +74,7 @@ namespace EducationalPlatform.Infrastructure.Services
                 return dto;
             });
 
-            return courseDtos; 
+            return courseDtos;
         }
 
         public async Task<CourseDto> GetByIdAsync(Guid id)
@@ -96,7 +96,7 @@ namespace EducationalPlatform.Infrastructure.Services
 
 
 
-        public async  Task <CourseDto>UpdateAsync(Guid id, UpdateCourseDto requestCourse)
+        public async Task<CourseDto> UpdateAsync(Guid id, UpdateCourseDto requestCourse)
         {
             if (requestCourse is not Application.DTOs.Courses.UpdateCourseDto updateCourseDto)
             {

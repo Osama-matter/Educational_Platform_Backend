@@ -1,4 +1,5 @@
-using Educational_Platform_Front_End.DTOs.QuizAttempts;
+using EducationalPlatform.Application.DTOs.QuizAttempt;
+using EducationalPlatform.Application.DTOs.Answer;
 
 namespace Educational_Platform_Front_End.Services.QuizAttempts
 {

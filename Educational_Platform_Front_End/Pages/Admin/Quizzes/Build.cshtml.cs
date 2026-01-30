@@ -1,8 +1,11 @@
-using Educational_Platform_Front_End.DTOs.Questions;
-using Educational_Platform_Front_End.DTOs.Quizzes.Admin;
+using EducationalPlatform.Application.DTOs.Question;
+using EducationalPlatform.Application.DTOs.QuestionOption;
+using EducationalPlatform.Application.DTOs.Quiz;
 using Educational_Platform_Front_End.Services.Questions;
 using Educational_Platform_Front_End.Services.Quizzes;
+using EducationalPlatform.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Educational_Platform_Front_End.Pages.Admin.Quizzes
@@ -21,6 +24,7 @@ namespace Educational_Platform_Front_End.Pages.Admin.Quizzes
         }
 
         [BindProperty]
+        [ValidateNever]
         public QuizDetailsDto Quiz { get; set; }
 
         [BindProperty]
@@ -41,13 +45,26 @@ namespace Educational_Platform_Front_End.Pages.Admin.Quizzes
 
         public async Task<IActionResult> OnPostAddQuestionAsync(Guid id)
         {
+            if (NewQuestion == null)
+            {
+                ErrorMessage = "Question data was not received by the server.";
+                await LoadQuizData(id);
+                return Page();
+            }
             if (!ModelState.IsValid)
             {
+                ErrorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
                 await LoadQuizData(id);
                 return Page();
             }
             try
             {
+                if (NewQuestion.QuestionType == default)
+                {
+                    NewQuestion.QuestionType = QuestionType.MultipleChoice;
+                }
                 NewQuestion.QuizId = id;
                 await _questionService.CreateQuestionAsync(NewQuestion);
             }

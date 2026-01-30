@@ -1,12 +1,13 @@
-using Educational_Platform_Front_End.DTOs.Quizzes;
+using System;
+using System.Collections.Generic;
 
-namespace Educational_Platform_Front_End.DTOs.Courses
+namespace EducationalPlatform.Application.DTOs.Courses
 {
     public class CourseDetailsDto
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public List<LessonDto> Lessons { get; set; } = new();
+        public List<LessonDetailsDto> Lessons { get; set; } = new();
     }
 }
