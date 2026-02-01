@@ -77,6 +77,16 @@
             public const string DeleteQuestionOption = "{questionOptionId}";
             public const string GetQuestionOptionsByQuestionId = "question/{questionId}";
         }
+
+        public static class Certificates
+        {
+            public const string IssueCertificate = "";
+            public const string GetUserCertificates = "user/{userId}";
+            public const string RevokeCertificate = "{certificateId}/revoke";
+            public const string VerifyCertificate = "verify/{verificationCode}";
+            public const string GetCertificateDetails = "{certificateId}";
+            public const string CertificateExists = "exists/user/{userId}/course/{courseId}";
+        }
     }
 }
 

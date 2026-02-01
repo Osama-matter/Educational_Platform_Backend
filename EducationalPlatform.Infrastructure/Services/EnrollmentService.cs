@@ -1,6 +1,6 @@
 ﻿using EducationalPlatform.Application.DTOs.Enrollments;
-using EducationalPlatform.Application.Interfaces;
 using EducationalPlatform.Application.Interfaces.Repositories;
+using EducationalPlatform.Application.Interfaces.Services;
 using EducationalPlatform.Domain.Entities;
 using OpenQA.Selenium;
 using System;

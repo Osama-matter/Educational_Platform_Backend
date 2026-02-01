@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EducationalPlatform.Application.Interfaces
+namespace EducationalPlatform.Application.Interfaces.Services
 {
     public interface IEnrollmentService
     {

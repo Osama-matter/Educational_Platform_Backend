@@ -34,6 +34,7 @@ namespace EducationalPlatform.Infrastructure.Data
         public DbSet<QuestionOption> QuestionOptions { get; set; }
         public DbSet<Answer> Answers { get; set; }
 
+        public DbSet<Certificate> Certificates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

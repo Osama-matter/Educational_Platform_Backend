@@ -1,5 +1,5 @@
 using EducationalPlatform.Application.DTOs.CourseFile;
-using EducationalPlatform.Application.Interfaces;
+using EducationalPlatform.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;

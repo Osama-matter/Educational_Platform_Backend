@@ -46,7 +46,7 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpGet("admin/{quizId}")]
-        public async Task<IActionResult> GetQuizDetailsForAdmin(Guid quizId)
+        public async Task<IActionResult> GetQuizDetailsForAdmin(Guid quizId )
         {
             var quiz = await _quizService.GetQuizDetailsForAdminAsync(quizId);
             if (quiz == null)

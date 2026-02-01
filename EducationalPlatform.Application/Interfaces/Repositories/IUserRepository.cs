@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using EducationalPlatform.Domain.Entities;
+using System;
 using System.Threading.Tasks;
 
 namespace EducationalPlatform.Application.Interfaces.Repositories
 {
-    internal class IUserRepository
+    public interface IUserRepository
     {
+        Task<User> GetByIdAsync(Guid id);
     }
 }

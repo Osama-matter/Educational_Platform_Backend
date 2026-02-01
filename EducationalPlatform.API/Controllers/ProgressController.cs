@@ -1,5 +1,5 @@
 ﻿using EducationalPlatform.Application.DTOs.Progress;
-using EducationalPlatform.Application.Interfaces;
+using EducationalPlatform.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;

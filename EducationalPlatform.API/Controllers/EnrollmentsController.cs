@@ -1,4 +1,5 @@
 ﻿using EducationalPlatform.API.Routes;
+using EducationalPlatform.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -10,9 +11,9 @@ namespace EducationalPlatform.API.Controllers
     public class EnrollmentsController : ControllerBase
     {
 
-        private readonly EducationalPlatform.Application.Interfaces.IEnrollmentService _enrollmentService;
+        private readonly IEnrollmentService _enrollmentService;
 
-        public EnrollmentsController(EducationalPlatform.Application.Interfaces.IEnrollmentService enrollmentService)
+        public EnrollmentsController(IEnrollmentService enrollmentService)
         {
             _enrollmentService = enrollmentService;
         }

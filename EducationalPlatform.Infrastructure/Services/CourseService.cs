@@ -1,8 +1,8 @@
 ﻿using Azure.Core;
 using EducationalPlatform.Application.DTOs.Courses;
-using EducationalPlatform.Application.Interfaces;
 using EducationalPlatform.Application.Interfaces.External_services;
 using EducationalPlatform.Application.Interfaces.Repositories;
+using EducationalPlatform.Application.Interfaces.Services;
 using EducationalPlatform.Domain.Entities.Course;
 using Microsoft.AspNetCore.Http;
 using System;

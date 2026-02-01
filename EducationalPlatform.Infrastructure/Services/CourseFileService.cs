@@ -1,7 +1,7 @@
 ﻿using EducationalPlatform.Application.DTOs.CourseFile;
-using EducationalPlatform.Application.Interfaces;
 using EducationalPlatform.Application.Interfaces.External_services;
 using EducationalPlatform.Application.Interfaces.Repositories;
+using EducationalPlatform.Application.Interfaces.Services;
 using EducationalPlatform.Domain.Entities.Course_File;
 using EducationalPlatform.Domain.Enums;
 using System;

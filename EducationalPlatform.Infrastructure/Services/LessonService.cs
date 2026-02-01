@@ -1,6 +1,6 @@
 ﻿using EducationalPlatform.Application.DTOs.Lessons;
-using EducationalPlatform.Application.Interfaces;
 using EducationalPlatform.Application.Interfaces.Repositories;
+using EducationalPlatform.Application.Interfaces.Services;
 using huzcodes.Extensions.Exceptions;
 using NuGet.Packaging.Signing;
 using OpenQA.Selenium;

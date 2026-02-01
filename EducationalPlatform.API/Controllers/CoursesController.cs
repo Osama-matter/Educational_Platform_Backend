@@ -1,5 +1,5 @@
 ﻿using EducationalPlatform.Application.DTOs.Courses;
-using EducationalPlatform.Application.Interfaces;
+using EducationalPlatform.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;

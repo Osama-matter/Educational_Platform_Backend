@@ -1,5 +1,4 @@
 ﻿using EducationalPlatform.Application.DTOs.Courses;
-using EducationalPlatform.Application.Interfaces;
 using EducationalPlatform.Application.Interfaces.External_services;
 using EducationalPlatform.Application.Interfaces.Repositories;
 using EducationalPlatform.Application.Interfaces.Services;
@@ -42,6 +41,11 @@ namespace EducationalPlatform.Infrastructure
             services.AddScoped<IQuestionOptionService, QuestionOptionService>();
             services.AddScoped<IAnswerRepository, AnswerRepository>();
             services.AddScoped<IAnswerService, AnswerService>();
+            services.AddScoped<ICertificateService, CertificateService>();
+            services.AddScoped<IMatterHubCertificateGenerator, MatterHubCertificateGenerator>();
+            services.AddScoped<ICertificateRepository, CertificateRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+           
 
             return services;
         }

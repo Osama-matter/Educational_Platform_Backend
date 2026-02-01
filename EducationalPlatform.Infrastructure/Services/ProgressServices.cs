@@ -1,6 +1,6 @@
 ﻿using EducationalPlatform.Application.DTOs.Progress;
-using EducationalPlatform.Application.Interfaces;
 using EducationalPlatform.Application.Interfaces.Repositories;
+using EducationalPlatform.Application.Interfaces.Services;
 using EducationalPlatform.Domain.Entities.progress;
 using huzcodes.Persistence.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
