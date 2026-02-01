@@ -94,7 +94,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // -------------------- Infrastructure --------------------
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddHostedService<WeeklyDigestService>();
 
 // -------------------- Authentication --------------------
 builder.Services.AddAuthentication(options =>

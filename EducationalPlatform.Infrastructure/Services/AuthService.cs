@@ -1,5 +1,6 @@
 using EducationalPlatform.Application.DTOs.Auth;
 using EducationalPlatform.Application.Interfaces;
+using EducationalPlatform.Application.Interfaces.Services;
 using EducationalPlatform.Application.Interfaces.Security;
 using EducationalPlatform.Domain.Entities;
 using EducationalPlatform.Domain.Enums;
@@ -18,14 +19,16 @@ namespace EducationalPlatform.Infrastructure.Services
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IEmailService _emailService;
 
-        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole<Guid>> roleManager, IJwtTokenService jwtTokenService, IHttpContextAccessor httpContextAccessor)
+        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole<Guid>> roleManager, IJwtTokenService jwtTokenService, IHttpContextAccessor httpContextAccessor, IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _jwtTokenService = jwtTokenService;
             _httpContextAccessor = httpContextAccessor;
+            _emailService = emailService;
         }
 
         private async Task EnsureRoleExistsAsync(string roleName)
@@ -67,6 +70,8 @@ namespace EducationalPlatform.Infrastructure.Services
                 var errorDetails = string.Join("; ", addRoleResult.Errors.Select(e => e.Description));
                 throw new System.Exception($"Assign role failed: {errorDetails}");
             }
+
+            await _emailService.SendWelcomeEmailAsync(user.Email, user.UserName);
 
             return new UserDto
             {
@@ -137,6 +142,8 @@ namespace EducationalPlatform.Infrastructure.Services
                 var errorDetails = string.Join("; ", addRoleResult.Errors.Select(e => e.Description));
                 throw new System.Exception($"Assign role failed: {errorDetails}");
             }
+
+            await _emailService.SendWelcomeEmailAsync(user.Email, user.UserName);
 
             return new UserDto
             {

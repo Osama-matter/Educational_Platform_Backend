@@ -11,10 +11,12 @@ using System.Threading.Tasks;
 
 namespace EducationalPlatform.Infrastructure.Services
 {
-    public class EnrollmentService(IEnrollmentRepository enrollmentRepository , ICourseRepository courseRepository) : IEnrollmentService
+    public class EnrollmentService(IEnrollmentRepository enrollmentRepository, ICourseRepository courseRepository, IUserRepository userRepository, IEmailService emailService) : IEnrollmentService
     {
         private readonly IEnrollmentRepository _enrollmentRepository = enrollmentRepository;
         private readonly ICourseRepository _courseRepository = courseRepository;
+        private readonly IUserRepository _userRepository = userRepository;
+        private readonly IEmailService _emailService = emailService;
         public async Task<EnrollmentDto> CreateAsync(Guid studentId, Guid courseId)
         {
 
@@ -30,7 +32,14 @@ namespace EducationalPlatform.Infrastructure.Services
             var enrollment = new Enrollment(studentId, courseId);
 
 
-            await _enrollmentRepository.AddAsync(enrollment);
+                        await _enrollmentRepository.AddAsync(enrollment);
+
+            var user = await _userRepository.GetByIdAsync(studentId);
+            var course = await _courseRepository.GetByIdAsync(courseId);
+            if (user != null && course != null)
+            {
+                await _emailService.SendEnrollmentEmailAsync(user.Email, user.UserName, course.Title);
+            }
 
             return new EnrollmentDto(enrollment);
         }

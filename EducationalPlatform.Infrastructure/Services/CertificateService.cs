@@ -21,19 +21,22 @@ namespace EducationalPlatform.Infrastructure.Services
  
         private readonly IMatterHubCertificateGenerator _certificateGenerator;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IEmailService _emailService;
 
         public CertificateService(
             ICertificateRepository certificateRepository,
             ICourseRepository courseRepository,
             IUserRepository userRepository,
             IMatterHubCertificateGenerator certificateGenerator,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment,
+            IEmailService emailService)
         {
             _certificateRepository = certificateRepository;
             _courseRepository = courseRepository;
             _userRepository = userRepository;
             _certificateGenerator = certificateGenerator;
             _webHostEnvironment = webHostEnvironment;
+            _emailService = emailService;
         }
 
         /// <summary>
@@ -112,7 +115,10 @@ namespace EducationalPlatform.Infrastructure.Services
                
             );
 
-            await _certificateRepository.AddAsync(certificate); 
+                        await _certificateRepository.AddAsync(certificate);
+
+            var (certificateBytes, _) = await DownloadCertificateAsync(certificate.Id);
+            await _emailService.SendCertificateEmailAsync(user.Email, user.UserName, course.Title, certificateBytes); 
 
 
             return new CertificateDto

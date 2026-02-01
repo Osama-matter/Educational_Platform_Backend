@@ -16,7 +16,7 @@ namespace EducationalPlatform.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, Microsoft.Extensions.Configuration.IConfiguration configuration)
         {
             services.AddScoped<IJwtTokenService, JwtTokenService>();
             services.AddScoped<ICourseService, CourseService>();
@@ -45,6 +45,9 @@ namespace EducationalPlatform.Infrastructure
             services.AddScoped<IMatterHubCertificateGenerator, MatterHubCertificateGenerator>();
             services.AddScoped<ICertificateRepository, CertificateRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IEmailService, EmailService>();
+
+            services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
            
 
             return services;
