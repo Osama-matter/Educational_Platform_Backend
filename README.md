@@ -1,27 +1,39 @@
 # EduPlatform: Enterprise Learning Management System
 
-EduPlatform is a robust, enterprise-level Learning Management System (LMS) designed to provide a seamless and scalable educational experience. Built on a modern .NET technology stack, it offers a comprehensive suite of tools for students, instructors, and administrators to manage and engage with educational content effectively.
+EduPlatform is an enterprise-grade Learning Management System (LMS) built on ASP.NET Core. It delivers a secure, scalable, and API‑driven learning experience for students, instructors, and administrators, with a focus on clean architecture, maintainability, and extensibility.
 
 ## 🚀 Project Overview
 
-This platform is engineered to solve the core challenges of online education by providing a centralized, secure, and intuitive environment for learning. It addresses the need for structured course management, progress tracking, interactive assessments, and role-based access control, making it suitable for educational institutions and corporate training programs.
+The platform centralizes course management, progress tracking, assessments, and role‑based access control. It is designed for educational institutions and corporate training programs that require a reliable, audited learning environment.
+
+## 📚 Table of Contents
+
+- [Target Users](#target-users)
+- [Tech Stack & Architecture](#-tech-stack--architecture)
+- [Core Features](#-core-features)
+- [Setup & Installation](#-setup--installation)
+- [API Documentation](#-api-documentation)
+- [Future Improvements](#-future-improvements)
+- [Testing](#-testing)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ### Target Users
 
-*   **Students**: Can enroll in courses, track their progress, access lesson materials, take quizzes, and view their assessment results in real-time.
-*   **Instructors**: Can create and manage courses and lessons, design comprehensive quizzes with multiple question types, and monitor student performance.
-*   **Admins**: Have full control over the platform, including user management, course creation, quiz management, question bank administration, and system settings.
+*   **Students**: Enroll in courses, track progress, access lesson content, take quizzes, and review results.
+*   **Instructors**: Create and manage courses/lessons, design quizzes, and monitor learner performance.
+*   **Admins**: Oversee user management, course catalog, quiz system, and platform configuration.
 
 ## 🛠️ Tech Stack & Architecture
 
-The project is built using **ASP.NET Core** following the principles of **Clean Architecture**. This ensures a clear separation of concerns, maintainability, and scalability. The solution is API-driven, with a distinct frontend consuming the backend services.
+The solution follows **Clean Architecture** with a clear separation between domain, application, infrastructure, and presentation layers. The backend is API‑first, and the frontend consumes the API.
 
 *   **Backend**: ASP.NET Core Web API (.NET 8)
 *   **Frontend**: ASP.NET Razor Pages
-*   **Architecture**: Clean Architecture, API-based
-*   **Database**: SQL Server with Entity Framework Core
-*   **Authentication**: JWT-based authentication and role-based authorization
-*   **ORM**: Entity Framework Core with Code-First Migrations
+*   **Architecture**: Clean Architecture (API‑driven)
+*   **Database**: SQL Server + Entity Framework Core
+*   **Authentication**: JWT with role‑based authorization
+*   **ORM**: EF Core, Code‑First Migrations
 
 ## ✨ Core Features
 
@@ -50,6 +62,14 @@ The project is built using **ASP.NET Core** following the principles of **Clean 
 *   **Lesson Completion**: The system tracks which lessons a student has completed with timestamps.
 *   **Progress Calculation**: Course progress is calculated and displayed as a percentage based on completed lessons and quiz attempts.
 *   **Dashboard Analytics**: Visual representation of learning progress and achievements.
+
+### Certificates
+
+*   **On‑the‑Fly PDF Generation**: Certificates are generated at download time to reduce server storage.
+*   **Certificate Metadata Stored in DB**: Only certificate metadata (number, verification code, issue date, user/course) is stored.
+*   **Download Endpoint**: `GET /api/Certificates/{certificateId}/download` returns the PDF.
+*   **Branded PDF**: The certificate includes the MatterHub logo loaded from `EducationalPlatform.API/wwwroot/certification/Logo/lOGO.png`.
+*   **Authorization Required**: Certificate endpoints require a valid JWT token.
 
 ### Admin Dashboard
 
@@ -336,6 +356,10 @@ The solution is organized into five distinct layers, following Clean Architectur
 - `GET /api/QuizAttempts/{id}` - Get attempt details
 - `POST /api/QuizAttempts` - Start quiz attempt (Student)
 - `POST /api/QuizAttempts/{id}/submit` - Submit quiz (Student)
+
+#### Certificates
+- `POST /api/Certificates/issue-certificate` - Issue a certificate (Authorized)
+- `GET /api/Certificates/{certificateId}/download` - Download certificate PDF (Authorized)
 
 ## 🔮 Future Improvements
 
