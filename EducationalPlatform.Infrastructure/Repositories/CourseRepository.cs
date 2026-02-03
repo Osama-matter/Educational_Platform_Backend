@@ -25,6 +25,8 @@ namespace EducationalPlatform.Infrastructure.Repositories
                 .AsNoTracking()
                 .Include(c => c.Lessons)
                 .Include(c => c.CourseFiles)
+                .Include(c => c.Reviews)
+                    .ThenInclude(r => r.User)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (course == null)

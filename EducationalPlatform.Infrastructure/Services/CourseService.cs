@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using EducationalPlatform.Application.DTOs.Courses;
+using EducationalPlatform.Application.DTOs.Review;
 using EducationalPlatform.Application.Interfaces.External_services;
 using EducationalPlatform.Application.Interfaces.Repositories;
 using EducationalPlatform.Application.Interfaces.Services;
@@ -91,10 +92,35 @@ namespace EducationalPlatform.Infrastructure.Services
             {
                 courseDto.Image_URl = $"{baseUrl}{course.Image_URl}";
             }
+
+            if (course.Reviews != null)
+            {
+                courseDto.Reviews = course.Reviews.Select(r => new ReviewDto
+                {
+                    Id = r.Id,
+                    Rate = r.Rate,
+                    Comment = r.Comment,
+                    UserId = r.UserId,
+                    UserName = r.User?.UserName,
+                    CourseId = r.CourseId,
+                    InstructorReply = r.InstructorReply
+                }).ToList();
+            }
+
+            if (course.CourseFiles != null)
+            {
+                courseDto.CourseFiles = course.CourseFiles.Select(cf => new CourseFileDto
+                {
+                    Id = cf.Id,
+                    FileName = cf.FileName,
+                    FilePath = cf.BlobStorageUrl
+                }).ToList();
+            }
+
             return courseDto;
         }
 
-
+            
 
         public async Task<CourseDto> UpdateAsync(Guid id, UpdateCourseDto requestCourse)
         {

@@ -1,5 +1,7 @@
 using System;
 using EducationalPlatform.Domain.Entities.Course;
+using EducationalPlatform.Application.DTOs.Review;
+using System.Collections.Generic;
 
 namespace EducationalPlatform.Application.DTOs.Courses
 {
@@ -8,6 +10,8 @@ namespace EducationalPlatform.Application.DTOs.Courses
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public ICollection<ReviewDto> Reviews { get; set; }
+        public ICollection<CourseFileDto> CourseFiles { get; set; }
         public Guid InstructorId { get; set; }
         public int? EstimatedDurationHours { get; set; }
         public bool IsActive { get; set; }

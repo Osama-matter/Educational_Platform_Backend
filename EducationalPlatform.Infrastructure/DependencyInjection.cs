@@ -45,6 +45,8 @@ namespace EducationalPlatform.Infrastructure
             services.AddScoped<IMatterHubCertificateGenerator, MatterHubCertificateGenerator>();
             services.AddScoped<ICertificateRepository, CertificateRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IEmailService, EmailService>();
 
             services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));

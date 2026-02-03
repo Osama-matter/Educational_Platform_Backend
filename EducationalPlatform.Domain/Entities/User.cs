@@ -25,6 +25,9 @@ namespace EducationalPlatform.Domain.Entities {
         public virtual ICollection<Course.Course> CoursesCreated { get; set; }
         public virtual ICollection<Enrollment> Enrollments { get; set; }
 
+        public virtual ICollection<Review> Reviews { get; set; }
+
+
         public User()
         {
             CreatedAt = DateTime.UtcNow;

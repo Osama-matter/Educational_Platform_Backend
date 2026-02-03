@@ -87,6 +87,15 @@
             public const string GetCertificateDetails = "{certificateId}";
             public const string CertificateExists = "exists/user/{userId}/course/{courseId}";
         }
+
+        public static class Reviews
+        {
+            public const string GetReviewById = "{reviewId}";
+            public const string GetReviewsForCourse = "course/{courseId}";
+            public const string CreateReview = "";
+            public const string UpdateReview = "{reviewId}";
+            public const string DeleteReview = "{reviewId}";
+        }
     }
 }
 
