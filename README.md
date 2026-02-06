@@ -47,14 +47,26 @@ The solution follows **Clean Architecture** with a clear separation between doma
 
 *   **Full CRUD Operations**: Admins and Instructors can create, read, update, and delete courses through dedicated API endpoints.
 *   **Public Course Catalog**: A browsable catalog of all available courses for students.
-*   **Detailed Course View**: Each course has a dedicated page with description, lesson list, associated quizzes, and enrollment options.
+*   **Detailed Course View**: Each course has a dedicated page with description, lesson list, and enrollment options.
 *   **Course Metadata**: Rich course information including difficulty level, duration, and prerequisites.
 
 ### Lesson Management
 
 *   **Structured Lessons**: Lessons are linked to specific courses, with properties for title, content, video URL, and duration.
+*   **Lesson-Level Quizzes**: Quizzes are now integrated directly into lessons, allowing for assessments immediately after learning content.
 *   **Admin & Instructor Control**: Content creators can manage lessons with version control and publishing workflows.
 *   **Multimedia Support**: Support for video content, downloadable resources, and rich text materials.
+
+### Forum System (New)
+
+*   **Community Discussion**: Dedicated forum threads for collaborative learning and student-instructor interaction.
+*   **Thread Subscriptions**: Users can subscribe to threads to stay updated on discussions.
+*   **Nested Discussions**: Support for posts and replies within threads to maintain organized conversations.
+*   **Post Reputation**: Ability to mark helpful posts to highlight valuable contributions.
+*   **API Endpoints**:
+    - `GET /api/ForumThreads` - List all discussion threads
+    - `POST /api/ForumPosts` - Contribute to discussions
+    - `POST /api/ForumSubscriptions` - Manage thread notifications
 
 ### Enrollment & Progress Tracking
 
@@ -84,7 +96,7 @@ The Quiz System is a comprehensive assessment module designed to evaluate studen
 #### Quiz Management
 
 *   **Quiz Creation & Configuration**:
-    - Link quizzes to specific courses
+    - Link quizzes to specific lessons for granular assessment
     - Set quiz name, description, and instructions
     - Configure total grade and passing score threshold
     - Define start and end dates for quiz availability
@@ -231,7 +243,7 @@ The Quiz System is built on four interconnected tables:
 
 #### Key Relationships
 
-- **One Course → Many Quizzes**: Each course can have multiple quizzes
+- **One Lesson → Many Quizzes**: Each lesson can have multiple quizzes for immediate assessment
 - **One Quiz → Many Questions**: Each quiz contains multiple questions
 - **One Question → Many Options**: MCQ questions have multiple answer choices
 - **One Quiz → Many Attempts**: Students can take quizzes multiple times (configurable)
