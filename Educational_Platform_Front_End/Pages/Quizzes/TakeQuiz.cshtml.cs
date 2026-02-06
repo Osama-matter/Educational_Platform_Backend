@@ -17,8 +17,14 @@ namespace Educational_Platform_Front_End.Pages.Quizzes
 
         public QuizAttemptDto QuizAttempt { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public Guid Id { get; set; }
+
         [BindProperty]
-        public Dictionary<Guid, Guid> SelectedAnswers { get; set; } = new();
+        public List<Guid> QuestionIds { get; set; } = new();
+
+        [BindProperty]
+        public List<Guid> AnswerIds { get; set; } = new();
 
         [TempData]
         public string ErrorMessage { get; set; }
@@ -30,10 +36,8 @@ namespace Educational_Platform_Front_End.Pages.Quizzes
                 QuizAttempt = await _quizAttemptService.GetQuizAttemptByIdAsync(id);
                 if (QuizAttempt == null) return NotFound();
 
-                foreach (var question in QuizAttempt.Questions)
-                {
-                    SelectedAnswers.Add(question.Id, Guid.Empty);
-                }
+                QuestionIds = QuizAttempt.Questions.Select(q => q.Id).ToList();
+                AnswerIds = QuizAttempt.Questions.Select(_ => Guid.Empty).ToList();
             }
             catch (Exception ex)
             {
@@ -55,8 +59,17 @@ namespace Educational_Platform_Front_End.Pages.Quizzes
             {
                 var submission = new SubmitAnswersRequest
                 {
-                    Answers = SelectedAnswers.Select(kvp => new AnswerDto { QuestionId = kvp.Key, SelectedOptionId = kvp.Value }).ToList()
+                    Answers = new List<AnswerDto>()
                 };
+
+                for (int i = 0; i < QuestionIds.Count; i++)
+                {
+                    submission.Answers.Add(new AnswerDto 
+                    { 
+                        QuestionId = QuestionIds[i], 
+                        SelectedOptionId = AnswerIds[i] 
+                    });
+                }
 
                 await _quizAttemptService.SubmitAnswersAsync(id, submission);
 

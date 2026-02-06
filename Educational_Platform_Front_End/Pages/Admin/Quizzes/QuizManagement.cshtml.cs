@@ -32,17 +32,18 @@ namespace Educational_Platform_Front_End.Pages.Admin.Quizzes
             }
         }
 
-        public async Task<IActionResult> OnPostDeleteAsync(System.Guid id)
+        public async Task<IActionResult> OnPostDeleteAsync(Guid id)
         {
             try
             {
                 await _quizService.DeleteQuizAsync(id);
+                return RedirectToPage();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 ErrorMessage = $"Failed to delete quiz: {ex.Message}";
+                return RedirectToPage();
             }
-            return RedirectToPage();
         }
     }
 }

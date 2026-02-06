@@ -110,6 +110,17 @@ namespace EducationalPlatform.Infrastructure.Services
             _reviewRepository.Update(review);
         }
 
+        public async Task ReplyToReviewAsync(Guid id, InstructorReplyDto replyDto)
+        {
+            var review = await _reviewRepository.GetByIdAsync(id);
+            if (review == null) throw new Exception("Review not found");
+
+            review.InstructorReply = replyDto.Reply;
+            review.RepliedAt = DateTime.UtcNow;
+
+            _reviewRepository.Update(review);
+        }
+
         public async Task DeleteReviewAsync(Guid id)
         {
             var review = await _reviewRepository.GetByIdAsync(id);

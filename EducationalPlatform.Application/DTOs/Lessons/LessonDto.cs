@@ -1,4 +1,6 @@
+using EducationalPlatform.Application.DTOs.Courses;
 using System;
+using System.Collections.Generic;
 using EducationalPlatform.Domain.Entities.Leeson;
 
 namespace EducationalPlatform.Application.DTOs.Lessons
@@ -11,6 +13,7 @@ namespace EducationalPlatform.Application.DTOs.Lessons
         public string Content { get; set; }
         public int OrderIndex { get; set; }
         public int? DurationMinutes { get; set; }
+        public List<QuizSummaryDto> Quizzes { get; set; } = new();
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 

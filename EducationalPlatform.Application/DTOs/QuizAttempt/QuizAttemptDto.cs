@@ -15,6 +15,7 @@ namespace EducationalPlatform.Application.DTOs.QuizAttempt
         public DateTime? SubmittedAt { get; set; }
         public int TotalScore { get; set; }
         public QuizAttemptStatus Status { get; set; }
+        public int TotalTimeMinutes { get; set; }
         public List<QuestionDto> Questions { get; set; } = new();
     }
 }

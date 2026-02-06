@@ -12,6 +12,7 @@ namespace EducationalPlatform.Application.Interfaces.Services
         public Task<CourseFileDto> CreateAsync(CreateCourseFileRequest request);
         public Task<CourseFileDto> GetByIdAsync(Guid id);
         public Task<IEnumerable<CourseFileDto>> GetAllAsync();
+        public Task<IEnumerable<CourseFileDto>> GetByCourseIdAsync(Guid courseId);
         public Task<CourseFileDto> UpdateAsync(Guid id, UpdateCourseFileRequest request);
         public Task DeleteAsync(Guid id);
 

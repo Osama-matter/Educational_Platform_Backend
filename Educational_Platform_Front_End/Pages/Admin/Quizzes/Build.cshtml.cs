@@ -25,13 +25,13 @@ namespace Educational_Platform_Front_End.Pages.Admin.Quizzes
 
         [BindProperty]
         [ValidateNever]
-        public QuizDetailsDto Quiz { get; set; }
+        public QuizDetailsDto Quiz { get; set; } = new QuizDetailsDto();
 
         [BindProperty]
-        public CreateQuestionDto NewQuestion { get; set; }
+        public CreateQuestionDto NewQuestion { get; set; } = new CreateQuestionDto();
 
         [BindProperty]
-        public CreateQuestionOptionDto NewOption { get; set; }
+        public CreateQuestionOptionDto NewOption { get; set; } = new CreateQuestionOptionDto();
 
         [TempData]
         public string ErrorMessage { get; set; }
@@ -51,6 +51,16 @@ namespace Educational_Platform_Front_End.Pages.Admin.Quizzes
                 await LoadQuizData(id);
                 return Page();
             }
+
+            // Remove validation for properties we set manually or that belong to other models
+            ModelState.Remove("NewQuestion.QuizId");
+            
+            // Clear errors for other properties on the page that aren't part of this action
+            foreach (var key in ModelState.Keys.Where(k => !k.StartsWith("NewQuestion")).ToList())
+            {
+                ModelState.Remove(key);
+            }
+
             if (!ModelState.IsValid)
             {
                 ErrorMessage = string.Join(" | ", ModelState.Values
@@ -67,12 +77,14 @@ namespace Educational_Platform_Front_End.Pages.Admin.Quizzes
                 }
                 NewQuestion.QuizId = id;
                 await _questionService.CreateQuestionAsync(NewQuestion);
+                return RedirectToPage(new { id });
             }
             catch (Exception ex)
             {
                 ErrorMessage = $"Error adding question: {ex.Message}";
+                await LoadQuizData(id);
+                return Page();
             }
-            return RedirectToPage(new { id });
         }
 
         public async Task<IActionResult> OnPostDeleteQuestionAsync(Guid id, Guid questionId)
@@ -90,16 +102,36 @@ namespace Educational_Platform_Front_End.Pages.Admin.Quizzes
 
         public async Task<IActionResult> OnPostAddOptionAsync(Guid id, Guid questionId)
         {
+            // Remove validation for properties we set manually
+            ModelState.Remove("NewOption.QuestionId");
+
+            // Clear errors for other properties on the page that aren't part of this action
+            foreach (var key in ModelState.Keys.Where(k => !k.StartsWith("NewOption")).ToList())
+            {
+                ModelState.Remove(key);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ErrorMessage = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+                await LoadQuizData(id);
+                return Page();
+            }
+
             try
             {
                 NewOption.QuestionId = questionId;
                 await _questionOptionService.CreateQuestionOptionAsync(NewOption);
+                return RedirectToPage(new { id });
             }
             catch (Exception ex)
             {
                 ErrorMessage = $"Error adding option: {ex.Message}";
+                await LoadQuizData(id);
+                return Page();
             }
-            return RedirectToPage(new { id });
         }
 
         public async Task<IActionResult> OnPostDeleteOptionAsync(Guid id, Guid optionId)

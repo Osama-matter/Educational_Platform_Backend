@@ -41,11 +41,14 @@ namespace EducationalPlatform.Domain.Entities.Leeson
         public virtual ICollection<LessonProgress> LessonProgresses { get; set; }
 
         public virtual ICollection<EducationalPlatform.Domain.Entities.Course_File.CourseFile> CourseFiles { get; set; }
+        public virtual ICollection<Quiz> Quizzes { get; set; }
+
         public Lesson()
         {
             Id = Guid.NewGuid();
             CreatedAt = DateTime.UtcNow;
             LessonProgresses = new HashSet<LessonProgress>();
+            Quizzes = new HashSet<Quiz>();
         }
 
         public Lesson(Guid courseId, string title, string content, int orderIndex, int? durationMinutes)

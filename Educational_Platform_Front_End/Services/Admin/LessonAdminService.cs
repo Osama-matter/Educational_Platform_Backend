@@ -22,35 +22,35 @@ namespace Educational_Platform_Front_End.Services.Admin
 
         public async Task<IReadOnlyList<LessonViewModel>> GetLessonsAsync(string token)
         {
-            return await _httpClient.GetFromJsonAsync<IReadOnlyList<LessonViewModel>>("api/lessons");
+            return await _httpClient.GetFromJsonAsync<IReadOnlyList<LessonViewModel>>("api/Lessons");
         }
 
         public async Task<LessonViewModel> GetLessonByIdAsync(string token, Guid lessonId)
         {
-            return await _httpClient.GetFromJsonAsync<LessonViewModel>($"api/lessons/{lessonId}");
+            return await _httpClient.GetFromJsonAsync<LessonViewModel>($"api/Lessons/{lessonId}");
         }
 
         public async Task CreateLessonAsync(string token, CreateLessonViewModel lesson)
         {
-            var response = await _httpClient.PostAsJsonAsync("api/lessons", lesson);
+            var response = await _httpClient.PostAsJsonAsync("api/Lessons", lesson);
             response.EnsureSuccessStatusCode();
         }
 
         public async Task UpdateLessonAsync(string token, Guid lessonId, UpdateLessonViewModel lesson)
         {
-            var response = await _httpClient.PutAsJsonAsync($"api/lessons/{lessonId}", lesson);
+            var response = await _httpClient.PutAsJsonAsync($"api/Lessons/{lessonId}", lesson);
             response.EnsureSuccessStatusCode();
         }
 
         public async Task DeleteLessonAsync(string token, Guid lessonId)
         {
-            var response = await _httpClient.DeleteAsync($"api/lessons/{lessonId}");
+            var response = await _httpClient.DeleteAsync($"api/Lessons/{lessonId}");
             response.EnsureSuccessStatusCode();
         }
 
         public async Task<IEnumerable> GetLessonsForCourseAsync(Guid selectedCourseId)
         {
-            return await _httpClient.GetFromJsonAsync<List<LessonViewModel>>($"api/courses/{selectedCourseId}/lessons");
+            return await _httpClient.GetFromJsonAsync<List<LessonViewModel>>($"api/Courses/{selectedCourseId}/lessons");
         }
     }
 }

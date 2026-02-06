@@ -39,8 +39,7 @@ namespace Educational_Platform_Front_End.Pages.Admin.Quizzes
 
             try
             {
-                // This method will need to be added to the service layer.
-                // await _quizService.PublishQuizAsync(id);
+                await _quizService.PublishQuizAsync(id);
                 return RedirectToPage("./QuizManagement");
             }
             catch (Exception ex)

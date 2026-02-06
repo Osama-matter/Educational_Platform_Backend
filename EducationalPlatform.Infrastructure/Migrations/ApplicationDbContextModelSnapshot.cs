@@ -212,6 +212,90 @@ namespace EducationalPlatform.Infrastructure.Migrations
                     b.ToTable("Enrollments");
                 });
 
+            modelBuilder.Entity("EducationalPlatform.Domain.Entities.ForumPost", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ForumPostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ForumThreadId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsHelpful")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ParentPostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ForumPostId");
+
+                    b.HasIndex("ForumThreadId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("forumPosts");
+                });
+
+            modelBuilder.Entity("EducationalPlatform.Domain.Entities.ForumSubscriptions", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ForumThreadId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "ForumThreadId");
+
+                    b.HasIndex("ForumThreadId");
+
+                    b.ToTable("ForumSubscription");
+                });
+
+            modelBuilder.Entity("EducationalPlatform.Domain.Entities.ForumThread", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ForumThreads");
+                });
+
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.Leeson.Lesson", b =>
                 {
                     b.Property<Guid>("Id")
@@ -772,6 +856,59 @@ namespace EducationalPlatform.Infrastructure.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("EducationalPlatform.Domain.Entities.ForumPost", b =>
+                {
+                    b.HasOne("EducationalPlatform.Domain.Entities.ForumPost", null)
+                        .WithMany("Replies")
+                        .HasForeignKey("ForumPostId");
+
+                    b.HasOne("EducationalPlatform.Domain.Entities.ForumThread", "ForumThread")
+                        .WithMany("Posts")
+                        .HasForeignKey("ForumThreadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EducationalPlatform.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ForumThread");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EducationalPlatform.Domain.Entities.ForumSubscriptions", b =>
+                {
+                    b.HasOne("EducationalPlatform.Domain.Entities.ForumThread", "Forumthread")
+                        .WithMany()
+                        .HasForeignKey("ForumThreadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EducationalPlatform.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Forumthread");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EducationalPlatform.Domain.Entities.ForumThread", b =>
+                {
+                    b.HasOne("EducationalPlatform.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.Leeson.Lesson", b =>
                 {
                     b.HasOne("EducationalPlatform.Domain.Entities.Course.Course", "Course")
@@ -812,7 +949,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
                         .HasForeignKey("CourseId");
 
                     b.HasOne("EducationalPlatform.Domain.Entities.Leeson.Lesson", "Lesson")
-                        .WithMany()
+                        .WithMany("Quizzes")
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -942,11 +1079,23 @@ namespace EducationalPlatform.Infrastructure.Migrations
                     b.Navigation("LessonProgresses");
                 });
 
+            modelBuilder.Entity("EducationalPlatform.Domain.Entities.ForumPost", b =>
+                {
+                    b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("EducationalPlatform.Domain.Entities.ForumThread", b =>
+                {
+                    b.Navigation("Posts");
+                });
+
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.Leeson.Lesson", b =>
                 {
                     b.Navigation("CourseFiles");
 
                     b.Navigation("LessonProgresses");
+
+                    b.Navigation("Quizzes");
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.Question", b =>

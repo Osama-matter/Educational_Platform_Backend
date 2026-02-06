@@ -95,6 +95,19 @@ namespace EducationalPlatform.Infrastructure.Services
 
             if (course.Reviews != null)
             {
+                courseDto.Lessons = course.Lessons.OrderBy(l => l.OrderIndex).Select(l => new LessonDetailsDto
+                {
+                    Id = l.Id,
+                    Title = l.Title,
+                    DurationMinutes = l.DurationMinutes,
+                    OrderIndex = l.OrderIndex
+                }).ToList();
+                courseDto.Quizzes = course.Lessons.SelectMany(l => l.Quizzes).Select(q => new QuizSummaryDto
+                {
+                    Id = q.Id,
+                    Title = q.Title,
+                    DurationMinutes = q.DurationMinutes
+                }).ToList();
                 courseDto.Reviews = course.Reviews.Select(r => new ReviewDto
                 {
                     Id = r.Id,

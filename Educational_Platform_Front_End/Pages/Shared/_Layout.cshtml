@@ -230,11 +230,15 @@
             const mobileAccountLink = document.getElementById('mobile-account-link');
             const adminLink = document.getElementById('admin-dashboard-link');
             const mobileAdminLink = document.getElementById('mobile-admin-dashboard-link');
+            const studentQuizzesLink = document.getElementById('student-quizzes-link');
+            const mobileStudentQuizzesLink = document.getElementById('mobile-student-quizzes-link');
 
             if (token) {
                 const payload = parseJwt(token);
                 const roles = getUserRoles(payload);
                 const isAdmin = roles.some(role => role?.toLowerCase() === 'admin');
+                const isStudent = roles.some(role => role?.toLowerCase() === 'student' || role?.toLowerCase() === 'user');
+                
                 // Authenticated state
                 if (registerLink) registerLink.style.display = 'none';
                 if (loginLink) loginLink.style.display = 'none';
@@ -246,6 +250,8 @@
                 if (mobileAccountLink) mobileAccountLink.style.display = 'block';
                 if (adminLink) adminLink.style.display = isAdmin ? 'block' : 'none';
                 if (mobileAdminLink) mobileAdminLink.style.display = isAdmin ? 'block' : 'none';
+                if (studentQuizzesLink) studentQuizzesLink.style.display = (isStudent || !isAdmin) ? 'block' : 'none';
+                if (mobileStudentQuizzesLink) mobileStudentQuizzesLink.style.display = (isStudent || !isAdmin) ? 'block' : 'none';
             } else {
                 // Unauthenticated state
                 if (registerLink) registerLink.style.display = 'block';

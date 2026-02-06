@@ -24,7 +24,7 @@ namespace Educational_Platform_Front_End.Pages.Admin.Quizzes
         public CreateQuizDto Quiz { get; set; } = new();
 
         [BindProperty(SupportsGet = true)]
-        public Guid SelectedCourseId { get; set; }
+        public string SelectedCourseId { get; set; }
 
         public SelectList Courses { get; set; }
         public SelectList Lessons { get; set; }
@@ -37,9 +37,9 @@ namespace Educational_Platform_Front_End.Pages.Admin.Quizzes
             var courses = await _courseAdminService.GetAllCoursesAsync();
             Courses = new SelectList(courses, "Id", "Title");
 
-            if (SelectedCourseId != Guid.Empty)
+            if (!string.IsNullOrEmpty(SelectedCourseId) && Guid.TryParse(SelectedCourseId, out Guid courseId))
             {
-                var lessons = await _lessonAdminService.GetLessonsForCourseAsync(SelectedCourseId);
+                var lessons = await _lessonAdminService.GetLessonsForCourseAsync(courseId);
                 Lessons = new SelectList(lessons, "Id", "Title");
             }
         }
@@ -48,19 +48,28 @@ namespace Educational_Platform_Front_End.Pages.Admin.Quizzes
         {
             if (!ModelState.IsValid)
             {
-                await OnGetAsync(); // Reload dropdowns
+                await OnGetAsync();
                 return Page();
             }
 
             try
             {
+                // Ensure LessonId is set if not already
+                if (Quiz.LessonId == Guid.Empty && Request.Form.ContainsKey("Quiz.LessonId"))
+                {
+                    if (Guid.TryParse(Request.Form["Quiz.LessonId"], out Guid lessonId))
+                    {
+                        Quiz.LessonId = lessonId;
+                    }
+                }
+
                 var newQuizId = await _quizService.CreateQuizAsync(Quiz);
                 return RedirectToPage("./Build", new { id = newQuizId });
             }
             catch (Exception ex)
             {
                 ErrorMessage = $"An error occurred while creating the quiz: {ex.Message}";
-                await OnGetAsync(); // Reload dropdowns
+                await OnGetAsync();
                 return Page();
             }
         }

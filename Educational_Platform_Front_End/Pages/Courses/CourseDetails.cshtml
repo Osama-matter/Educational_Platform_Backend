@@ -22,30 +22,8 @@
             <div class="list-group-item">
                 <div class="d-flex w-100 justify-content-between align-items-center">
                     <h5 class="mb-1">@lesson.Title</h5>
-                    @if (lesson.Quiz != null)
-                    {
-                        <form method="post" asp-page-handler="StartQuiz" asp-route-quizId="@lesson.Quiz.Id">
-                            <button type="submit" class="btn btn-primary btn-sm">
-                                @(lesson.QuizAttempts.Any() ? "Retake Quiz" : "Start Quiz")
-                            </button>
-                        </form>
-                    }
+                    <a asp-page="/Lessons/Details" asp-route-id="@lesson.Id" class="btn btn-outline-primary btn-sm">Open Lesson</a>
                 </div>
-                @if (lesson.QuizAttempts != null && lesson.QuizAttempts.Any())
-                {
-                    <div class="mt-3">
-                        <h6>Your Past Attempts:</h6>
-                        <ul class="list-unstyled">
-                            @foreach (var attempt in lesson.QuizAttempts)
-                            {
-                                <li>
-                                    <span>Score: @attempt.TotalScore, Submitted: @(attempt.SubmittedAt?.ToString("g") ?? "N/A")</span>
-                                    <a asp-page="../Quizzes/QuizResult" asp-route-id="@attempt.Id" class="ms-2">View Result</a>
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                }
             </div>
         }
     </div>

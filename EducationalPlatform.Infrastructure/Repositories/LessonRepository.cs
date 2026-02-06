@@ -46,15 +46,12 @@ namespace EducationalPlatform.Infrastructure.Repositories
         {
             var Lesson = await _context.Lessons
                 .AsNoTracking()
-                
                 .Include(c => c.CourseFiles)
+                .Include(c => c.Quizzes)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (Lesson == null)
                 return null;
-
-            Lesson.CourseFiles = Lesson.CourseFiles
-            .ToList();
 
             return Lesson;
         }
@@ -70,6 +67,7 @@ namespace EducationalPlatform.Infrastructure.Repositories
         {
             return await _context.Lessons
                 .Where(l => l.CourseId == courseId)
+                .Include(l => l.Quizzes)
                 .ToListAsync();
         }
     }

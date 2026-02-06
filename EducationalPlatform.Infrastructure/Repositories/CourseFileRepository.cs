@@ -37,6 +37,13 @@ namespace EducationalPlatform.Infrastructure.Repositories
             
         }
 
+        public async Task<IEnumerable<CourseFile>> GetByCourseIdAsync(Guid courseId)
+        {
+            return await _context.CourseFiles
+                .Where(f => f.CourseId == courseId)
+                .ToListAsync();
+        }
+
         public async Task<CourseFile> GetByIdAsync(Guid id)
         {
             return await _context.CourseFiles.FirstOrDefaultAsync(e => e.Id == id);

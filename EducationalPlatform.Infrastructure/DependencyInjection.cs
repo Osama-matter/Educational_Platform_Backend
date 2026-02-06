@@ -49,6 +49,13 @@ namespace EducationalPlatform.Infrastructure
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IEmailService, EmailService>();
 
+            services.AddScoped<IForumPostRepository, ForumPostRepository>();
+            services.AddScoped<IForumPostService, ForumPostService>();
+            services.AddScoped<IForumSubscriptionRepository, ForumSubscriptionRepository>();
+            services.AddScoped<IForumSubscriptionService, ForumSubscriptionService>();
+            services.AddScoped<IForumThreadRepository, ForumThreadRepository>();
+            services.AddScoped<IForumThreadService, ForumThreadService>();
+
             services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
            
 

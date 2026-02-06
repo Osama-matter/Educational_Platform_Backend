@@ -59,7 +59,8 @@ namespace EducationalPlatform.Infrastructure.Services
         public async Task<QuizDto> GetQuizByIdAsync(Guid id)
         {
             var quiz = await _quizRepository.GetByIdAsync(id);
-            return quiz == null ? null : new QuizDto
+            if (quiz == null) return null;
+            return new QuizDto
             {
                 Id = quiz.Id,
                 Title = quiz.Title,
@@ -69,12 +70,13 @@ namespace EducationalPlatform.Infrastructure.Services
                 DurationMinutes = quiz.DurationMinutes,
                 TotalScore = quiz.TotalScore,
                 PassingScore = quiz.PassingScore,
+                TotalTimeMinutes = quiz.DurationMinutes,
                 IsPublished = quiz.IsPublished,
                 LessonId = quiz.LessonId
             };
         }
 
-        public async Task<IEnumerable<QuizDto>> GetQuizzesAsync()
+        public async Task<List<QuizDto>> GetAllQuizzesAsync()
         {
             var quizzes = await _quizRepository.GetAllAsync();
             return quizzes.Select(quiz => new QuizDto
@@ -82,14 +84,13 @@ namespace EducationalPlatform.Infrastructure.Services
                 Id = quiz.Id,
                 Title = quiz.Title,
                 Description = quiz.Description,
-                AvailableFrom = quiz.AvailableFrom,
-                AvailableTo = quiz.AvailableTo,
                 DurationMinutes = quiz.DurationMinutes,
                 TotalScore = quiz.TotalScore,
                 PassingScore = quiz.PassingScore,
+                TotalTimeMinutes = quiz.DurationMinutes,
                 IsPublished = quiz.IsPublished,
                 LessonId = quiz.LessonId
-            });
+            }).ToList();
         }
 
         public async Task UpdateQuizAsync(Guid id, UpdateQuizDto updateQuizDto)
@@ -140,6 +141,23 @@ namespace EducationalPlatform.Infrastructure.Services
                     }).ToList()
                 }).ToList()
             };
+        }
+
+        public async Task<IEnumerable<QuizDto>> GetQuizzesAsync()
+        {
+            var quizzes = await _quizRepository.GetAllAsync();
+            return quizzes.Select(quiz => new QuizDto
+            {
+                Id = quiz.Id,
+                Title = quiz.Title,
+                Description = quiz.Description,
+                DurationMinutes = quiz.DurationMinutes,
+                TotalScore = quiz.TotalScore,
+                PassingScore = quiz.PassingScore,
+                TotalTimeMinutes = quiz.DurationMinutes,
+                IsPublished = quiz.IsPublished,
+                LessonId = quiz.LessonId
+            }).ToList();
         }
     }
 }

@@ -37,6 +37,12 @@ namespace EducationalPlatform.Infrastructure.Data
         public DbSet<Certificate> Certificates { get; set; }
         public DbSet<Review> Reviews { get; set; }
 
+        public DbSet<ForumThread> ForumThreads { get; set; }
+
+        public DbSet<ForumPost> forumPosts { get; set; }
+
+        public DbSet<ForumSubscriptions> ForumSubscription { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

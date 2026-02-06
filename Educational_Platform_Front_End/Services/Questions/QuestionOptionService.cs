@@ -17,6 +17,11 @@ namespace Educational_Platform_Front_End.Services.Questions
             await _httpClient.PostAsJsonAsync("api/QuestionOptions", option);
         }
 
+        public async Task<List<QuestionOptionDto>> GetOptionsByQuestionIdAsync(Guid questionId)
+        {
+            return await _httpClient.GetFromJsonAsync<List<QuestionOptionDto>>($"api/QuestionOptions/question/{questionId}");
+        }
+
         public async Task DeleteQuestionOptionAsync(Guid optionId)
         {
             await _httpClient.DeleteAsync($"api/QuestionOptions/{optionId}");

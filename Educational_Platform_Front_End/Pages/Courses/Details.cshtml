@@ -1,4 +1,5 @@
 @page "{id:guid}"
+@using EducationalPlatform.Application.DTOs.Courses
 @model Educational_Platform_Front_End.Pages.Courses.DetailsModel
 @{
     ViewData["Title"] = Model.Course?.Title ?? "Course Details";
@@ -57,7 +58,7 @@
                                     </div>
                                     <div class="accordion__content">
                                         <p>Watch the lesson, complete the activity, and mark progress.</p>
-                                        <a asp-page="/Lessons/Details" asp-route-id="@lesson.Id" class="btn btn--primary btn--sm">Open lesson</a>
+                                        <a asp-page="/Lessons/Details" asp-route-id="@lesson.Id" class="btn btn--primary btn--sm mb-4">Open lesson</a>
                                     </div>
                                 </div>
                             }

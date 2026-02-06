@@ -96,6 +96,32 @@
             public const string UpdateReview = "{reviewId}";
             public const string DeleteReview = "{reviewId}";
         }
+
+        public static class ForumThreads
+        {
+            public const string GetAllThreads = "";
+            public const string GetThreadById = "{id}";
+            public const string CreateThread = "";
+            public const string UpdateThread = "{id}";
+            public const string DeleteThread = "{id}";
+            public const string GetThreadPosts = "{id}/posts";
+        }
+
+        public static class ForumPosts
+        {
+            public const string GetPostById = "{id}";
+            public const string CreatePost = "";
+            public const string UpdatePost = "{id}";
+            public const string DeletePost = "{id}";
+        }
+
+        public static class ForumSubscriptions
+        {
+            public const string GetMySubscriptions = "my-subscriptions";
+            public const string Subscribe = "";
+            public const string Unsubscribe = "{threadId}";
+            public const string IsSubscribed = "is-subscribed/{threadId}";
+        }
     }
 }
 

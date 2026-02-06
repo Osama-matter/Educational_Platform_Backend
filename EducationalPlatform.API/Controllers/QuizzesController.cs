@@ -71,5 +71,17 @@ namespace EducationalPlatform.API.Controllers
             await _quizService.DeleteQuizAsync(quizId);
             return NoContent();
         }
+
+        [HttpPost("{quizId}/publish")]
+        [Authorize]
+        public async Task<IActionResult> Publish(Guid quizId)
+        {
+            var quiz = await _quizService.GetQuizByIdAsync(quizId);
+            if (quiz == null) return NotFound();
+
+            var updateDto = new UpdateQuizDto { IsPublished = true };
+            await _quizService.UpdateQuizAsync(quizId, updateDto);
+            return Ok("Quiz published successfully");
+        }
     }
 }

@@ -27,7 +27,8 @@ namespace Educational_Platform_Front_End.Pages.Quizzes
         {
             try
             {
-                Quizzes = await _quizService.GetAllQuizzesAsync();
+                var allQuizzes = await _quizService.GetAllQuizzesAsync();
+                Quizzes = allQuizzes.Where(q => q.IsPublished).ToList();
             }
             catch (Exception ex)
             {

@@ -129,7 +129,14 @@ namespace EducationalPlatform.Infrastructure.Services
                 OrderIndex = lesson.OrderIndex,
                 DurationMinutes = lesson.DurationMinutes,
                 CreatedAt = lesson.CreatedAt,
-                UpdatedAt = lesson.UpdatedAt
+                UpdatedAt = lesson.UpdatedAt,
+                Quizzes = lesson.Quizzes?.Select(q => new EducationalPlatform.Application.DTOs.Courses.QuizSummaryDto
+                {
+                    Id = q.Id,
+                    Title = q.Title,
+                    DurationMinutes = q.DurationMinutes,
+                    LessonId = q.LessonId
+                }).ToList() ?? new List<EducationalPlatform.Application.DTOs.Courses.QuizSummaryDto>()
             });
         }
 

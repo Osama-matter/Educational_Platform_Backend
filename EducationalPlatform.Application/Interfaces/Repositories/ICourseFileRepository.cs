@@ -12,6 +12,7 @@ namespace EducationalPlatform.Application.Interfaces.Repositories
     {
         Task<CourseFile> GetByIdAsync(Guid id);
         Task<IEnumerable<CourseFile>> GetAllAsync();
+        Task<IEnumerable<CourseFile>> GetByCourseIdAsync(Guid courseId);
         Task AddAsync(CourseFile CourseFile);
         Task UpdateAsync(CourseFile CourseFile);
         Task DeleteAsync(CourseFile courseFile);

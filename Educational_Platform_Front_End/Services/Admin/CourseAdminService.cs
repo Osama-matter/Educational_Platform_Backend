@@ -23,12 +23,12 @@ namespace Educational_Platform_Front_End.Services.Admin
         {
             // This method might be obsolete now but is kept to satisfy the interface.
             // The new approach uses a centrally configured HttpClient.
-            return await _httpClient.GetFromJsonAsync<IReadOnlyList<CourseViewModel>>("api/courses");
+            return await _httpClient.GetFromJsonAsync<IReadOnlyList<CourseViewModel>>("api/Courses");
         }
 
         public async Task<IEnumerable> GetAllCoursesAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<CourseViewModel>>("api/courses");
+            return await _httpClient.GetFromJsonAsync<List<CourseViewModel>>("api/Courses");
         }
     }
 }

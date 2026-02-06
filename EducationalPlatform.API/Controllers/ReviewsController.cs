@@ -61,6 +61,14 @@ namespace EducationalPlatform.API.Controllers
             return Ok("Updated  ");
         }
 
+        [HttpPost("{reviewId}/reply")]
+        [Authorize(Roles = "Instructor,Admin")]
+        public async Task<IActionResult> ReplyToReview(Guid reviewId, [FromBody] InstructorReplyDto replyDto)
+        {
+            await _reviewService.ReplyToReviewAsync(reviewId, replyDto);
+            return Ok("Reply added successfully");
+        }
+
         [HttpDelete(Routes.Routes.Reviews.DeleteReview)]
         public async Task<IActionResult> DeleteReview(Guid reviewId)
         {

@@ -73,6 +73,12 @@ namespace EducationalPlatform.Infrastructure.Services
             return courseFiles.Select(MapToDto);
         }
 
+        public async Task<IEnumerable<CourseFileDto>> GetByCourseIdAsync(Guid courseId)
+        {
+            var courseFiles = await _fileRepository.GetByCourseIdAsync(courseId);
+            return courseFiles.Select(MapToDto);
+        }
+
         public async Task<CourseFileDto> GetByIdAsync(Guid id)
         {
             var courseFile = await _fileRepository.GetByIdAsync(id);

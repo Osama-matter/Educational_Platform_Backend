@@ -87,6 +87,7 @@ namespace EducationalPlatform.Infrastructure.Services
                 SubmittedAt = quizAttempt.SubmittedAt,
                 TotalScore = quizAttempt.TotalScore,
                 Status = quizAttempt.Status,
+                TotalTimeMinutes = string.IsNullOrEmpty(quizAttempt.SubmittedAt.ToString()) ? 0 : (int)(quizAttempt.SubmittedAt.Value - quizAttempt.StartedAt).TotalMinutes,
                 Questions = questions.Select(question => new QuestionDto
                 {
                     Id = question.Id,

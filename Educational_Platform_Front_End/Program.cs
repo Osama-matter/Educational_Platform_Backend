@@ -2,6 +2,7 @@ using Educational_Platform_Front_End.Services.Courses;
 using Educational_Platform_Front_End.Services.Questions;
 using Educational_Platform_Front_End.Services.QuizAttempts;
 using Educational_Platform_Front_End.Services.Quizzes;
+using Educational_Platform_Front_End.Services.Reviews;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,10 +17,7 @@ builder.Services.AddAuthentication("Cookies")
     });
 builder.Services.AddTransient<AuthHeaderHandler>();
 
-builder.Services.AddHttpClient<Educational_Platform_Front_End.Services.Admin.IAdminAuthService, Educational_Platform_Front_End.Services.Admin.AdminAuthService>(client =>
-{
-    client.BaseAddress = new Uri("https://localhost:7228");
-});
+builder.Services.AddScoped<Educational_Platform_Front_End.Services.Admin.IAdminAuthService, Educational_Platform_Front_End.Services.Admin.AdminAuthService>();
 
 builder.Services.AddHttpClient<Educational_Platform_Front_End.Services.Admin.ICourseAdminService, Educational_Platform_Front_End.Services.Admin.CourseAdminService>(client =>
 {
@@ -49,6 +47,11 @@ builder.Services.AddHttpClient<IQuestionService, QuestionService>(client =>
     client.BaseAddress = new Uri("https://localhost:7228");
 }).AddHttpMessageHandler<AuthHeaderHandler>();
 builder.Services.AddHttpClient<IQuestionOptionService, QuestionOptionService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7228");
+}).AddHttpMessageHandler<AuthHeaderHandler>();
+
+builder.Services.AddHttpClient<IReviewService, ReviewService>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7228");
 }).AddHttpMessageHandler<AuthHeaderHandler>();

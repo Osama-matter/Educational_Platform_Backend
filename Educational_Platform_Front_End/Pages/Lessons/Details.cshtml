@@ -81,14 +81,28 @@
                 </div>
 
                 <div class="quiz-card mt-6">
-                    <h3 class="heading-5">Quick knowledge check</h3>
-                    <p class="text-small text-muted">What is the first step in a product discovery loop?</p>
-                    <div class="mt-4 flex flex-col gap-2">
-                        <label class="form__radio"><input type="radio" name="quiz" /> Define the user problem</label>
-                        <label class="form__radio"><input type="radio" name="quiz" /> Choose pricing tiers</label>
-                        <label class="form__radio"><input type="radio" name="quiz" /> Launch marketing campaign</label>
-                    </div>
-                    <button class="btn btn--primary mt-4" type="button">Submit answer</button>
+                    <h3 class="heading-5">Lesson Quizzes</h3>
+                    @if (Model.Lesson.Quizzes != null && Model.Lesson.Quizzes.Any())
+                    {
+                        <div class="flex flex-col gap-3 mt-4">
+                            @foreach (var quiz in Model.Lesson.Quizzes)
+                            {
+                                <div class="card p-4 flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="font-medium mb-0">@quiz.Title</h6>
+                                        <p class="text-small text-muted mb-0">Duration: @quiz.DurationMinutes mins</p>
+                                    </div>
+                                    <form method="post" asp-page="/Quizzes/AvailableQuizzes" asp-page-handler="StartAttempt" asp-route-quizId="@quiz.Id">
+                                        <button type="submit" class="btn btn--secondary btn--sm rounded-pill">Start Quiz</button>
+                                    </form>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-small text-muted mt-4">No quizzes available for this lesson.</p>
+                    }
                 </div>
 
                 <div class="card mt-6" style="padding: var(--spacing-6);">

@@ -12,6 +12,7 @@ namespace EducationalPlatform.Application.DTOs.Quiz
         public int DurationMinutes { get; set; }
         public int TotalScore { get; set; }
         public int PassingScore { get; set; }
+        public int TotalTimeMinutes { get; set; }
         public bool IsPublished { get; set; }
         public Guid LessonId { get; set; }
     }

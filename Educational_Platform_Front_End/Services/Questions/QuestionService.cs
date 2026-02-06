@@ -19,6 +19,11 @@ namespace Educational_Platform_Front_End.Services.Questions
             return await response.Content.ReadFromJsonAsync<Guid>();
         }
 
+        public async Task<List<QuestionDto>> GetQuestionsByQuizIdAsync(Guid quizId)
+        {
+            return await _httpClient.GetFromJsonAsync<List<QuestionDto>>($"api/Questions/quiz/{quizId}");
+        }
+
         public async Task DeleteQuestionAsync(Guid questionId)
         {
             await _httpClient.DeleteAsync($"api/Questions/{questionId}");

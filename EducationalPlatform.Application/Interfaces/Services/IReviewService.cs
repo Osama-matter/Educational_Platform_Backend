@@ -11,6 +11,7 @@ namespace EducationalPlatform.Application.Interfaces.Services
         Task<IEnumerable<ReviewDto>> GetReviewsForCourseAsync(Guid courseId);
         Task<ReviewDto> CreateReviewAsync(CreateReviewDto createReviewDto);
         Task UpdateReviewAsync(Guid id, UpdateReviewDto updateReviewDto);
+        Task ReplyToReviewAsync(Guid id, InstructorReplyDto replyDto);
         Task DeleteReviewAsync(Guid id);
     }
 }

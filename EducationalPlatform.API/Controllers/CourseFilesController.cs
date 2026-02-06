@@ -27,6 +27,13 @@ namespace EducationalPlatform.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("course/{courseId}")]
+        public async Task<IActionResult> GetByCourseId(Guid courseId)
+        {
+            var result = await _courseFileService.GetByCourseIdAsync(courseId);
+            return Ok(result);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
