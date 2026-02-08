@@ -48,7 +48,8 @@ The solution follows **Clean Architecture** with a clear separation between doma
 *   **Full CRUD Operations**: Admins and Instructors can create, read, update, and delete courses through dedicated API endpoints.
 *   **Public Course Catalog**: A browsable catalog of all available courses for students.
 *   **Detailed Course View**: Each course has a dedicated page with description, lesson list, and enrollment options.
-*   **Course Metadata**: Rich course information including difficulty level, duration, and prerequisites.
+*   **Course Metadata**: Rich course information including difficulty level, duration, price, and prerequisites.
+*   **Payment Integration**: Integrated with Fawaterak payment gateway for paid courses, supporting secure checkout and automatic enrollment activation.
 
 ### Lesson Management
 
@@ -70,7 +71,8 @@ The solution follows **Clean Architecture** with a clear separation between doma
 
 ### Enrollment & Progress Tracking
 
-*   **Course Enrollment**: Students can easily enroll in courses from the catalog.
+*   **Course Enrollment**: Students can easily enroll in courses from the catalog and proceed to payment if required.
+*   **Access Control**: Lessons and materials are restricted to students with an active (paid) enrollment, ensuring secure content delivery.
 *   **Lesson Completion**: The system tracks which lessons a student has completed with timestamps.
 *   **Progress Calculation**: Course progress is calculated and displayed as a percentage based on completed lessons and quiz attempts.
 *   **Dashboard Analytics**: Visual representation of learning progress and achievements.
@@ -396,7 +398,6 @@ The solution is organized into five distinct layers, following Clean Architectur
 ### Long-term Enhancements
 *   **Video Streaming**: Integrate dedicated video processing and streaming service (Azure Media Services)
 *   **Certificates**: Automatically generate and issue certificates upon course completion with quiz score requirements
-*   **Payment Integration**: Add support for payment gateways (Stripe, PayPal) to allow for paid courses
 *   **Notifications**: Real-time notification system for quiz availability, deadline reminders, and results
 *   **Mobile App**: Native iOS and Android applications for on-the-go learning
 *   **Gamification**: Badges, leaderboards, and achievement system
