@@ -25,7 +25,7 @@
         {
             public const string GetAllEnrollments = "";
             public const string GetEnrollmentById = "{enrollmentId}";
-            public const string CreateEnrollment = "";
+            public const string CreateEnrollment = "{studentId}/{courseId}";
             public const string UpdateEnrollment = "{enrollmentId}";
             public const string DeleteEnrollment = "{enrollmentId}";
         }

@@ -10,6 +10,7 @@ namespace EducationalPlatform.Application.DTOs.Courses
         public string Description { get; set; }
         public int? EstimatedDurationHours { get; set; }
         public bool IsActive { get; set; }
+        public decimal Price { get; set; }
         public IFormFile Image_form { get; set; }
         public void ApplyTo(Course course)
         {
@@ -17,6 +18,7 @@ namespace EducationalPlatform.Application.DTOs.Courses
             course.Description = Description;
             course.EstimatedDurationHours = EstimatedDurationHours;
             course.IsActive = IsActive;
+            course.Price = Price;
 
         }
     }

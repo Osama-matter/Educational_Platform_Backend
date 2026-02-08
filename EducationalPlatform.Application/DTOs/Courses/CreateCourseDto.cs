@@ -15,6 +15,7 @@ namespace EducationalPlatform.Application.DTOs.Courses
         public Guid InstructorId { get; set; }
         public int? EstimatedDurationHours { get; set; }
         public bool IsActive { get; set; }
+        public decimal Price { get; set; }
 
         public IFormFile imageFile { get; set; }
   

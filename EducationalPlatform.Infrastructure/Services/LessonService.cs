@@ -2,7 +2,7 @@
 using EducationalPlatform.Application.Interfaces.Repositories;
 using EducationalPlatform.Application.Interfaces.Services;
 using huzcodes.Extensions.Exceptions;
-using NuGet.Packaging.Signing;
+using Microsoft.AspNetCore.Http;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -12,9 +12,26 @@ using System.Threading.Tasks;
 
 namespace EducationalPlatform.Infrastructure.Services
 {
-    public class LessonService(ILessonRepository lessonRepository) : ILessonService
+    public class LessonService(ILessonRepository lessonRepository, IEnrollmentRepository enrollmentRepository, IHttpContextAccessor httpContextAccessor) : ILessonService
     {
         private readonly ILessonRepository _lessonRepository = lessonRepository;
+        private readonly IEnrollmentRepository _enrollmentRepository = enrollmentRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+
+        private async Task ValidateAccessAsync(Guid courseId)
+        {
+            var userIdStr = _httpContextAccessor.HttpContext?.User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdStr))
+                throw new UnauthorizedAccessException("User is not authenticated.");
+
+            var userId = Guid.Parse(userIdStr);
+            var enrollment = await _enrollmentRepository.GetByStudentAndCourseAsync(userId, courseId);
+
+            if (enrollment == null || !enrollment.IsActive)
+            {
+                throw new InvalidOperationException("Access denied. You must be enrolled and have completed the payment to access this lesson.");
+            }
+        }
 
         //summary
         // Creates a new lesson.
@@ -96,6 +113,9 @@ namespace EducationalPlatform.Infrastructure.Services
             {
                 throw new NotFoundException($"Lesson with ID {id} not found.");
             }
+
+            await ValidateAccessAsync(OData.CourseId);
+
             var OResultDto = new LessonDto
             {
                 Id = OData.Id,

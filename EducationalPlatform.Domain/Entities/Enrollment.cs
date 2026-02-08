@@ -28,6 +28,9 @@ namespace EducationalPlatform.Domain.Entities
         [Required]
         public bool IsActive { get; set; }
 
+        public string? PaymentStatus { get; set; }
+        public string? InvoiceId { get; set; }
+
         // Navigation properties
         public virtual User Student { get; set; }
         public virtual Course.Course Course { get; set; }

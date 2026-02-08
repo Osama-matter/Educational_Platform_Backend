@@ -11,6 +11,7 @@ using EducationalPlatform.Infrastructure.Services.External_services;
 using huzcodes.Persistence.Interfaces.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using NuGet.Protocol.Core.Types;
+using EducationalPlatform.Infrastructure.Services.FawaterkServices;
 
 namespace EducationalPlatform.Infrastructure
 {
@@ -55,6 +56,10 @@ namespace EducationalPlatform.Infrastructure
             services.AddScoped<IForumSubscriptionService, ForumSubscriptionService>();
             services.AddScoped<IForumThreadRepository, ForumThreadRepository>();
             services.AddScoped<IForumThreadService, ForumThreadService>();
+
+            services.AddHttpClient();
+            services.Configure<FawaterakOptions>(configuration.GetSection("Fawaterak"));
+            services.AddScoped<IFawaterakPaymentService, FawaterakPaymentService>();
 
             services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
            

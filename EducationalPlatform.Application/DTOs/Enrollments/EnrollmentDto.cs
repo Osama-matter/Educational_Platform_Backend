@@ -10,6 +10,7 @@ namespace EducationalPlatform.Application.DTOs.Enrollments
         public Guid CourseId { get; set; }
         public DateTime EnrolledAt { get; set; }
         public bool IsActive { get; set; }
+        public string? PaymentUrl { get; set; }
 
         public EnrollmentDto()
         {

@@ -1,4 +1,5 @@
 ﻿using EducationalPlatform.API.Routes;
+using EducationalPlatform.Application.DTOs.FawaterkDTO;
 using EducationalPlatform.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,18 +22,27 @@ namespace EducationalPlatform.API.Controllers
         // POST: api/enrollments
         [HttpPost(Routes.Routes.Enrollments.CreateEnrollment)]
         public async Task<ActionResult<EducationalPlatform.Application.DTOs.Enrollments.EnrollmentDto>> Create(
-            [FromQuery] Guid studentId,
-            [FromQuery] Guid courseId)
+            [FromRoute] Guid studentId,
+            [FromRoute] Guid courseId)
         {
-
+            // Note: studentId from route is overridden by authenticated user ID for security
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             if (userId == null)
                 return Unauthorized();
 
-            // Assign the userId as InstructorId
-            studentId = Guid.Parse(userId);
-            var result = await _enrollmentService.CreateAsync(studentId, courseId);
+            var authenticatedStudentId = Guid.Parse(userId);
+            
+            var invoiceRequest = new EInvoiceRequestModel
+            {
+                Customer = new EInvoiceRequestModel.CustomerModel
+                {
+                    FirstName = "",
+                    LastName = "",
+                    Email = ""
+                },
+                CartItems = new List<EInvoiceRequestModel.CartItemModel>()
+            };
+            var result = await _enrollmentService.CreateAsync(authenticatedStudentId, courseId, invoiceRequest);
             return Ok(result);
         }
 

@@ -18,6 +18,7 @@
                         <span class="badge badge--primary">Instructor-led</span>
                         <span class="badge badge--neutral">@(Model.Course.EstimatedDurationHours?.ToString() ?? "N/A") hours</span>
                         <span class="badge badge--success">@(Model.Course.IsActive ? "Active" : "Inactive")</span>
+                        <span class="badge badge--warning">@Model.Course.Price.ToString("C0", new System.Globalization.CultureInfo("en-EG"))</span>
                     </div>
                     <img src="@Model.Course.Image_URl" class="card__image" alt="@Model.Course.Title" style="height: 320px; border-radius: var(--border-radius-lg);" />
                 </div>
@@ -100,12 +101,19 @@
                 <div class="card" style="padding: var(--spacing-6);">
                     <p class="text-small text-muted">Enrollment</p>
                     <h3 class="heading-4">Start this course today</h3>
+                    <div class="flex justify-between items-center mb-4">
+                        <p class="text-muted mb-0">Full access to course materials</p>
+                        <span class="heading-4 text-primary">@Model.Course.Price.ToString("C0", new System.Globalization.CultureInfo("en-EG"))</span>
+                    </div>
                     <p class="text-muted">Includes 12 modules, downloadable resources, and certificate.</p>
                     <div class="progress mt-4">
                         <div class="progress__bar" style="width: 22%;"></div>
                     </div>
                     <p class="text-small text-muted mt-2">2 of 9 chapters completed</p>
-                    <button class="btn btn--primary btn--full mt-4" type="button" id="enroll-button" data-course-id="@Model.Course.Id">Enroll and continue</button>
+                    <div asp-validation-summary="All" class="text-danger mb-4"></div>
+                    <form method="post" asp-page-handler="Enroll" asp-route-id="@Model.Course.Id">
+                        <button class="btn btn--primary btn--full mt-4" type="submit" id="enroll-button-form">Enroll and continue</button>
+                    </form>
                     <a id="add-lesson-button" asp-page="/Lessons/Create" asp-route-courseId="@Model.Course.Id" class="btn btn--secondary btn--full mt-2" style="display: none;">Add new lesson</a>
                     <a asp-page="/Courses/Index" class="btn btn--ghost btn--full mt-2">Back to catalog</a>
                 </div>
@@ -125,7 +133,7 @@ else
         const tabButtons = document.querySelectorAll('.tabs__button');
         const tabPanels = document.querySelectorAll('.tab-panel');
         const accordions = document.querySelectorAll('[data-accordion]');
-        const enrollButton = document.getElementById('enroll-button');
+        const enrollButtonForm = document.getElementById('enroll-button-form');
 
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -183,7 +191,8 @@ else
 
         async function checkEnrollmentStatus() {
             const token = getCookie('jwt_token');
-            if (!token || !enrollButton) return;
+            const button = document.getElementById('enroll-button-form');
+            if (!token || !button) return;
 
             const payload = parseJwt(token);
             const userId = payload?.nameid || payload?.sub;
@@ -198,59 +207,27 @@ else
 
                 if (!response.ok) return;
                 const enrollments = await response.json();
-                const courseId = enrollButton.dataset.courseId;
-                const isEnrolled = enrollments?.some(enrollment =>
-                    enrollment.courseId?.toLowerCase() === courseId?.toLowerCase()
-                    && enrollment.studentId?.toLowerCase() === userId?.toLowerCase());
+                const courseId = "@Model.Course.Id";
+                const enrollment = enrollments?.find(e =>
+                    e.courseId?.toLowerCase() === courseId?.toLowerCase()
+                    && e.studentId?.toLowerCase() === userId?.toLowerCase());
 
-                if (isEnrolled) {
-                    enrollButton.disabled = true;
-                    enrollButton.textContent = 'Enrolled';
+                if (enrollment) {
+                    if (enrollment.isActive) {
+                        button.disabled = true;
+                        button.textContent = 'Enrolled';
+                        button.classList.add('btn--success');
+                    } else if (enrollment.paymentUrl) {
+                        button.textContent = 'Complete Payment';
+                        button.onclick = (e) => {
+                            e.preventDefault();
+                            window.location.href = enrollment.paymentUrl;
+                        };
+                    }
                 }
             } catch (error) {
                 console.error('Enrollment status error:', error);
             }
-        }
-
-        if (enrollButton) {
-            enrollButton.addEventListener('click', async () => {
-                const token = getCookie('jwt_token');
-                const courseId = enrollButton.dataset.courseId;
-
-                if (!token) {
-                    window.location.href = '/Account/Login';
-                    return;
-                }
-
-                enrollButton.disabled = true;
-                enrollButton.textContent = 'Enrolling...';
-
-                try {
-                    const response = await fetch(`https://localhost:7228/api/enrollments?courseId=${courseId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(errorText || 'Enrollment failed');
-                    }
-
-                    enrollButton.textContent = 'Enrolled';
-                    if (typeof showToast === 'function') {
-                        showToast('You are now enrolled in this course.');
-                    }
-                } catch (error) {
-                    console.error('Enrollment error:', error);
-                    if (typeof showToast === 'function') {
-                        showToast(error.message || 'Enrollment failed');
-                    }
-                    enrollButton.textContent = 'Enroll and continue';
-                    enrollButton.disabled = false;
-                }
-            });
         }
 
         checkEnrollmentStatus();

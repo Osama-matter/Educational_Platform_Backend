@@ -29,7 +29,7 @@ namespace EducationalPlatform.Infrastructure.Services
             // Upload image and get URL
             string imageUrl = await _imageService.SaveCourseImageAsync(createCourseDto.imageFile);
 
-            var course = new Course(createCourseDto.Title, createCourseDto.Description, createCourseDto.InstructorId, createCourseDto.EstimatedDurationHours, createCourseDto.IsActive, imageUrl);
+            var course = new Course(createCourseDto.Title, createCourseDto.Description, createCourseDto.InstructorId, createCourseDto.EstimatedDurationHours, createCourseDto.IsActive, imageUrl, createCourseDto.Price);
             await _courseRepository.AddAsync(course);
 
             var request = _httpContextAccessor.HttpContext.Request;
@@ -88,6 +88,7 @@ namespace EducationalPlatform.Infrastructure.Services
             var request = _httpContextAccessor.HttpContext.Request;
             var baseUrl = $"{request.Scheme}://{request.Host}";
             var courseDto = new CourseDto(course);
+            courseDto.Price = course.Price; // Ensure price is set
             if (!string.IsNullOrEmpty(course.Image_URl))
             {
                 courseDto.Image_URl = $"{baseUrl}{course.Image_URl}";

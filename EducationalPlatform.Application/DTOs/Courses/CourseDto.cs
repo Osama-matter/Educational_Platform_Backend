@@ -14,6 +14,7 @@ namespace EducationalPlatform.Application.DTOs.Courses
         public ICollection<CourseFileDto> CourseFiles { get; set; }
         public Guid InstructorId { get; set; }
         public string Image_URl { get; set; }
+        public decimal Price { get; set; }
         public int? EstimatedDurationHours { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -35,6 +36,7 @@ namespace EducationalPlatform.Application.DTOs.Courses
             CreatedAt = course.CreatedAt;
             UpdatedAt = course.UpdatedAt;
             Image_URl = course.Image_URl;
+            Price = course.Price;
         }
     }
 }
