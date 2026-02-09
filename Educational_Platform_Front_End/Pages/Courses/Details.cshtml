@@ -83,15 +83,74 @@
 
                 <div class="tab-panel" data-panel="reviews">
                     <div class="card" style="padding: var(--spacing-8);">
-                        <h3 class="heading-4">Learner reviews</h3>
-                        <p class="text-muted">4.8 average rating · 2,140 reviews</p>
-                        <div class="grid grid--cols-2 mt-6">
-                            <div class="comment-box">
-                                “Actionable lessons with great structure.”
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="heading-4 mb-0">Learner reviews</h3>
+                            <p class="text-muted mb-0">@(Model.Reviews?.Count ?? 0) reviews</p>
+                        </div>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <div class="mb-8 p-4 border rounded-lg bg-gray-50">
+                                <h4 class="heading-6 mb-4">Add your review</h4>
+                                <form method="post" asp-page-handler="Rate" asp-route-id="@Model.Course.Id">
+                                    <div class="mb-4">
+                                        <label class="block text-small mb-2">Rating</label>
+                                        <div class="rating-input flex gap-2">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                <label class="cursor-pointer">
+                                                    <input type="radio" asp-for="NewReview.Rate" value="@i" class="hidden peer" required />
+                                                    <i class="lucide-star text-gray-300 peer-checked:text-warning fill-current" style="width: 24px; height: 24px;"></i>
+                                                </label>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-small mb-2">Comment</label>
+                                        <textarea asp-for="NewReview.Comment" class="reply-textarea" rows="3" placeholder="Share your experience..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn--primary btn--sm">Submit Review</button>
+                                </form>
                             </div>
-                            <div class="comment-box">
-                                “The assignments were challenging but rewarding.”
-                            </div>
+                        }
+
+                        <div class="grid gap-6">
+                            @if (Model.Reviews != null && Model.Reviews.Any())
+                            {
+                                @foreach (var review in Model.Reviews)
+                                {
+                                    <div class="comment-box border-bottom pb-4">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div class="flex items-center gap-2">
+                                                <div class="avatar signature-avatar" style="width: 32px; height: 32px;">@(review.UserName?[0].ToString().ToUpper() ?? "U")</div>
+                                                <div>
+                                                    <p class="font-bold text-small mb-0">@review.UserName</p>
+                                                    <div class="flex gap-1">
+                                                        @for (int i = 1; i <= 5; i++)
+                                                        {
+                                                            <i class="lucide-star @(i <= review.Rate ? "text-warning fill-current" : "text-gray-300")" style="width: 12px; height: 12px;"></i>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span class="text-xs text-muted">@review.CreatedAt.ToString("MMM dd, yyyy")</span>
+                                        </div>
+                                        <p class="text-small">@review.Comment</p>
+                                        
+                                        @if (!string.IsNullOrEmpty(review.InstructorReply))
+                                        {
+                                            <div class="ml-8 mt-4 p-3 bg-blue-50 border-l-4 border-blue-500 rounded">
+                                                <p class="text-xs font-bold text-blue-700 mb-1">Instructor Response</p>
+                                                <p class="text-small italic">@review.InstructorReply</p>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p class="text-muted text-center py-8">No reviews yet. Be the first to rate this course!</p>
+                            }
                         </div>
                     </div>
                 </div>

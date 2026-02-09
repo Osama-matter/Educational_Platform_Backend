@@ -57,6 +57,9 @@ namespace EducationalPlatform.Infrastructure
             services.AddScoped<IForumThreadRepository, ForumThreadRepository>();
             services.AddScoped<IForumThreadService, ForumThreadService>();
 
+            services.AddScoped<IForumPostVoteRepository, ForumPostVoteRepository>();
+            services.AddScoped<IForumVotingService, ForumVotingService>();
+
             services.AddHttpClient();
             services.Configure<FawaterakOptions>(configuration.GetSection("Fawaterak"));
             services.AddScoped<IFawaterakPaymentService, FawaterakPaymentService>();

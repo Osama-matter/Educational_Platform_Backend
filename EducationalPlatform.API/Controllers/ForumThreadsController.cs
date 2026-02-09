@@ -19,11 +19,22 @@ namespace EducationalPlatform.API.Controllers
             _postService = postService;
         }
 
-        [HttpGet(Routes.Routes.ForumThreads.GetAllThreads)]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            Console.WriteLine("[DEBUG] API: ForumThreads.GetAll called");
             var result = await _threadService.GetAllAsync();
-            return Ok(result);
+            
+            if (result == null)
+            {
+                Console.WriteLine("[DEBUG] API: _threadService.GetAllAsync returned NULL");
+                return Ok(new List<ForumThreadDto>());
+            }
+
+            var threadList = result.ToList();
+            Console.WriteLine($"[DEBUG] API: Found {threadList.Count} threads");
+            
+            return Ok(threadList);
         }
 
         [HttpGet(Routes.Routes.ForumThreads.GetThreadById)]

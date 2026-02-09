@@ -22,6 +22,7 @@ namespace EducationalPlatform.Infrastructure.Services
         private readonly IMatterHubCertificateGenerator _certificateGenerator;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IEmailService _emailService;
+        private readonly IEnrollmentRepository _enrollmentRepository;
 
         public CertificateService(
             ICertificateRepository certificateRepository,
@@ -29,6 +30,7 @@ namespace EducationalPlatform.Infrastructure.Services
             IUserRepository userRepository,
             IMatterHubCertificateGenerator certificateGenerator,
             IWebHostEnvironment webHostEnvironment,
+            IEnrollmentRepository enrollmentRepository,
             IEmailService emailService)
         {
             _certificateRepository = certificateRepository;
@@ -37,6 +39,7 @@ namespace EducationalPlatform.Infrastructure.Services
             _certificateGenerator = certificateGenerator;
             _webHostEnvironment = webHostEnvironment;
             _emailService = emailService;
+            _enrollmentRepository =enrollmentRepository;
         }
 
         /// <summary>
@@ -95,10 +98,18 @@ namespace EducationalPlatform.Infrastructure.Services
             if (course == null)
                 throw new Exception("Course not found");
 
+
+
             // Check if certificate already exists
             var exists = await _certificateRepository.ExistsAsync(createDto.UserId, createDto.CourseId);
             if (exists)
                 throw new Exception("Certificate already issued for this user and course");
+
+            //check if  user  already in this course
+
+            var  enrollment = await _enrollmentRepository.GetByStudentAndCourseAsync(createDto.UserId, createDto.CourseId);
+            if(enrollment == null)
+                throw new Exception("User is not enrolled in this course");
 
             // Generate certificate number and verification code
             var certificateNumber = GenerateCertificationData.GenerateCertificateNumber();
@@ -115,7 +126,7 @@ namespace EducationalPlatform.Infrastructure.Services
                
             );
 
-                        await _certificateRepository.AddAsync(certificate);
+                await _certificateRepository.AddAsync(certificate);
 
             var (certificateBytes, _) = await DownloadCertificateAsync(certificate.Id);
             await _emailService.SendCertificateEmailAsync(user.Email, user.UserName, course.Title, certificateBytes); 

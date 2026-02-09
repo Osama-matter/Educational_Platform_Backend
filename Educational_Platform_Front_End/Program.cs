@@ -4,6 +4,7 @@ using Educational_Platform_Front_End.Services.QuizAttempts;
 using Educational_Platform_Front_End.Services.Quizzes;
 using Educational_Platform_Front_End.Services.Reviews;
 using Educational_Platform_Front_End.Services.Enrollments;
+using Educational_Platform_Front_End.Services.Forum;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +59,11 @@ builder.Services.AddHttpClient<IReviewService, ReviewService>(client =>
 }).AddHttpMessageHandler<AuthHeaderHandler>();
 
 builder.Services.AddHttpClient<IEnrollmentService, EnrollmentService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7228");
+}).AddHttpMessageHandler<AuthHeaderHandler>();
+
+builder.Services.AddHttpClient<IForumService, ForumService>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7228");
 }).AddHttpMessageHandler<AuthHeaderHandler>();

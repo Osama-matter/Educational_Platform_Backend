@@ -11,7 +11,9 @@ namespace EducationalPlatform.Application.DTOs.Forum
         public string UserName { get; set; }
         public Guid? ParentPostId { get; set; }
         public bool IsHelpful { get; set; }
+        public int VoteCount { get; set; }
         public DateTime CreatedAt { get; set; }
+        public List<ForumPostDto> Replies { get; set; } = new();
     }
 
     public class CreateForumPostDto

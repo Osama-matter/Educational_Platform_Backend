@@ -9,6 +9,10 @@ namespace EducationalPlatform.Application.DTOs.Forum
         public string Description { get; set; }
         public Guid UserId { get; set; }
         public string UserName { get; set; }
+        public int PostCount { get; set; }
+        public int VoteCount { get; set; }
+        public bool IsSubscribed { get; set; }
+        public string AuthorName => UserName; // UI helper mapping
         public DateTime CreatedAt { get; set; }
     }
 

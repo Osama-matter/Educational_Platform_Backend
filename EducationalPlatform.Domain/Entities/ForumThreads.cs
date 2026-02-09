@@ -18,10 +18,14 @@ namespace EducationalPlatform.Domain.Entities
 
         public DateTime CreatedAt { get; set; }
 
+        public int VoteCount { get; set; }
+
         // Navigation Properties
         public User User { get; set; }
 
         public ICollection<ForumPost> Posts { get; set; }
+
+        public ICollection<ForumPostVote> Votes { get; set; }
     }
 
 }

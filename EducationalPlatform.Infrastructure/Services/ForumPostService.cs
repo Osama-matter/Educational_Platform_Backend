@@ -29,7 +29,16 @@ namespace EducationalPlatform.Infrastructure.Services
         public async Task<IEnumerable<ForumPostDto>> GetByThreadIdAsync(Guid threadId)
         {
             var posts = await _repository.GetByThreadIdAsync(threadId);
-            return posts.Select(MapToDto);
+            var allDtos = posts.Select(MapToDto).ToList();
+            
+            // Build hierarchy
+            var rootPosts = allDtos.Where(p => p.ParentPostId == null).ToList();
+            foreach (var post in allDtos)
+            {
+                post.Replies = allDtos.Where(r => r.ParentPostId == post.Id).ToList();
+            }
+            
+            return rootPosts;
         }
 
         public async Task<ForumPostDto> CreateAsync(CreateForumPostDto createDto, Guid userId)
@@ -84,6 +93,7 @@ namespace EducationalPlatform.Infrastructure.Services
                 UserName = post.User?.UserName ?? "Unknown",
                 ParentPostId = post.ParentPostId,
                 IsHelpful = post.IsHelpful,
+                VoteCount = post.VoteCount,
                 CreatedAt = post.CreatedAt
             };
         }

@@ -41,6 +41,15 @@ namespace EducationalPlatform.API.Controllers
         [Authorize]
         public async Task<IActionResult> Update(Guid id, UpdateForumPostDto updateDto)
         {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
+            var userId = Guid.Parse(userIdStr);
+
+            var post = await _postService.GetByIdAsync(id);
+            if (post == null) return NotFound();
+
+            if (post.UserId != userId) return Forbid();
+
             try
             {
                 var result = await _postService.UpdateAsync(id, updateDto);
@@ -56,6 +65,15 @@ namespace EducationalPlatform.API.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdStr)) return Unauthorized();
+            var userId = Guid.Parse(userIdStr);
+
+            var post = await _postService.GetByIdAsync(id);
+            if (post == null) return NotFound();
+
+            if (post.UserId != userId) return Forbid();
+
             var result = await _postService.DeleteAsync(id);
             if (!result) return NotFound();
             return NoContent();

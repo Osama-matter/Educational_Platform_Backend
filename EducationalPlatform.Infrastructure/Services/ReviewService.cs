@@ -35,7 +35,8 @@ namespace EducationalPlatform.Infrastructure.Services
                 UserId = review.UserId,
                 UserName = review.User.UserName,
                 InstructorReply = review.InstructorReply,
-                CourseId = review.CourseId
+                CourseId = review.CourseId,
+                CreatedAt = review.CreatedAt
             };
         }
 
@@ -55,7 +56,8 @@ namespace EducationalPlatform.Infrastructure.Services
                 UserName = review.User?.UserName ?? "Anonymous", // Use the loaded User property
                 CourseId = review.CourseId,
     
-                InstructorReply = review.InstructorReply // Added for PIC 5 requirements
+                InstructorReply = review.InstructorReply, // Added for PIC 5 requirements
+                CreatedAt = review.CreatedAt
             }).ToList();
 
             return reviewDtos;
@@ -91,7 +93,8 @@ namespace EducationalPlatform.Infrastructure.Services
                 UserId = review.UserId,
                 UserName = User?.UserName,
         
-                CourseId = review.CourseId
+                CourseId = review.CourseId,
+                CreatedAt = review.CreatedAt
             };
 
 

@@ -16,6 +16,8 @@ namespace EducationalPlatform.Domain.Entities
 
         public bool IsHelpful { get; set; }
 
+        public int VoteCount { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         // Navigation Properties
@@ -24,6 +26,8 @@ namespace EducationalPlatform.Domain.Entities
         public User User { get; set; }
 
         public ICollection<ForumPost> Replies { get; set; }
+
+        public ICollection<ForumPostVote> Votes { get; set; }
     }
 
 }

@@ -32,7 +32,9 @@ namespace EducationalPlatform.Infrastructure.Services
         public async Task<IEnumerable<ForumThreadDto>> GetAllAsync()
         {
             var threads = await _repository.GetAllAsync();
-            return threads.Select(MapToDto);
+            var dtos = threads.Select(MapToDto).ToList();
+            Console.WriteLine($"[DEBUG] Service GetAllAsync mapped {dtos.Count} threads");
+            return dtos;
         }
 
         public async Task<ForumThreadDto> CreateAsync(CreateForumThreadDto createDto, Guid userId)
@@ -84,6 +86,9 @@ namespace EducationalPlatform.Infrastructure.Services
                 Description = thread.Description,
                 UserId = thread.UserId,
                 UserName = thread.User?.UserName ?? "Unknown",
+                PostCount = thread.Posts?.Count ?? 0,
+                VoteCount = thread.VoteCount,
+                IsSubscribed = false, // Default to false, can be set by a specialized method if needed
                 CreatedAt = thread.CreatedAt
             };
         }

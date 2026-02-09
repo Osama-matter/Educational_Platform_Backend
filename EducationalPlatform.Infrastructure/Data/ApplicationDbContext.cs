@@ -41,6 +41,8 @@ namespace EducationalPlatform.Infrastructure.Data
 
         public DbSet<ForumPost> forumPosts { get; set; }
 
+        public DbSet<ForumPostVote> ForumPostVotes { get; set; }
+
         public DbSet<ForumSubscriptions> ForumSubscription { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

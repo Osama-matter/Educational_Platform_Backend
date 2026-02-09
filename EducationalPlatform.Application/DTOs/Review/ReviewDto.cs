@@ -11,5 +11,6 @@ namespace EducationalPlatform.Application.DTOs.Review
         public string UserName { get; set; } 
         public Guid CourseId { get; set; }
         public string? InstructorReply { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

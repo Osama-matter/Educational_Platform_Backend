@@ -4,6 +4,7 @@ using EducationalPlatform.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EducationalPlatform.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260209223147_addforumvoting")]
+    partial class addforumvoting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,10 +275,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ForumPostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ForumThreadId")
+                    b.Property<Guid>("ForumPostId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -287,8 +287,6 @@ namespace EducationalPlatform.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ForumPostId");
-
-                    b.HasIndex("ForumThreadId");
 
                     b.HasIndex("UserId");
 
@@ -332,9 +330,6 @@ namespace EducationalPlatform.Infrastructure.Migrations
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("VoteCount")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -930,11 +925,9 @@ namespace EducationalPlatform.Infrastructure.Migrations
                 {
                     b.HasOne("EducationalPlatform.Domain.Entities.ForumPost", "ForumPost")
                         .WithMany("Votes")
-                        .HasForeignKey("ForumPostId");
-
-                    b.HasOne("EducationalPlatform.Domain.Entities.ForumThread", "ForumThread")
-                        .WithMany("Votes")
-                        .HasForeignKey("ForumThreadId");
+                        .HasForeignKey("ForumPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("EducationalPlatform.Domain.Entities.User", "User")
                         .WithMany()
@@ -943,8 +936,6 @@ namespace EducationalPlatform.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ForumPost");
-
-                    b.Navigation("ForumThread");
 
                     b.Navigation("User");
                 });
@@ -1159,8 +1150,6 @@ namespace EducationalPlatform.Infrastructure.Migrations
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.ForumThread", b =>
                 {
                     b.Navigation("Posts");
-
-                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.Leeson.Lesson", b =>
