@@ -1,3 +1,4 @@
+using Educational_Platform_Front_End.Services.Certificate;
 using Educational_Platform_Front_End.Services.Courses;
 using Educational_Platform_Front_End.Services.Questions;
 using Educational_Platform_Front_End.Services.QuizAttempts;
@@ -68,6 +69,11 @@ builder.Services.AddHttpClient<IForumService, ForumService>(client =>
     client.BaseAddress = new Uri("https://localhost:7228");
 }).AddHttpMessageHandler<AuthHeaderHandler>();
 
+builder.Services.AddHttpClient<ICertificateService, CertificateService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7228");
+}).AddHttpMessageHandler<AuthHeaderHandler>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -82,6 +88,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseStatusCodePagesWithReExecute("/Error", "?statusCode={0}");
 
 app.UseAuthentication();
 app.UseAuthorization();

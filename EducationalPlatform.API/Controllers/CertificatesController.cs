@@ -26,6 +26,7 @@ namespace EducationalPlatform.API.Controllers
         /// Issue a new certificate for a user who completed a course.
         /// </summary>
         [HttpPost(Routes.Routes.Certificates.IssueCertificate)]
+       
         public async Task<ActionResult<CertificateDto>> IssueCertificate([FromBody] CreateCertificateDto dto)
         {
             try
@@ -102,6 +103,7 @@ namespace EducationalPlatform.API.Controllers
         /// Verify a certificate using its verification code.
         /// </summary>
         [HttpGet(Routes.Routes.Certificates.VerifyCertificate)]
+        [AllowAnonymous]
         public async Task<ActionResult<VerifyCertificateDto>> VerifyCertificate(string verificationCode)
         {
             try
@@ -118,6 +120,7 @@ namespace EducationalPlatform.API.Controllers
         /// <summary>
         /// Check if a certificate exists for a user and course.
         /// </summary>
+        [AllowAnonymous]
         [HttpGet("{certificateId}/download")]
         public async Task<IActionResult> DownloadCertificate(Guid certificateId)
         {

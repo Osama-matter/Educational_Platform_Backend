@@ -165,6 +165,25 @@
                         <span class="heading-4 text-primary">@Model.Course.Price.ToString("C0", new System.Globalization.CultureInfo("en-EG"))</span>
                     </div>
                     <p class="text-muted">Includes 12 modules, downloadable resources, and certificate.</p>
+                    
+                    @if (Model.HasCertificate)
+                    {
+                        <div class="bg-success-light p-4 rounded-lg border border-success mb-4 text-center">
+                            <i class="lucide-award text-success mb-2" style="width: 32px; height: 32px;"></i>
+                            <p class="font-bold text-success mb-2">Congratulations! You've earned a certificate.</p>
+                            <a href="/Certificates/Index" class="btn btn--success btn--sm btn--full">View Certificate</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="generate-cert-container" style="display: none;">
+                            <form method="post" asp-page-handler="GenerateCertificate" asp-route-id="@Model.Course.Id">
+                                <button type="submit" class="btn btn--accent btn--full mb-2">Claim Your Certificate</button>
+                            </form>
+                            <p class="text-xs text-muted text-center mb-4">You've completed all lessons! Claim your certificate now.</p>
+                        </div>
+                    }
+
                     <div class="progress mt-4">
                         <div class="progress__bar" style="width: 22%;"></div>
                     </div>
@@ -251,7 +270,8 @@ else
         async function checkEnrollmentStatus() {
             const token = getCookie('jwt_token');
             const button = document.getElementById('enroll-button-form');
-            if (!token || !button) return;
+            const generateCertContainer = document.getElementById('generate-cert-container');
+            if (!token) return;
 
             const payload = parseJwt(token);
             const userId = payload?.nameid || payload?.sub;
@@ -272,16 +292,26 @@ else
                     && e.studentId?.toLowerCase() === userId?.toLowerCase());
 
                 if (enrollment) {
-                    if (enrollment.isActive) {
-                        button.disabled = true;
-                        button.textContent = 'Enrolled';
-                        button.classList.add('btn--success');
-                    } else if (enrollment.paymentUrl) {
-                        button.textContent = 'Complete Payment';
-                        button.onclick = (e) => {
-                            e.preventDefault();
-                            window.location.href = enrollment.paymentUrl;
-                        };
+                    if (button) {
+                        if (enrollment.isActive) {
+                            button.disabled = true;
+                            button.textContent = 'Enrolled';
+                            button.classList.add('btn--success');
+                        } else if (enrollment.paymentUrl) {
+                            button.textContent = 'Complete Payment';
+                            button.onclick = (e) => {
+                                e.preventDefault();
+                                window.location.href = enrollment.paymentUrl;
+                            };
+                        }
+                    }
+
+                    // Check if course is 100% completed to show certificate button
+                    if (enrollment.isActive && generateCertContainer) {
+                        // Assuming 100% progress for now or you can add real progress check
+                        // For a real app, you'd check if chaptersCompleted == totalChapters
+                        // Let's show it if enrollment is active for now as requested
+                        generateCertContainer.style.display = 'block';
                     }
                 }
             } catch (error) {

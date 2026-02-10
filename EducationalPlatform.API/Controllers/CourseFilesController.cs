@@ -10,7 +10,7 @@ namespace EducationalPlatform.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class CourseFilesController : ControllerBase
     {
         private readonly ICourseFileService _courseFileService;
@@ -45,6 +45,7 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Instructor,Admin")]
         public async Task<IActionResult> Create([FromForm] CreateCourseFileRequest request)
         {
             if (!ModelState.IsValid)
@@ -70,6 +71,7 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Instructor,Admin")]
         public async Task<IActionResult> Update(Guid id, [FromForm] UpdateCourseFileRequest request)
         {
             if (!ModelState.IsValid)
@@ -87,6 +89,7 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles =" Instructor,Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try

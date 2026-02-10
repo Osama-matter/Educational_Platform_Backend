@@ -74,6 +74,9 @@
                                 My Account
                             </a>
                         </li>
+                        <li class="nav-menu__item" id="certificates-link" style="display: none;">
+                            <a class="nav-menu__link" asp-area="" asp-page="/Certificates/Index">Certificates</a>
+                        </li>
                         <li class="nav-menu__item" id="logout-link" style="display: none;">
                             <a class="nav-menu__link" asp-area="" asp-page="/Account/Logout">Log Out</a>
                         </li>
@@ -124,6 +127,9 @@
                     </li>
                     <li class="nav-menu__item" id="mobile-account-link" style="display: none;">
                         <a class="nav-menu__link" asp-area="" asp-page="/Account/Details">My Account</a>
+                    </li>
+                    <li class="nav-menu__item" id="mobile-certificates-link" style="display: none;">
+                        <a class="nav-menu__link" asp-area="" asp-page="/Certificates/Index">Certificates</a>
                     </li>
                     <li class="nav-menu__item" id="mobile-logout-link" style="display: none;">
                         <a class="nav-menu__link" asp-area="" asp-page="/Account/Logout">Log Out</a>
@@ -234,6 +240,8 @@
             const mobileLoginLink = document.getElementById('mobile-login-link');
             const mobileLogoutLink = document.getElementById('mobile-logout-link');
             const mobileAccountLink = document.getElementById('mobile-account-link');
+            const certificatesLink = document.getElementById('certificates-link');
+            const mobileCertificatesLink = document.getElementById('mobile-certificates-link');
             const adminLink = document.getElementById('admin-dashboard-link');
             const mobileAdminLink = document.getElementById('mobile-admin-dashboard-link');
             const studentQuizzesLink = document.getElementById('student-quizzes-link');
@@ -254,6 +262,8 @@
                 if (mobileLoginLink) mobileLoginLink.style.display = 'none';
                 if (mobileLogoutLink) mobileLogoutLink.style.display = 'block';
                 if (mobileAccountLink) mobileAccountLink.style.display = 'block';
+                if (certificatesLink) certificatesLink.style.display = 'block';
+                if (mobileCertificatesLink) mobileCertificatesLink.style.display = 'block';
                 if (adminLink) adminLink.style.display = isAdmin ? 'block' : 'none';
                 if (mobileAdminLink) mobileAdminLink.style.display = isAdmin ? 'block' : 'none';
                 if (studentQuizzesLink) studentQuizzesLink.style.display = (isStudent || !isAdmin) ? 'block' : 'none';
@@ -268,6 +278,8 @@
                 if (mobileLoginLink) mobileLoginLink.style.display = 'block';
                 if (mobileLogoutLink) mobileLogoutLink.style.display = 'none';
                 if (mobileAccountLink) mobileAccountLink.style.display = 'none';
+                if (certificatesLink) certificatesLink.style.display = 'none';
+                if (mobileCertificatesLink) mobileCertificatesLink.style.display = 'none';
                 if (adminLink) adminLink.style.display = 'none';
                 if (mobileAdminLink) mobileAdminLink.style.display = 'none';
             }

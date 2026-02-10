@@ -25,30 +25,17 @@ namespace EducationalPlatform.API.Controllers
 
 
         [HttpPost(Routes.Routes.Courses.CreateCourse)]
-        //[Authorize]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<IActionResult> Create(CreateCourseDto coursesRequest)
         {
-            // Get User ID from JWT token
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             if (userId == null)
                 return Unauthorized();
 
-            // Assign the userId as InstructorId
             coursesRequest.InstructorId = Guid.Parse(userId);
 
-
-            try
-            {
-                var result = await _courseService.CreateAsync(coursesRequest);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                // Log the detailed exception
-                return StatusCode(500, $"An internal error occurred. Please check the server logs for details. Exception: {ex.Message}");
-            }
-
+            var result = await _courseService.CreateAsync(coursesRequest);
+            return Ok(result);
         }
 
         [HttpGet(Routes.Routes.Courses.GetAllCourses)]
@@ -80,8 +67,7 @@ namespace EducationalPlatform.API.Controllers
 
 
         [HttpPut(Routes.Routes.Courses.UpdateCourse)]
-
-        //[Authorize]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<IActionResult> Update(Guid courseId, UpdateCourseDto updateCourseDto)
         {
             var result = await _courseService.UpdateAsync(courseId, updateCourseDto);
@@ -89,15 +75,14 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpDelete(Routes.Routes.Courses.DeleteCourse)]
-        //[Authorize]
-         public async Task<IActionResult> Delete(Guid courseId)
-         {  
-            if (await _courseService.DeleteAsync(courseId)  == true)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(Guid courseId)
+        {  
+            if (await _courseService.DeleteAsync(courseId))
             {
                 return NoContent();
             }
             throw new Exception("Error deleting course");
-
         }
     }
 

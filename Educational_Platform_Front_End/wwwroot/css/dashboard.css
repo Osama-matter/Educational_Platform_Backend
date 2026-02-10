@@ -11,6 +11,50 @@
     gap: 1.5rem;
 }
 
+@media (max-width: 768px) {
+    .section .container > .flex {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .section .container > .flex .btn {
+        width: 100%;
+    }
+
+    .dashboard-enrollments {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .enrollment-card__info {
+        padding: 1.25rem;
+    }
+
+    .enrollment-card__progress {
+        padding: 0 1.25rem;
+    }
+
+    .enrollment-card__actions {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .enrollment-card__info {
+        padding: 1rem;
+    }
+
+    .enrollment-card__progress {
+        padding: 0 1rem;
+    }
+
+    .enrollment-card__actions {
+        padding: 1rem;
+    }
+}
+
 .enrollment-card {
     background-color: #fff;
     border: 1px solid #e2e8f0;

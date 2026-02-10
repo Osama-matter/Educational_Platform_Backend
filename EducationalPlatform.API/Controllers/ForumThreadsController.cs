@@ -19,22 +19,12 @@ namespace EducationalPlatform.API.Controllers
             _postService = postService;
         }
 
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            Console.WriteLine("[DEBUG] API: ForumThreads.GetAll called");
             var result = await _threadService.GetAllAsync();
-            
-            if (result == null)
-            {
-                Console.WriteLine("[DEBUG] API: _threadService.GetAllAsync returned NULL");
-                return Ok(new List<ForumThreadDto>());
-            }
-
-            var threadList = result.ToList();
-            Console.WriteLine($"[DEBUG] API: Found {threadList.Count} threads");
-            
-            return Ok(threadList);
+            return Ok(result);
         }
 
         [HttpGet(Routes.Routes.ForumThreads.GetThreadById)]
@@ -61,19 +51,12 @@ namespace EducationalPlatform.API.Controllers
         [Authorize]
         public async Task<IActionResult> Update(Guid id, UpdateForumThreadDto updateDto)
         {
-            try
-            {
-                var result = await _threadService.UpdateAsync(id, updateDto);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _threadService.UpdateAsync(id, updateDto);
+            return Ok(result);
         }
 
         [HttpDelete(Routes.Routes.ForumThreads.DeleteThread)]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await _threadService.DeleteAsync(id);

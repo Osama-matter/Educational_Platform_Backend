@@ -45,7 +45,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
 
                     b.HasIndex("SelectedOptionId");
 
-                    b.ToTable("Answers");
+                    b.ToTable("Answers", (string)null);
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.Certificate", b =>
@@ -89,7 +89,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
                     b.HasIndex("UserId", "CourseId")
                         .IsUnique();
 
-                    b.ToTable("Certificates");
+                    b.ToTable("Certificates", (string)null);
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.Course.Course", b =>
@@ -136,7 +136,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
 
                     b.HasIndex("Title");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.Course_File.CourseFile", b =>
@@ -184,7 +184,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
 
                     b.HasIndex("UploadedById");
 
-                    b.ToTable("CourseFiles");
+                    b.ToTable("CourseFiles", (string)null);
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.Enrollment", b =>
@@ -218,7 +218,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
                     b.HasIndex("StudentId", "CourseId")
                         .IsUnique();
 
-                    b.ToTable("Enrollments");
+                    b.ToTable("Enrollments", (string)null);
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.ForumPost", b =>
@@ -260,7 +260,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("forumPosts");
+                    b.ToTable("forumPosts", (string)null);
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.ForumPostVote", b =>
@@ -292,7 +292,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ForumPostVotes");
+                    b.ToTable("ForumPostVotes", (string)null);
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.ForumSubscriptions", b =>
@@ -310,7 +310,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
 
                     b.HasIndex("ForumThreadId");
 
-                    b.ToTable("ForumSubscription");
+                    b.ToTable("ForumSubscription", (string)null);
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.ForumThread", b =>
@@ -340,7 +340,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ForumThreads");
+                    b.ToTable("ForumThreads", (string)null);
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.Leeson.Lesson", b =>
@@ -378,7 +378,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
 
                     b.HasIndex("CourseId", "OrderIndex");
 
-                    b.ToTable("Lessons");
+                    b.ToTable("Lessons", (string)null);
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.Question", b =>
@@ -427,7 +427,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("QuestionOptions");
+                    b.ToTable("QuestionOptions", (string)null);
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.Quiz", b =>
@@ -473,7 +473,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
 
                     b.HasIndex("LessonId");
 
-                    b.ToTable("Quizzes");
+                    b.ToTable("Quizzes", (string)null);
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.QuizAttempt", b =>
@@ -504,7 +504,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("QuizAttempts");
+                    b.ToTable("QuizAttempts", (string)null);
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.Review", b =>
@@ -549,7 +549,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
 
                     b.HasIndex("UserId1");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("EducationalPlatform.Domain.Entities.User", b =>
@@ -667,7 +667,7 @@ namespace EducationalPlatform.Infrastructure.Migrations
                     b.HasIndex("EnrollmentId", "LessonId")
                         .IsUnique();
 
-                    b.ToTable("LessonProgresses");
+                    b.ToTable("LessonProgresses", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>

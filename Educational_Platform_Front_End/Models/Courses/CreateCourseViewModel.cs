@@ -15,6 +15,10 @@ namespace Educational_Platform_Front_End.Models.Courses
 
         public bool IsActive { get; set; }
 
+        [Required]
+        [Range(0, 1000000)]
+        public decimal Price { get; set; }
+
         public IFormFile ImageFile { get; set; }
     }
 }

@@ -46,7 +46,7 @@ namespace EducationalPlatform.API.Controllers
             }
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("register-admin")]
         public async Task<ActionResult<UserDto>> RegisterAdmin(RegisterAdminDto registerAdminDto)
         {

@@ -5,83 +5,91 @@
     ViewData["Title"] = Model.QuizAttempt?.QuizTitle ?? "Take Quiz";
 }
 
-<div class="container mt-4">
+<div class="container py-5">
     @if (Model.QuizAttempt != null)
     {
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>@Model.QuizAttempt.QuizTitle</h1>
-            <div id="quiz-timer" class="badge bg-primary fs-4" data-time-limit="@(Model.QuizAttempt.TotalTimeMinutes * 60)">
-                Time Remaining: --:--
-            </div>
-        </div>
-
-        <form id="quizForm" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            @for (int i = 0; i < Model.QuizAttempt.Questions.Count; i++)
-            {
-                var question = Model.QuizAttempt.Questions[i];
-                <input type="hidden" name="QuestionIds[@i]" value="@question.Id" />
-                <div class="card my-4 question-card @(i == 0 ? "" : "d-none")" data-question-index="@i">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Question @(i + 1) of @Model.QuizAttempt.Questions.Count</h5>
-                        <span class="badge bg-secondary">@question.Score Points</span>
-                    </div>
-                    <div class="card-body">
-                        <p class="fs-5 mb-4">@question.Content</p>
-                        <div class="list-group">
-                            @foreach (var option in question.Options)
-                            {
-                                <label class="list-group-item list-group-item-action mb-2 rounded border">
-                                    <input type="radio" 
-                                           name="AnswerIds[@i]" 
-                                           value="@option.Id" 
-                                           class="form-check-input me-3 quiz-option" 
-                                           data-question-id="@question.Id"
-                                           data-index="@i"
-                                           @(Model.AnswerIds.Count > i && Model.AnswerIds[i] == option.Id ? "checked" : "") />
-                                    @option.Text
-                                </label>
-                            }
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Quiz Header -->
+                <div class="card border-0 shadow-sm rounded-xl mb-4 overflow-hidden">
+                    <div class="card-body p-4 bg-primary text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h1 class="h3 font-weight-bold mb-1">@Model.QuizAttempt.QuizTitle</h1>
+                                <p class="mb-0 opacity-75">Answer all questions to complete the assessment</p>
+                            </div>
+                            <div class="text-right">
+                                <div id="quiz-timer" class="h2 font-weight-bold mb-0" data-time-limit="@(Model.QuizAttempt.TotalTimeMinutes * 60)">
+                                    --:--
+                                </div>
+                                <small class="text-white-50 uppercase tracking-wider">Remaining</small>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-footer d-flex justify-content-between">
-                        <button type="button" class="btn btn-outline-secondary prev-btn @(i == 0 ? "invisible" : "")" onclick="showQuestion(@(i - 1))">Previous</button>
-                        
-                        @if (i == Model.QuizAttempt.Questions.Count - 1)
-                        {
-                            <button type="button" class="btn btn-success" onclick="confirmSubmit()">Finish Quiz</button>
-                        }
-                        else
-                        {
-                            <button type="button" class="btn btn-primary next-btn" onclick="showQuestion(@(i + 1))">Next Question</button>
-                        }
+                    <div class="progress rounded-0" style="height: 6px;">
+                        <div id="quiz-progress-bar" class="progress-bar bg-accent" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
-            }
-        </form>
 
-        <!-- Confirmation Modal -->
-        <div class="modal fade" id="submitModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Finish Quiz?</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Are you sure you want to submit your answers? You cannot change them after submission.
-                        <div id="unanswered-warning" class="text-danger mt-2 d-none">
-                            <strong>Warning:</strong> You have unanswered questions!
+                <form id="quizForm" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+
+                    @for (int i = 0; i < Model.QuizAttempt.Questions.Count; i++)
+                    {
+                        var question = Model.QuizAttempt.Questions[i];
+                        <input type="hidden" name="QuestionIds[@i]" value="@question.Id" />
+                        <div class="card border-0 shadow-sm rounded-xl mb-4 question-card @(i == 0 ? "" : "d-none")" data-question-index="@i">
+                            <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                                <span class="badge badge-soft-primary px-3 py-2 rounded-pill">Question @(i + 1) of @Model.QuizAttempt.Questions.Count</span>
+                                <span class="text-muted font-weight-bold"><i class="lucide-award mr-1"></i> @question.Score Points</span>
+                            </div>
+                            <div class="card-body p-4">
+                                <h4 class="font-weight-bold text-dark mb-4">@question.Content</h4>
+                                <div class="quiz-options-grid">
+                                    @foreach (var option in question.Options)
+                                    {
+                                        <label class="quiz-option-label mb-3">
+                                            <input type="radio" 
+                                                   name="AnswerIds[@i]" 
+                                                   value="@option.Id" 
+                                                   class="quiz-option-input d-none" 
+                                                   data-question-id="@question.Id"
+                                                   data-index="@i"
+                                                   @(Model.AnswerIds.Count > i && Model.AnswerIds[i] == option.Id ? "checked" : "") />
+                                            <div class="quiz-option-card p-3 border rounded-lg transition-all d-flex align-items-center">
+                                                <div class="quiz-option-indicator mr-3 d-flex align-items-center justify-content-center border rounded-circle" style="width: 24px; height: 24px;">
+                                                    <div class="inner-dot rounded-circle bg-primary d-none" style="width: 12px; height: 12px;"></div>
+                                                </div>
+                                                <span class="text-dark">@option.Text</span>
+                                            </div>
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-0 pb-4 px-4 d-flex justify-content-between">
+                                <button type="button" class="btn btn-light px-4 rounded-pill prev-btn @(i == 0 ? "invisible" : "")" onclick="showQuestion(@(i - 1))">
+                                    <i class="lucide-arrow-left mr-2"></i> Previous
+                                </button>
+                                
+                                @if (i == Model.QuizAttempt.Questions.Count - 1)
+                                {
+                                    <button type="button" class="btn btn-success px-5 rounded-pill font-weight-bold" onclick="confirmSubmit()">
+                                        Finish Assessment <i class="lucide-check-circle ml-2"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-primary px-5 rounded-pill font-weight-bold next-btn" onclick="showQuestion(@(i + 1))">
+                                        Next Question <i class="lucide-arrow-right ml-2"></i>
+                                    </button>
+                                }
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go Back</button>
-                        <button type="button" class="btn btn-success" onclick="document.getElementById('quizForm').submit()">Submit Now</button>
-                    </div>
+                    }
+                </form>
                 </div>
             </div>
-        </div>
+    
     }
     else
     {

@@ -25,20 +25,33 @@ namespace Educational_Platform_Front_End.Pages.Lessons
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
+            var token = Request.Cookies["jwt_token"];
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return RedirectToPage("/Account/Login");
+            }
+
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                
+                // 1. Get Lesson Details
                 var response = await client.GetAsync($"https://localhost:7228/api/lessons/{id}");
 
-                if (response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
-                    var content = await response.Content.ReadAsStringAsync();
-                    Lesson = JsonSerializer.Deserialize<LessonViewModel>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    return Page();
-                }
-                else
-                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized || response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                    {
+                        StatusMessage = "Access denied. You must be enrolled and have paid for the course to view this lesson.";
+                        return RedirectToPage("/Courses/Index");
+                    }
                     return NotFound();
                 }
+
+                var content = await response.Content.ReadAsStringAsync();
+                Lesson = JsonSerializer.Deserialize<LessonViewModel>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                
+                return Page();
             }
         }
 

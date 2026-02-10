@@ -44,6 +44,7 @@ namespace Educational_Platform_Front_End.Pages.Courses
                         content.Add(new StringContent(Course.EstimatedDurationHours.Value.ToString()), "EstimatedDurationHours");
                     }
                     content.Add(new StringContent(Course.IsActive.ToString()), "IsActive");
+                    content.Add(new StringContent(Course.Price.ToString()), "Price");
 
                     if (Course.ImageFile != null)
                     {

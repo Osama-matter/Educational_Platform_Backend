@@ -1647,6 +1647,44 @@ p {
     .filter-panel {
         position: static;
     }
+
+    .lesson-list {
+        display: grid;
+        gap: var(--spacing-4);
+    }
+
+    .lesson-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-4);
+        padding: var(--spacing-6);
+    }
+
+    .lesson-item__info {
+        min-width: 0;
+    }
+
+    .lesson-item__actions {
+        flex-shrink: 0;
+    }
+
+    .lesson-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .lesson-item__actions {
+        width: 100%;
+    }
+
+    .lesson-item__actions .btn {
+        width: 100%;
+    }
+
+    #youtube-embed {
+        height: 220px;
+    }
 }
 
 /* ============================================
@@ -5896,7 +5934,12 @@ section {
     }
 
     .data-table {
-        min-width: 800px;
+        min-width: 0;
+    }
+
+    .data-table__th,
+    .data-table__td {
+        white-space: nowrap;
     }
 
     .modal {
@@ -5912,6 +5955,23 @@ section {
     .filter-select,
     .search-input {
         width: 100%;
+    }
+
+    .search-category {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .search-input {
+        min-width: 0;
+    }
+
+    .catalog-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .course-grid-modern {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -7663,4 +7723,67 @@ color: #718096;
             margin-left: 0;
             padding-left: 12px;
         }
+    }
+
+    .error-page {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - var(--header-height) - 200px);
+        padding: var(--spacing-8);
+        text-align: center;
+    }
+
+    .error-page__content {
+        max-width: 560px;
+        width: 100%;
+    }
+
+    .error-page__icon {
+        color: var(--color-danger-500);
+        margin-bottom: var(--spacing-6);
+        display: flex;
+        justify-content: center;
+    }
+
+    .error-page__title {
+        font-size: var(--font-size-3xl);
+        margin-bottom: var(--spacing-4);
+    }
+
+    .error-page__message {
+        color: var(--color-neutral-600);
+        font-size: var(--font-size-lg);
+        margin-bottom: var(--spacing-8);
+    }
+
+    .error-page__request-id {
+        margin-bottom: var(--spacing-8);
+        padding: var(--spacing-3);
+        background-color: var(--color-neutral-100);
+        border-radius: var(--border-radius-md);
+        font-size: var(--font-size-sm);
+    }
+
+    .error-page__request-id code {
+        color: var(--color-danger-600);
+        margin-left: var(--spacing-2);
+    }
+
+    .error-page__actions {
+        display: flex;
+        gap: var(--spacing-4);
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .error-page__debug {
+        margin-top: var(--spacing-12);
+        text-align: left;
+        padding: var(--spacing-4);
+        background-color: var(--color-neutral-50);
+        border: 1px solid var(--color-neutral-200);
+        border-radius: var(--border-radius-md);
+        font-size: var(--font-size-xs);
+        overflow-x: auto;
     }

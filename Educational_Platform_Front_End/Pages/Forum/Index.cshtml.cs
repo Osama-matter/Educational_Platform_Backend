@@ -24,29 +24,17 @@ namespace Educational_Platform_Front_End.Pages.Forum
         {
             try
             {
-                Console.WriteLine("[DEBUG] Index Page OnGetAsync starting...");
-                Threads = await _forumService.GetAllThreadsAsync();
-                
-                if (Threads != null)
-                {
-                    Console.WriteLine($"[DEBUG] Index Page received {Threads.Count()} threads");
-                }
-                else
-                {
-                    Console.WriteLine("[DEBUG] Index Page received NULL threads collection");
-                    Threads = new List<ForumThreadDto>();
-                }
+                Threads = await _forumService.GetAllThreadsAsync() ?? new List<ForumThreadDto>();
                 
                 if (User.Identity.IsAuthenticated)
                 {
-                    SubscribedThreads = await _forumService.GetMySubscriptionsAsync();
+                    SubscribedThreads = await _forumService.GetMySubscriptionsAsync() ?? new List<ForumSubscriptionDto>();
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine($"[DEBUG] Critical Error in Forum Index Page: {ex.Message}");
-                Console.WriteLine($"[DEBUG] StackTrace: {ex.StackTrace}");
                 Threads = new List<ForumThreadDto>();
+                SubscribedThreads = new List<ForumSubscriptionDto>();
             }
         }
     }

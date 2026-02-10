@@ -27,29 +27,12 @@ namespace EducationalPlatform.Infrastructure.Repositories
 
         public async Task<IEnumerable<ForumThread>> GetAllAsync()
         {
-            try
-            {
-                var threads = await _context.ForumThreads
-                    .Include(t => t.User)
-                    .Include(t => t.Posts)
-                    .OrderByDescending(t => t.CreatedAt)
-                    .AsNoTracking()
-                    .ToListAsync();
-                
-                if (threads == null) {
-                    Console.WriteLine("[DEBUG] Repository GetAllAsync: Entity Framework returned NULL list");
-                    return new List<ForumThread>();
-                }
-
-                Console.WriteLine($"[DEBUG] Repository GetAllAsync: Found {threads.Count} threads in DB. Thread IDs: {string.Join(", ", threads.Select(t => t.Id))}");
-                return threads;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[DEBUG] Repository GetAllAsync ERROR: {ex.Message}");
-                Console.WriteLine($"[DEBUG] Repository GetAllAsync StackTrace: {ex.StackTrace}");
-                throw;
-            }
+            return await _context.ForumThreads
+                .Include(t => t.User)
+                .Include(t => t.Posts)
+                .OrderByDescending(t => t.CreatedAt)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task AddAsync(ForumThread thread)

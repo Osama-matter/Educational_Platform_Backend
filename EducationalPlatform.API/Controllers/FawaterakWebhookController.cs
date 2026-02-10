@@ -35,36 +35,55 @@ public class FawaterakWebhooksController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<string>> WebhookPaid([FromBody] WebHookModel model)
     {
-        var valid = _payments.VerifyWebhook(model);
-        if (!valid) return Unauthorized();
-
-        // model.Payload.OrderId should contain the Enrollment ID (passed as ExternalId in request)
-        if (model.Payload != null && Guid.TryParse(model.Payload.OrderId, out Guid enrollmentId))
+        try
         {
-            using var scope = HttpContext.RequestServices.CreateScope();
-            var enrollmentRepository = scope.ServiceProvider.GetRequiredService<EducationalPlatform.Application.Interfaces.Repositories.IEnrollmentRepository>();
-            var userRepository = scope.ServiceProvider.GetRequiredService<EducationalPlatform.Application.Interfaces.Repositories.IUserRepository>();
-            var courseRepository = scope.ServiceProvider.GetRequiredService<EducationalPlatform.Application.Interfaces.Repositories.ICourseRepository>();
-            var emailService = scope.ServiceProvider.GetRequiredService<EducationalPlatform.Application.Interfaces.Services.IEmailService>();
-
-            var enrollment = await enrollmentRepository.GetByIdAsync(enrollmentId);
-            if (enrollment != null)
+            var valid = _payments.VerifyWebhook(model);
+            if (!valid)
             {
-                enrollment.IsActive = true;
-                enrollment.PaymentStatus = "Paid";
-                await enrollmentRepository.UpdateAsync(enrollment);
+                Console.WriteLine("[DEBUG] Webhook signature verification failed");
+                return Unauthorized();
+            }
 
-                // Send enrollment confirmation email
-                var user = await userRepository.GetByIdAsync(enrollment.StudentId);
-                var course = await courseRepository.GetByIdAsync(enrollment.CourseId);
-                if (user != null && course != null)
+            if (model.Payload != null && Guid.TryParse(model.Payload.OrderId, out Guid enrollmentId))
+            {
+                using var scope = HttpContext.RequestServices.CreateScope();
+                var enrollmentRepository = scope.ServiceProvider.GetRequiredService<EducationalPlatform.Application.Interfaces.Repositories.IEnrollmentRepository>();
+                var userRepository = scope.ServiceProvider.GetRequiredService<EducationalPlatform.Application.Interfaces.Repositories.IUserRepository>();
+                var courseRepository = scope.ServiceProvider.GetRequiredService<EducationalPlatform.Application.Interfaces.Repositories.ICourseRepository>();
+                var emailService = scope.ServiceProvider.GetRequiredService<EducationalPlatform.Application.Interfaces.Services.IEmailService>();
+
+                var enrollment = await enrollmentRepository.GetByIdAsync(enrollmentId);
+                if (enrollment != null)
                 {
-                    await emailService.SendEnrollmentEmailAsync(user.Email, user.UserName, course.Title);
+                    enrollment.IsActive = true;
+                    enrollment.PaymentStatus = "Paid";
+                    await enrollmentRepository.UpdateAsync(enrollment);
+                    Console.WriteLine($"[DEBUG] Enrollment {enrollmentId} activated and marked as Paid");
+
+                    var user = await userRepository.GetByIdAsync(enrollment.StudentId);
+                    var course = await courseRepository.GetByIdAsync(enrollment.CourseId);
+                    if (user != null && course != null)
+                    {
+                        await emailService.SendEnrollmentEmailAsync(user.Email, user.UserName, course.Title);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"[DEBUG] Enrollment {enrollmentId} not found in database");
                 }
             }
-        }
+            else
+            {
+                Console.WriteLine("[DEBUG] Invalid or missing OrderId in Webhook payload");
+            }
 
-        return Ok("got it!");
+            return Ok("got it!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[DEBUG] Webhook Error: {ex.Message}");
+            return StatusCode(500, ex.Message);
+        }
     }
 
     /// <summary>

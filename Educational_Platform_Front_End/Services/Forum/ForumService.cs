@@ -20,33 +20,17 @@ namespace Educational_Platform_Front_End.Services.Forum
         {
             try
             {
-                // Diagnosing the exact URL being called
-                var url = "api/ForumThreads";
-                Console.WriteLine($"[DEBUG] Calling Forum API: {_httpClient.BaseAddress}{url}");
-                
-                var response = await _httpClient.GetAsync(url);
+                var response = await _httpClient.GetAsync("api/ForumThreads");
                 
                 if (!response.IsSuccessStatusCode)
                 {
-                    var errorContent = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"[DEBUG] API Error: {response.StatusCode} - {errorContent}");
                     return new List<ForumThreadDto>();
                 }
                 
-                var content = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"[DEBUG] RAW API Response: {content}");
-
-                var threads = await response.Content.ReadFromJsonAsync<IEnumerable<ForumThreadDto>>();
-                Console.WriteLine($"[DEBUG] Successfully fetched {threads?.Count() ?? 0} threads.");
-                return threads ?? new List<ForumThreadDto>();
+                return await response.Content.ReadFromJsonAsync<IEnumerable<ForumThreadDto>>() ?? new List<ForumThreadDto>();
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine($"[DEBUG] Exception fetching threads: {ex.Message}");
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine($"[DEBUG] Inner Exception: {ex.InnerException.Message}");
-                }
                 return new List<ForumThreadDto>();
             }
         }

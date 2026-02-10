@@ -25,7 +25,6 @@ namespace Educational_Platform_Front_End.Services.Enrollments
                 var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userId))
                 {
-                    // Fallback to nameid if NameIdentifier is not found (common in some JWT setups)
                     userId = _httpContextAccessor.HttpContext?.User?.FindFirst("nameid")?.Value;
                 }
 
@@ -34,15 +33,12 @@ namespace Educational_Platform_Front_End.Services.Enrollments
                     return new EnrollmentResult { Success = false, Error = "User is not authenticated or ID not found." };
                 }
 
-                // POST /api/enrollments/{studentId}/{courseId}
-                var response = await _httpClient.PostAsync($"/api/enrollments/{userId}/{courseId}", null);
+                // Call with empty body since API expects it
+                var response = await _httpClient.PostAsJsonAsync($"/api/enrollments/{userId}/{courseId}", new { });
                 
-                var content = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Enrollment API Response: {content}");
-
                 if (response.IsSuccessStatusCode)
                 {
-                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject<EnrollmentResponse>(content);
+                    var result = await response.Content.ReadFromJsonAsync<EnrollmentDto>();
                     return new EnrollmentResult 
                     { 
                         Success = true, 
@@ -50,7 +46,8 @@ namespace Educational_Platform_Front_End.Services.Enrollments
                     };
                 }
 
-                return new EnrollmentResult { Success = false, Error = $"Enrollment failed ({response.StatusCode}): {content}" };
+                var errorContent = await response.Content.ReadAsStringAsync();
+                return new EnrollmentResult { Success = false, Error = $"Enrollment failed ({response.StatusCode}): {errorContent}" };
             }
             catch (Exception ex)
             {
@@ -58,7 +55,7 @@ namespace Educational_Platform_Front_End.Services.Enrollments
             }
         }
 
-        private class EnrollmentResponse
+        private class EnrollmentDto
         {
             public string? PaymentUrl { get; set; }
         }

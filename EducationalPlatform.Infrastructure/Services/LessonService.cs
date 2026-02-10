@@ -24,10 +24,17 @@ namespace EducationalPlatform.Infrastructure.Services
             if (string.IsNullOrEmpty(userIdStr))
                 throw new UnauthorizedAccessException("User is not authenticated.");
 
+            // Check if user is Admin or Instructor of the course
+            var user = _httpContextAccessor.HttpContext?.User;
+            if (user != null && (user.IsInRole("Admin") || user.IsInRole("Instructor")))
+            {
+                return; // Admins and Instructors have access to all lessons
+            }
+
             var userId = Guid.Parse(userIdStr);
             var enrollment = await _enrollmentRepository.GetByStudentAndCourseAsync(userId, courseId);
 
-            if (enrollment == null || !enrollment.IsActive)
+            if (enrollment == null || !enrollment.IsActive || !string.Equals(enrollment.PaymentStatus, "Paid", StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidOperationException("Access denied. You must be enrolled and have completed the payment to access this lesson.");
             }

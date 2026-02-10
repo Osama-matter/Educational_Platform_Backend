@@ -55,6 +55,17 @@ namespace EducationalPlatform.Infrastructure.Services
                 var retryDto = await CreateOrRetryInvoiceAsync(exist, user, course, invoiceRequest, isNewEnrollment: false);
                 return retryDto;
             }
+            if(course.Price <= 0)
+            {
+                // Free course -> directly enroll without payment
+                var freeEnrollment = new Enrollment(studentId, courseId)
+                {
+                    IsActive = true,
+                    PaymentStatus = "Free"
+                };
+                await _enrollmentRepository.AddAsync(freeEnrollment);
+                return new EnrollmentDto(freeEnrollment);
+            }
 
             var enrollment = new Enrollment(studentId, courseId)
             {
