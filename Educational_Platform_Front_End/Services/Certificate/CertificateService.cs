@@ -63,7 +63,7 @@ namespace Educational_Platform_Front_End.Services.Certificate
         public string GetDownloadUrl(Guid certificateId)
         {
             // Use local backend URL directly for downloads
-            return $"https://localhost:7228/api/Certificates/{certificateId}/download";
+            return $"https://matterhub.runasp.net/api/Certificates/{certificateId}/download";
         }
     }
 }

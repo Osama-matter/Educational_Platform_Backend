@@ -83,7 +83,7 @@ namespace EducationalPlatform.Infrastructure.Services
             var course = await _courseRepository.GetByIdAsync(id);
             if (course == null)
             {
-                throw new ValidationException("Course not found");
+                return null;
             }
             var request = _httpContextAccessor.HttpContext.Request;
             var baseUrl = $"{request.Scheme}://{request.Host}";
@@ -94,7 +94,7 @@ namespace EducationalPlatform.Infrastructure.Services
                 courseDto.Image_URl = $"{baseUrl}{course.Image_URl}";
             }
 
-            if (course.Reviews != null)
+            if (course.Lessons != null)
             {
                 courseDto.Lessons = course.Lessons.OrderBy(l => l.OrderIndex).Select(l => new LessonDetailsDto
                 {
@@ -103,12 +103,17 @@ namespace EducationalPlatform.Infrastructure.Services
                     DurationMinutes = l.DurationMinutes,
                     OrderIndex = l.OrderIndex
                 }).ToList();
+
                 courseDto.Quizzes = course.Lessons.SelectMany(l => l.Quizzes).Select(q => new QuizSummaryDto
                 {
                     Id = q.Id,
                     Title = q.Title,
                     DurationMinutes = q.DurationMinutes
                 }).ToList();
+            }
+
+            if (course.Reviews != null)
+            {
                 courseDto.Reviews = course.Reviews.Select(r => new ReviewDto
                 {
                     Id = r.Id,

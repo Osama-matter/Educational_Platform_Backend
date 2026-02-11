@@ -43,7 +43,7 @@ namespace Educational_Platform_Front_End.Pages.Lessons
                 var json = JsonSerializer.Serialize(Lesson);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync("https://localhost:7228/api/lessons", content);
+                var response = await client.PostAsync("https://matterhub.runasp.net/api/lessons", content);
 
                 if (response.IsSuccessStatusCode)
                 {

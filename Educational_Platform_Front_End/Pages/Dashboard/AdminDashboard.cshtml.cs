@@ -18,10 +18,10 @@ namespace Educational_Platform_Front_End.Pages.Dashboard
         {
             using (var client = new HttpClient())
             {
-                var coursesResponse = await client.GetAsync("https://localhost:7228/api/courses");
-                if (coursesResponse.IsSuccessStatusCode)
+                var response = await client.GetAsync("https://matterhub.runasp.net/api/courses");
+                if (response.IsSuccessStatusCode)
                 {
-                    var coursesContent = await coursesResponse.Content.ReadAsStringAsync();
+                    var coursesContent = await response.Content.ReadAsStringAsync();
                     Courses = JsonSerializer.Deserialize<List<CourseViewModel>>(coursesContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 }
                 else

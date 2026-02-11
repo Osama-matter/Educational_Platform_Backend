@@ -283,9 +283,9 @@
 
             try {
                 const [coursesRes, enrollmentsRes, progressRes] = await Promise.all([
-                    fetch('https://localhost:7228/api/courses', { headers: { 'Authorization': `Bearer ${token}` } }),
-                    fetch('https://localhost:7228/api/enrollments', { headers: { 'Authorization': `Bearer ${token}` } }),
-                    fetch('https://localhost:7228/api/progress', { headers: { 'Authorization': `Bearer ${token}` } })
+                    fetch('https://matterhub.runasp.net/api/courses', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('https://matterhub.runasp.net/api/enrollments', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('https://matterhub.runasp.net/api/progress', { headers: { 'Authorization': `Bearer ${token}` } })
                 ]);
 
                 const courses = coursesRes.ok ? await coursesRes.json() : [];

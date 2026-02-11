@@ -20,58 +20,62 @@ builder.Services.AddAuthentication("Cookies")
     });
 builder.Services.AddTransient<AuthHeaderHandler>();
 
-builder.Services.AddScoped<Educational_Platform_Front_End.Services.Admin.IAdminAuthService, Educational_Platform_Front_End.Services.Admin.AdminAuthService>();
+// Configure HttpClient for API services
+var apiBaseUrl = builder.Configuration["ApiConfig:BaseUrl"] ?? "https://matterhub.runasp.net";
 
 builder.Services.AddHttpClient<Educational_Platform_Front_End.Services.Admin.ICourseAdminService, Educational_Platform_Front_End.Services.Admin.CourseAdminService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7228");
+    client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<AuthHeaderHandler>();
 
 builder.Services.AddHttpClient<Educational_Platform_Front_End.Services.Admin.ILessonAdminService, Educational_Platform_Front_End.Services.Admin.LessonAdminService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7228");
+    client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<AuthHeaderHandler>();
 
-// Configure HttpClient for API services
 builder.Services.AddHttpClient<IQuizService, QuizService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7228");
+    client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<AuthHeaderHandler>();
+
 builder.Services.AddHttpClient<IQuizAttemptService, QuizAttemptService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7228");
+    client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<AuthHeaderHandler>();
+
 builder.Services.AddHttpClient<ICourseService, CourseService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7228");
+    client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<AuthHeaderHandler>();
+
 builder.Services.AddHttpClient<IQuestionService, QuestionService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7228");
+    client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<AuthHeaderHandler>();
+
 builder.Services.AddHttpClient<IQuestionOptionService, QuestionOptionService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7228");
+    client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<AuthHeaderHandler>();
 
 builder.Services.AddHttpClient<IReviewService, ReviewService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7228");
+    client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<AuthHeaderHandler>();
 
 builder.Services.AddHttpClient<IEnrollmentService, EnrollmentService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7228");
+    client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<AuthHeaderHandler>();
 
 builder.Services.AddHttpClient<IForumService, ForumService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7228");
+    client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<AuthHeaderHandler>();
 
 builder.Services.AddHttpClient<ICertificateService, CertificateService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7228");
+    client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<AuthHeaderHandler>();
 
 var app = builder.Build();

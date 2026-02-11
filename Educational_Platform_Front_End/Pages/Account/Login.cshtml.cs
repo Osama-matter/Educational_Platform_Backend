@@ -16,6 +16,13 @@ namespace Educational_Platform_Front_End.Pages.Account
 {
     public class LoginModel : PageModel
     {
+        private readonly IConfiguration _configuration;
+
+        public LoginModel(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         [BindProperty]
         public LoginViewModel Input { get; set; }
 
@@ -30,10 +37,11 @@ namespace Educational_Platform_Front_End.Pages.Account
                 return Page();
             }
 
+            var baseUrl = _configuration["ApiConfig:BaseUrl"] ?? "https://matterhub.runasp.net";
             using var client = new HttpClient();
             var payload = JsonSerializer.Serialize(new { email = Input.Email, password = Input.Password });
             var content = new StringContent(payload, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("https://localhost:7228/api/Account/login", content);
+            var response = await client.PostAsync($"{baseUrl}/api/Account/login", content);
 
             if (!response.IsSuccessStatusCode)
             {

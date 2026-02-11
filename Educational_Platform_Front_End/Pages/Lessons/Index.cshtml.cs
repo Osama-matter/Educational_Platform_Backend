@@ -14,6 +14,13 @@ namespace Educational_Platform_Front_End.Pages.Lessons
     [Authorize]
     public class IndexModel : PageModel
     {
+        private readonly IConfiguration _configuration;
+
+        public IndexModel(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public IEnumerable<LessonViewModel> Lessons { get; set; }
 
         public async Task<IActionResult> OnGetAsync([FromQuery] Guid? courseId)
@@ -23,9 +30,10 @@ namespace Educational_Platform_Front_End.Pages.Lessons
                 return RedirectToPage("/Dashboard/AdminDashboard");
             }
 
+            var baseUrl = _configuration["ApiConfig:BaseUrl"] ?? "https://matterhub.runasp.net";
             using (var client = new HttpClient())
             {
-                var lessonsResponse = await client.GetAsync("https://localhost:7228/api/lessons");
+                var lessonsResponse = await client.GetAsync($"{baseUrl}/api/lessons");
                 if (lessonsResponse.IsSuccessStatusCode)
                 {
                     var lessonsContent = await lessonsResponse.Content.ReadAsStringAsync();

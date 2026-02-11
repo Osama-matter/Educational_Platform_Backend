@@ -53,7 +53,7 @@ namespace Educational_Platform_Front_End.Pages.Courses
                         content.Add(streamContent, "imageFile", Course.ImageFile.FileName);
                     }
 
-                    var response = await client.PostAsync("https://localhost:7228/api/courses", content);
+                    var response = await client.PostAsync("https://matterhub.runasp.net/api/courses", content);
 
                     if (response.IsSuccessStatusCode)
                     {

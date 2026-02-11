@@ -18,6 +18,13 @@ namespace Educational_Platform_Front_End.Pages.Lessons
 {
     public class DetailsModel : PageModel
     {
+        private readonly IConfiguration _configuration;
+
+        public DetailsModel(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public LessonViewModel Lesson { get; set; }
 
         [TempData]
@@ -31,21 +38,24 @@ namespace Educational_Platform_Front_End.Pages.Lessons
                 return RedirectToPage("/Account/Login");
             }
 
+            var baseUrl = _configuration["ApiConfig:BaseUrl"] ?? "https://matterhub.runasp.net";
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 
                 // 1. Get Lesson Details
-                var response = await client.GetAsync($"https://localhost:7228/api/lessons/{id}");
+                var response = await client.GetAsync($"{baseUrl}/api/lessons/{id}");
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    var errorContent = await response.Content.ReadAsStringAsync();
                     if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized || response.StatusCode == System.Net.HttpStatusCode.Forbidden)
                     {
-                        StatusMessage = "Access denied. You must be enrolled and have paid for the course to view this lesson.";
+                        StatusMessage = $"Access denied. You must be enrolled and have paid for the course. (API detail: {errorContent})";
                         return RedirectToPage("/Courses/Index");
                     }
-                    return NotFound();
+                    StatusMessage = $"Error loading lesson ({response.StatusCode}): {errorContent}";
+                    return RedirectToPage("/Courses/Index");
                 }
 
                 var content = await response.Content.ReadAsStringAsync();
@@ -62,7 +72,8 @@ namespace Educational_Platform_Front_End.Pages.Lessons
             {
                 return RedirectToPage("/Account/Login");
             }
-
+            var baseUrl = _configuration["ApiConfig:BaseUrl"] ?? "https://matterhub.runasp.net";
+            
             var userId = TryGetUserIdFromJwt(token);
             if (userId == null)
             {
@@ -73,7 +84,7 @@ namespace Educational_Platform_Front_End.Pages.Lessons
             LessonViewModel lesson;
             using (var lessonClient = new HttpClient())
             {
-                var lessonResponse = await lessonClient.GetAsync($"https://localhost:7228/api/lessons/{id}");
+                var lessonResponse = await lessonClient.GetAsync($"{baseUrl}/api/lessons/{id}");
                 if (!lessonResponse.IsSuccessStatusCode)
                 {
                     StatusMessage = "Lesson not found.";
@@ -95,7 +106,7 @@ namespace Educational_Platform_Front_End.Pages.Lessons
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 EnrollmentDto enrollment = null;
-                var enrollmentsResponse = await client.GetAsync("https://localhost:7228/api/enrollments");
+                var enrollmentsResponse = await client.GetAsync($"{baseUrl}/api/enrollments");
                 if (enrollmentsResponse.IsSuccessStatusCode)
                 {
                     var enrollmentsJson = await enrollmentsResponse.Content.ReadAsStringAsync();
@@ -105,7 +116,7 @@ namespace Educational_Platform_Front_End.Pages.Lessons
 
                 if (enrollment == null)
                 {
-                    var createEnrollmentResponse = await client.PostAsync($"https://localhost:7228/api/enrollments?courseId={lesson.CourseId}", null);
+                    var createEnrollmentResponse = await client.PostAsync($"{baseUrl}/api/enrollments?courseId={lesson.CourseId}", null);
                     if (!createEnrollmentResponse.IsSuccessStatusCode)
                     {
                         StatusMessage = "You must be enrolled in this course before marking lessons complete.";
@@ -129,7 +140,7 @@ namespace Educational_Platform_Front_End.Pages.Lessons
                 };
 
                 var content = new StringContent(JsonSerializer.Serialize(progressPayload), Encoding.UTF8, "application/json");
-                var progressResponse = await client.PostAsync("https://localhost:7228/api/progress", content);
+                var progressResponse = await client.PostAsync($"{baseUrl}/api/progress", content);
 
                 if (!progressResponse.IsSuccessStatusCode)
                 {

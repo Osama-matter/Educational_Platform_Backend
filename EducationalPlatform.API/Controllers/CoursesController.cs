@@ -39,6 +39,7 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpGet(Routes.Routes.Courses.GetAllCourses)]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
             var result = await _courseService.GetAllAsync();
@@ -47,7 +48,7 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpGet(Routes.Routes.Courses.GetCourseById)]
-
+        [AllowAnonymous]
         public async Task<IActionResult> GetById([FromRoute] Guid courseId)
         {
             var result = await _courseService.GetByIdAsync(courseId);
@@ -59,6 +60,7 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpGet("{courseId}/lessons")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetLessonsForCourse(Guid courseId)
         {
             var lessons = await _lessonService.GetAllLessonsForCourseAsync(courseId);

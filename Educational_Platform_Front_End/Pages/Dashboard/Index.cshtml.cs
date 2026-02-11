@@ -17,10 +17,12 @@ namespace Educational_Platform_Front_End.Pages.Dashboard
     public class IndexModel : PageModel
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IConfiguration _configuration;
 
-        public IndexModel(IHttpClientFactory httpClientFactory)
+        public IndexModel(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
+            _configuration = configuration;
         }
 
         public IEnumerable<EnrollmentViewModel> Enrollments { get; set; } = new List<EnrollmentViewModel>();
@@ -44,10 +46,11 @@ namespace Educational_Platform_Front_End.Pages.Dashboard
                 return RedirectToPage("/Account/Login");
             }
 
+            var baseUrl = _configuration["ApiConfig:BaseUrl"] ?? "https://matterhub.runasp.net";
             using (var client = _httpClientFactory.CreateClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                client.BaseAddress = new Uri("https://localhost:7228/");
+                client.BaseAddress = new Uri(baseUrl);
 
                 // 1. Get ALL enrollments for the student
                 var enrollmentsResponse = await client.GetAsync("api/enrollments");

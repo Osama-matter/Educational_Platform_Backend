@@ -26,7 +26,7 @@ namespace Educational_Platform_Front_End.Pages.Account
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                var response = await client.GetAsync("https://localhost:7228/api/account/details");
+                var response = await client.GetAsync("https://matterhub.runasp.net/api/account/details");
 
                 if (response.IsSuccessStatusCode)
                 {

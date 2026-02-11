@@ -26,8 +26,20 @@
 
     <!-- COURSES GRID -->
     <div class="container pb-16">
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert--danger" style="margin-bottom: 2rem; padding: 1.5rem; border-radius: 8px;">
+                <h4 style="margin-bottom: 0.5rem; font-weight: 700;">System Notification</h4>
+                <div asp-validation-summary="All"></div>
+            </div>
+        }
+
         @if (Model.Courses != null && Model.Courses.Any())
         {
+            <div style="background: #f0fdf4; color: #15803d; padding: 0.75rem 1rem; border-radius: 6px; margin-bottom: 2rem; font-size: 0.875rem; border: 1px solid #bbf7d0;">
+                <strong>Debug Info:</strong> Found @Model.Courses.Count() courses in the database.
+            </div>
+            
             <section class="course-grid-modern" id="courseList">
 
                 @foreach (var course in Model.Courses)

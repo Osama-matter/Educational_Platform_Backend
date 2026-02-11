@@ -1,5 +1,5 @@
 ﻿@page
-@model Educational_Platform_Front_End.Pages.Courses.IndexModel
+@model Educational_Platform_Front_End.Pages.IndexModel
 @{
     ViewData["Title"] = "Home";
 }
@@ -58,9 +58,32 @@
             <h2>Featured Courses</h2>
             <p>Explore our most popular courses designed for your goals.</p>
         </div>
+        
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert--danger" style="margin-bottom: 2rem;">
+                <div asp-validation-summary="All"></div>
+            </div>
+        }
+
         <div class="courses-grid">
+            @if (!ViewData.ModelState.IsValid || (Model.Courses != null && !Model.Courses.Any()))
+            {
+                <div style="grid-column: 1/-1; margin-bottom: 2rem; padding: 1.5rem; background: #fff7ed; border: 1px solid #ffedd5; border-radius: 12px; color: #9a3412;">
+                    <h4 style="margin-bottom: 0.5rem; font-weight: 700;">Home Page Debug Status</h4>
+                    <div asp-validation-summary="All"></div>
+                    @if (Model.Courses != null && !Model.Courses.Any())
+                    {
+                        <p>Status: API connection successful, but 0 courses were loaded into the view model.</p>
+                    }
+                </div>
+            }
+
             @if (Model.Courses != null && Model.Courses.Any())
             {
+                <div style="grid-column: 1/-1; background: #f0fdf4; color: #15803d; padding: 0.75rem 1rem; border-radius: 6px; margin-bottom: 2rem; font-size: 0.875rem; border: 1px solid #bbf7d0;">
+                    <strong>Success:</strong> Found @Model.Courses.Count() courses for the homepage.
+                </div>
                 foreach (var course in Model.Courses)
                 {
                     <div class="course-card">

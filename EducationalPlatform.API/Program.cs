@@ -127,11 +127,12 @@ var app = builder.Build();
 app.UseMiddleware<EducationalPlatform.API.Middleware.ExceptionLoggingMiddleware>();
 
 // -------------------- Middleware Pipeline --------------------
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Educational Platform API v1");
+    c.RoutePrefix = string.Empty; // Set Swagger as the home page
+});
 
 app.UseCors("AllowAll");
 app.UseStaticFiles();
@@ -142,6 +143,25 @@ app.UseAuthentication(); // Important: must be before Authorization
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Apply migrations automatically
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        if (context.Database.GetPendingMigrations().Any())
+        {
+            context.Database.Migrate();
+        }
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating the database.");
+    }
+}
 
 try
 {

@@ -11,34 +11,67 @@ namespace Educational_Platform_Front_End.Pages.Courses
 {
     public class IndexModel : PageModel
     {
+        private readonly IConfiguration _configuration;
         public IEnumerable<CourseViewModel> Courses { get; set; }
         public bool IsAdmin { get; set; }
+
+        public IndexModel(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         public async Task<IActionResult> OnGetAsync()
         {
             IsAdmin = User.IsInRole("Admin");
+            var baseUrl = _configuration["ApiConfig:BaseUrl"] ?? "https://matterhub.runasp.net";
 
             using (var client = new HttpClient())
             {
-                var response = await client.GetAsync("https://localhost:7228/api/courses");
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    var content = await response.Content.ReadAsStringAsync();
-                    var allCourses = JsonSerializer.Deserialize<IEnumerable<CourseViewModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    var response = await client.GetAsync($"{baseUrl}/api/courses");
 
-                    if (!IsAdmin)
+                    if (response.IsSuccessStatusCode)
                     {
-                        Courses = allCourses.Where(c => c.IsActive).ToList();
+                        var content = await response.Content.ReadAsStringAsync();
+                        
+                        // Debug logging for the content received
+                        if (string.IsNullOrWhiteSpace(content))
+                        {
+                            ModelState.AddModelError(string.Empty, "API returned an empty response.");
+                            Courses = new List<CourseViewModel>();
+                            return Page();
+                        }
+
+                        var allCourses = JsonSerializer.Deserialize<IEnumerable<CourseViewModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                        if (allCourses != null && allCourses.Any())
+                        {
+                            // Show all courses for debugging purposes
+                            Courses = allCourses.ToList();
+                        }
+                        else
+                        {
+                            Courses = new List<CourseViewModel>();
+                            ModelState.AddModelError(string.Empty, "API returned a successful status but no course data.");
+                        }
                     }
                     else
                     {
-                        Courses = allCourses.ToList();
+                        var errorContent = await response.Content.ReadAsStringAsync();
+                        Courses = new List<CourseViewModel>();
+                        ModelState.AddModelError(string.Empty, $"API Error ({response.StatusCode}): {errorContent}");
                     }
                 }
-                else
+                catch (JsonException ex)
                 {
                     Courses = new List<CourseViewModel>();
+                    ModelState.AddModelError(string.Empty, $"Data Format Error: The API returned data in an unexpected format. Details: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Courses = new List<CourseViewModel>();
+                    ModelState.AddModelError(string.Empty, $"System Error: {ex.Message}");
                 }
             }
             return Page();
