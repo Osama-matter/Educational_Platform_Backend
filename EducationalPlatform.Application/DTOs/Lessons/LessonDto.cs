@@ -1,7 +1,7 @@
-using EducationalPlatform.Application.DTOs.Courses;
 using System;
 using System.Collections.Generic;
 using EducationalPlatform.Domain.Entities.Leeson;
+using EducationalPlatform.Application.DTOs.Quiz;
 
 namespace EducationalPlatform.Application.DTOs.Lessons
 {

@@ -1,4 +1,5 @@
 ﻿using EducationalPlatform.Application.DTOs.Lessons;
+using EducationalPlatform.Application.DTOs.Quiz;
 using EducationalPlatform.Application.Interfaces.Repositories;
 using EducationalPlatform.Application.Interfaces.Services;
 using huzcodes.Extensions.Exceptions;
@@ -59,7 +60,8 @@ namespace EducationalPlatform.Infrastructure.Services
                 OrderIndex = OData.OrderIndex,
                 DurationMinutes = OData.DurationMinutes,
                 CreatedAt = OData.CreatedAt,
-                UpdatedAt = OData.UpdatedAt
+                UpdatedAt = OData.UpdatedAt,
+                Quizzes = new List<QuizSummaryDto>()
             };
             return OResultDto;
 
@@ -132,7 +134,14 @@ namespace EducationalPlatform.Infrastructure.Services
                 OrderIndex = OData.OrderIndex,
                 DurationMinutes = OData.DurationMinutes,
                 CreatedAt = OData.CreatedAt,
-                UpdatedAt = OData.UpdatedAt
+                UpdatedAt = OData.UpdatedAt,
+                Quizzes = OData.Quizzes?.Select(q => new EducationalPlatform.Application.DTOs.Quiz.QuizSummaryDto
+                {
+                    Id = q.Id,
+                    Title = q.Title,
+                    DurationMinutes = q.DurationMinutes,
+                    LessonId = q.LessonId
+                }).ToList() ?? new List<QuizSummaryDto>()
             };
             return OResultDto;
         }
@@ -157,13 +166,13 @@ namespace EducationalPlatform.Infrastructure.Services
                 DurationMinutes = lesson.DurationMinutes,
                 CreatedAt = lesson.CreatedAt,
                 UpdatedAt = lesson.UpdatedAt,
-                Quizzes = lesson.Quizzes?.Select(q => new EducationalPlatform.Application.DTOs.Courses.QuizSummaryDto
+                Quizzes = lesson.Quizzes?.Select(q => new EducationalPlatform.Application.DTOs.Quiz.QuizSummaryDto
                 {
                     Id = q.Id,
                     Title = q.Title,
                     DurationMinutes = q.DurationMinutes,
                     LessonId = q.LessonId
-                }).ToList() ?? new List<EducationalPlatform.Application.DTOs.Courses.QuizSummaryDto>()
+                }).ToList() ?? new List<QuizSummaryDto>()
             });
         }
 
@@ -190,7 +199,14 @@ namespace EducationalPlatform.Infrastructure.Services
                 OrderIndex = OData.OrderIndex,
                 DurationMinutes = OData.DurationMinutes,
                 CreatedAt = OData.CreatedAt,
-                UpdatedAt = OData.UpdatedAt
+                UpdatedAt = OData.UpdatedAt,
+                Quizzes = OData.Quizzes?.Select(q => new EducationalPlatform.Application.DTOs.Quiz.QuizSummaryDto
+                {
+                    Id = q.Id,
+                    Title = q.Title,
+                    DurationMinutes = q.DurationMinutes,
+                    LessonId = q.LessonId
+                }).ToList() ?? new List<QuizSummaryDto>()
             };
             return OResultDto;
         }

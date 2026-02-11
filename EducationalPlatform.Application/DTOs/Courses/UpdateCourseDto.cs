@@ -12,6 +12,8 @@ namespace EducationalPlatform.Application.DTOs.Courses
         public bool IsActive { get; set; }
         public decimal Price { get; set; }
         public IFormFile Image_form { get; set; }
+        public int NumberOfSections { get; set; }
+
         public void ApplyTo(Course course)
         {
             course.Title = Title;

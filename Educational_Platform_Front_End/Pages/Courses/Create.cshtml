@@ -34,6 +34,11 @@
                         <span asp-validation-for="Course.Price" class="form__error"></span>
                     </div>
                     <div class="form__group">
+                        <label asp-for="Course.NumberOfSections" class="form__label">Number of Sections</label>
+                        <input asp-for="Course.NumberOfSections" class="form__input" type="number" min="1" />
+                        <span asp-validation-for="Course.NumberOfSections" class="form__error"></span>
+                    </div>
+                    <div class="form__group">
                         <label class="form__checkbox">
                             <input asp-for="Course.IsActive" /> @Html.DisplayNameFor(model => model.Course.IsActive)
                         </label>

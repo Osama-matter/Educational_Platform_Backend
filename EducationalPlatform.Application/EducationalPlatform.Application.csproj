@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Lessons\" />
     <Folder Include="DTOs\Enrollments\" />
     <Folder Include="DTOs\Progress\" />
   </ItemGroup>

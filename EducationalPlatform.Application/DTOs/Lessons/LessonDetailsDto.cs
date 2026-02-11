@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using EducationalPlatform.Application.DTOs.Quiz;
 using EducationalPlatform.Application.DTOs.QuizAttempt;
 
-namespace EducationalPlatform.Application.DTOs.Courses
+namespace EducationalPlatform.Application.DTOs.Lessons
 {
     public class LessonDetailsDto
     {

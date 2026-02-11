@@ -107,9 +107,18 @@ namespace EducationalPlatform.Infrastructure.Services
 
             //check if  user  already in this course
 
-            var  enrollment = await _enrollmentRepository.GetByStudentAndCourseAsync(createDto.UserId, createDto.CourseId);
-            if(enrollment == null)
+            var enrollment = await _enrollmentRepository.GetByStudentAndCourseAsync(createDto.UserId, createDto.CourseId);
+            if (enrollment == null)
                 throw new Exception("User is not enrolled in this course");
+
+            // Check if user has completed all lessons in the course
+            var totalLessons = course.Lessons.Count;
+            var completedLessonsCount = enrollment.LessonProgresses.Count(lp => lp.IsCompleted);
+
+            if (completedLessonsCount < totalLessons)
+            {
+                throw new Exception($"You have only completed {completedLessonsCount} out of {totalLessons} lessons. Please complete all lessons to claim your certificate.");
+            }
 
             // Generate certificate number and verification code
             var certificateNumber = GenerateCertificationData.GenerateCertificateNumber();

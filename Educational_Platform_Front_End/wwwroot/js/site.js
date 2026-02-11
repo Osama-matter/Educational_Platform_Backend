@@ -432,6 +432,42 @@ document.addEventListener('DOMContentLoaded', function () {
         element.textContent = currentYear;
     });
 
+    // ============================================
+    // MOBILE NAVIGATION TOGGLE
+    // ============================================
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn, .nav-toggle');
+    const mobileMenu = document.querySelector('.mobile-nav');
+
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('is-open');
+            mobileMenu.classList.toggle('active');
+            mobileMenuBtn.setAttribute('aria-expanded', isOpen);
+        });
+    }
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (mobileMenu && mobileMenu.classList.contains('is-open')) {
+            if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                mobileMenu.classList.remove('is-open');
+                mobileMenu.classList.remove('active');
+                mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            }
+        }
+    });
+
+    // Dashboard Sidebar Toggle
+    const sidebarToggle = document.querySelector('.sidebar-toggle, .admin-sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar, .admin-sidebar, .admin-layout__sidebar');
+
+    if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', () => {
+            const isOpen = sidebar.classList.toggle('is-active') || sidebar.classList.toggle('admin-layout__sidebar--mobile-open');
+            sidebarToggle.setAttribute('aria-expanded', isOpen);
+        });
+    }
+
     console.log('All enterprise interactions initialized successfully');
 });
 

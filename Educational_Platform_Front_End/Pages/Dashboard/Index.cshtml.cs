@@ -27,6 +27,26 @@ namespace Educational_Platform_Front_End.Pages.Dashboard
 
         public IEnumerable<EnrollmentViewModel> Enrollments { get; set; } = new List<EnrollmentViewModel>();
 
+        private static List<T> SafeDeserializeList<T>(string content)
+        {
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                return new List<T>();
+            }
+
+            try
+            {
+                return JsonSerializer.Deserialize<List<T>>(content, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }) ?? new List<T>();
+            }
+            catch (JsonException)
+            {
+                return new List<T>();
+            }
+        }
+
         public async Task<IActionResult> OnGetAsync()
         {
             var token = Request.Cookies["jwt_token"];
@@ -60,7 +80,7 @@ namespace Educational_Platform_Front_End.Pages.Dashboard
                     return Page();
                 }
                 var enrollmentsContent = await enrollmentsResponse.Content.ReadAsStringAsync();
-                var allEnrollments = JsonSerializer.Deserialize<List<EnrollmentViewModel>>(enrollmentsContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                var allEnrollments = SafeDeserializeList<EnrollmentViewModel>(enrollmentsContent);
 
                 // Filter enrollments for the current student and active/paid status
                 var studentEnrollments = allEnrollments.Where(e => 
@@ -76,17 +96,23 @@ namespace Educational_Platform_Front_End.Pages.Dashboard
                 // 2. Get Courses
                 var coursesResponse = await client.GetAsync("api/courses");
                 var coursesContent = await coursesResponse.Content.ReadAsStringAsync();
-                var courses = JsonSerializer.Deserialize<List<CourseViewModel>>(coursesContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                var courses = coursesResponse.IsSuccessStatusCode
+                    ? SafeDeserializeList<CourseViewModel>(coursesContent)
+                    : new List<CourseViewModel>();
 
                 // 3. Get Lessons
                 var lessonsResponse = await client.GetAsync("api/lessons");
                 var lessonsContent = await lessonsResponse.Content.ReadAsStringAsync();
-                var allLessons = JsonSerializer.Deserialize<List<LessonViewModel>>(lessonsContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                var allLessons = lessonsResponse.IsSuccessStatusCode
+                    ? SafeDeserializeList<LessonViewModel>(lessonsContent)
+                    : new List<LessonViewModel>();
 
                 // 4. Get Progress
                 var progressResponse = await client.GetAsync("api/progress");
                 var progressContent = await progressResponse.Content.ReadAsStringAsync();
-                var progress = JsonSerializer.Deserialize<List<ProgressViewModel>>(progressContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                var progress = progressResponse.IsSuccessStatusCode
+                    ? SafeDeserializeList<ProgressViewModel>(progressContent)
+                    : new List<ProgressViewModel>();
 
                 foreach (var enrollment in studentEnrollments)
                 {

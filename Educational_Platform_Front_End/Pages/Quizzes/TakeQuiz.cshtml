@@ -144,7 +144,7 @@
             }, 1000);
 
             // Save answers on change
-            document.querySelectorAll('.quiz-option').forEach(radio => {
+            document.querySelectorAll('.quiz-option-input').forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     const savedAnswers = JSON.parse(localStorage.getItem(savedAnswersKey) || "{}");
                     savedAnswers[e.target.dataset.questionId] = e.target.value;
@@ -163,11 +163,7 @@
         function updateTimerDisplay() {
             const minutes = Math.floor(timeRemaining / 60);
             const seconds = timeRemaining % 60;
-            timerElement.textContent = `Time Remaining: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
-            if (timeRemaining < 60) {
-                timerElement.classList.replace('bg-primary', 'bg-danger');
-            }
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
         function showQuestion(index) {
@@ -178,17 +174,27 @@
         }
 
         function confirmSubmit() {
-            const totalAnswered = document.querySelectorAll('.quiz-option:checked').length;
+            const totalAnswered = document.querySelectorAll('.quiz-option-input:checked').length;
             const warning = document.getElementById('unanswered-warning');
             
-            if (totalAnswered < totalQuestions) {
-                warning.classList.remove('d-none');
-            } else {
-                warning.classList.add('d-none');
+            if (warning) {
+                if (totalAnswered < totalQuestions) {
+                    warning.classList.remove('d-none');
+                } else {
+                    warning.classList.add('d-none');
+                }
             }
 
-            const modal = new bootstrap.Modal(document.getElementById('submitModal'));
-            modal.show();
+            const modalEl = document.getElementById('submitModal');
+            if (modalEl && window.bootstrap?.Modal) {
+                const modal = new bootstrap.Modal(modalEl);
+                modal.show();
+                return;
+            }
+
+            if (confirm('Submit your quiz now?')) {
+                document.getElementById('quizForm').submit();
+            }
         }
 
         function autoSubmit() {

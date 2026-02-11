@@ -27,7 +27,12 @@ namespace EducationalPlatform.Infrastructure.Services
 
         public async Task<Guid> CreateQuizAttemptAsync(CreateQuizAttemptDto createQuizAttemptDto)
         {
-            var existingAttempts = await _quizAttemptRepository.GetByUserIdAndQuizIdAsync(createQuizAttemptDto.UserId, createQuizAttemptDto.QuizId);
+            if (!createQuizAttemptDto.UserId.HasValue)
+            {
+                throw new InvalidOperationException("UserId is required.");
+            }
+
+            var existingAttempts = await _quizAttemptRepository.GetByUserIdAndQuizIdAsync(createQuizAttemptDto.UserId.Value, createQuizAttemptDto.QuizId);
             if (existingAttempts.Any(a => a.Status == QuizAttemptStatus.Graded))
             {
                 throw new InvalidOperationException("You have already completed this quiz.");
@@ -46,7 +51,7 @@ namespace EducationalPlatform.Infrastructure.Services
 
             var quizAttempt = new QuizAttempt
             {
-                UserId = createQuizAttemptDto.UserId,
+                UserId = createQuizAttemptDto.UserId.Value,
                 QuizId = createQuizAttemptDto.QuizId,
                 StartedAt = DateTime.UtcNow,
                 Status = QuizAttemptStatus.InProgress,
@@ -87,7 +92,7 @@ namespace EducationalPlatform.Infrastructure.Services
                 SubmittedAt = quizAttempt.SubmittedAt,
                 TotalScore = quizAttempt.TotalScore,
                 Status = quizAttempt.Status,
-                TotalTimeMinutes = string.IsNullOrEmpty(quizAttempt.SubmittedAt.ToString()) ? 0 : (int)(quizAttempt.SubmittedAt.Value - quizAttempt.StartedAt).TotalMinutes,
+                TotalTimeMinutes = quiz?.DurationMinutes ?? 0,
                 Questions = questions.Select(question => new QuestionDto
                 {
                     Id = question.Id,

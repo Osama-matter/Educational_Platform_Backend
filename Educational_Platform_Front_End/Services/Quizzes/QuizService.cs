@@ -49,7 +49,11 @@ namespace Educational_Platform_Front_End.Services.Quizzes
         {
             // This assumes an endpoint that handles the publish action, likely a PUT or POST.
             var response = await _httpClient.PostAsync($"api/Quizzes/{quizId}/publish", null);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorBody = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException($"Failed to publish quiz ({(int)response.StatusCode} {response.ReasonPhrase}). {errorBody}");
+            }
         }
     }
 }

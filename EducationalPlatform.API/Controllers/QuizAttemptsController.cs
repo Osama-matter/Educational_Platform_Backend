@@ -31,10 +31,24 @@ namespace EducationalPlatform.API.Controllers
             if (userId == null)
                 return Unauthorized();
 
-            // Assign the userId as InstructorId
-            createQuizAttemptDto.UserId = Guid.Parse(userId);
-            var quizAttemptId = await _quizAttemptService.CreateQuizAttemptAsync(createQuizAttemptDto);
-            return Ok(quizAttemptId);
+            try
+            {
+                createQuizAttemptDto.UserId = Guid.Parse(userId);
+                var quizAttemptId = await _quizAttemptService.CreateQuizAttemptAsync(createQuizAttemptDto);
+                return Ok(quizAttemptId);
+            }
+            catch (ArgumentException ex)
+            {
+                if (ex.Message.Contains("not found", StringComparison.OrdinalIgnoreCase))
+                {
+                    return NotFound(ex.Message);
+                }
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet(Routes.Routes.QuizAttempts.GetAllQuizAttempts)]

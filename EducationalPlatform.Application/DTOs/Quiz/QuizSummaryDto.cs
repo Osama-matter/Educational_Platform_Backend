@@ -1,6 +1,6 @@
 using System;
 
-namespace EducationalPlatform.Application.DTOs.Courses
+namespace EducationalPlatform.Application.DTOs.Quiz
 {
     public class QuizSummaryDto
     {

@@ -49,9 +49,12 @@ namespace EducationalPlatform.Infrastructure.Repositories
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public Task<Enrollment?> GetByStudentAndCourseAsync(Guid studentId, Guid courseId)
+        public async Task<Enrollment?> GetByStudentAndCourseAsync(Guid studentId, Guid courseId)
         {
-            return _context.Enrollments
+            return await _context.Enrollments
+                .Include(e => e.LessonProgresses)
+                .Include(e => e.Course)
+                    .ThenInclude(c => c.Lessons)
                 .FirstOrDefaultAsync(e => e.StudentId == studentId && e.CourseId == courseId);
         }
     }

@@ -37,6 +37,8 @@ namespace EducationalPlatform.Domain.Entities.Course
         [Required]
         [Range(0, double.MaxValue)]
         public decimal Price { get; set; }
+        [Required]
+        public int NumberOfSections { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }
@@ -64,7 +66,7 @@ namespace EducationalPlatform.Domain.Entities.Course
             Enrollments = new HashSet<Enrollment>();
         }
 
-        public Course(string title, string description, Guid instructorId, int? estimatedDurationHours, bool isActive , string imageUrl, decimal price)
+        public Course(string title, string description, Guid instructorId, int? estimatedDurationHours, bool isActive , string imageUrl, decimal price , int numberofsction)
             : this()
         {
             Title = title;
@@ -74,6 +76,7 @@ namespace EducationalPlatform.Domain.Entities.Course
             IsActive = isActive;
             Image_URl = imageUrl;
             Price = price;
+            NumberOfSections = numberofsction;
         }
     }
 }

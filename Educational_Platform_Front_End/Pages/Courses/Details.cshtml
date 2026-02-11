@@ -7,9 +7,9 @@
 
 @if (Model.Course != null)
 {
-    <div class="container pt-8 pb-8">
-        <div class="grid" style="grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr); gap: var(--spacing-8);">
-            <div>
+    <div class="container pt-8 pb-8 course-details-wrapper">
+        <div class="grid course-details-layout" style="gap: var(--spacing-8);">
+            <div class="course-main-content">
                 <div class="card" style="padding: var(--spacing-8);">
                     <p class="text-small text-muted">Course track</p>
                     <h1 class="heading-2">@Model.Course.Title</h1>
@@ -17,10 +17,11 @@
                     <div class="flex items-center gap-4 mb-4">
                         <span class="badge badge--primary">Instructor-led</span>
                         <span class="badge badge--neutral">@(Model.Course.EstimatedDurationHours?.ToString() ?? "N/A") hours</span>
+                        <span class="badge badge--neutral">@Model.Course.NumberOfSections sections</span>
                         <span class="badge badge--success">@(Model.Course.IsActive ? "Active" : "Inactive")</span>
                         <span class="badge badge--warning">@Model.Course.Price.ToString("C0", new System.Globalization.CultureInfo("en-EG"))</span>
                     </div>
-                    <img src="@Model.Course.Image_URl" class="card__image" alt="@Model.Course.Title" style="height: 320px; border-radius: var(--border-radius-lg);" />
+                    <img src="@Model.Course.Image_URl" class="card__image course-hero-image" alt="@Model.Course.Title" style="height: 320px; border-radius: var(--border-radius-lg);" />
                 </div>
 
                 <div class="tabs mt-8" role="tablist">
@@ -28,6 +29,7 @@
                     <button class="tabs__button" data-tab="curriculum" type="button">Lessons</button>
                     <button class="tabs__button" data-tab="instructor" type="button">Instructor</button>
                     <button class="tabs__button" data-tab="reviews" type="button">Reviews</button>
+                    <button class="tabs__button" data-tab="files" type="button">Files</button>
                 </div>
 
                 <div class="tab-panel is-active" data-panel="overview">
@@ -154,9 +156,34 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="tab-panel" data-panel="files">
+                    <div class="card" style="padding: var(--spacing-8);">
+                        <h3 class="heading-4">Course Files</h3>
+                        @if (Model.Course.CourseFiles != null && Model.Course.CourseFiles.Any())
+                        {
+                            <ul class="grid gap-4">
+                                @foreach (var file in Model.Course.CourseFiles)
+                                {
+                                    <li class="flex items-center justify-between p-3 border rounded-lg">
+                                        <div class="flex items-center gap-3">
+                                            <i class="lucide-file" style="width: 20px; height: 20px;"></i>
+                                            <span class="text-small">@file.FileName</span>
+                                        </div>
+                                        <a href="@file.FilePath" target="_blank" class="btn btn--secondary btn--sm">Download</a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No files available for this course.</p>
+                        }
+                    </div>
+                </div>
             </div>
 
-            <aside>
+            <aside class="course-sidebar">
                 <div class="card" style="padding: var(--spacing-6);">
                     <p class="text-small text-muted">Enrollment</p>
                     <h3 class="heading-4">Start this course today</h3>
@@ -306,12 +333,16 @@ else
                         }
                     }
 
-                    // Check if course is 100% completed to show certificate button
+                    // Only show claim certificate container if all lessons are completed
                     if (enrollment.isActive && generateCertContainer) {
-                        // Assuming 100% progress for now or you can add real progress check
-                        // For a real app, you'd check if chaptersCompleted == totalChapters
-                        // Let's show it if enrollment is active for now as requested
-                        generateCertContainer.style.display = 'block';
+                        const totalLessons = enrollment.course?.lessons?.length || 0;
+                        const completedLessons = enrollment.lessonProgresses?.filter(lp => lp.isCompleted).length || 0;
+                        
+                        if (totalLessons > 0 && completedLessons === totalLessons) {
+                            generateCertContainer.style.display = 'block';
+                        } else {
+                            generateCertContainer.style.display = 'none';
+                        }
                     }
                 }
             } catch (error) {

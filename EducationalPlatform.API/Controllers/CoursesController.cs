@@ -26,16 +26,26 @@ namespace EducationalPlatform.API.Controllers
 
         [HttpPost(Routes.Routes.Courses.CreateCourse)]
         [Authorize(Roles = "Admin,Instructor")]
-        public async Task<IActionResult> Create(CreateCourseDto coursesRequest)
+        public async Task<IActionResult> Create([FromForm] CreateCourseDto coursesRequest)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
-                return Unauthorized();
+            try
+            {
+                var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdStr))
+                    return Unauthorized();
 
-            coursesRequest.InstructorId = Guid.Parse(userId);
+                var userId = Guid.Parse(userIdStr);
 
-            var result = await _courseService.CreateAsync(coursesRequest);
-            return Ok(result);
+                // Always set InstructorId from JWT to ensure it exists in AspNetUsers
+                coursesRequest.InstructorId = userId;
+
+                var result = await _courseService.CreateAsync(coursesRequest);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message, detail = ex.InnerException?.Message });
+            }
         }
 
         [HttpGet(Routes.Routes.Courses.GetAllCourses)]
@@ -70,10 +80,17 @@ namespace EducationalPlatform.API.Controllers
 
         [HttpPut(Routes.Routes.Courses.UpdateCourse)]
         [Authorize(Roles = "Admin,Instructor")]
-        public async Task<IActionResult> Update(Guid courseId, UpdateCourseDto updateCourseDto)
+        public async Task<IActionResult> Update(Guid courseId, [FromForm] UpdateCourseDto updateCourseDto)
         {
-            var result = await _courseService.UpdateAsync(courseId, updateCourseDto);
-            return Ok(result);
+            try
+            {
+                var result = await _courseService.UpdateAsync(courseId, updateCourseDto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message, detail = ex.InnerException?.Message });
+            }
         }
 
         [HttpDelete(Routes.Routes.Courses.DeleteCourse)]

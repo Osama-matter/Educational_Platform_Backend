@@ -1,5 +1,7 @@
 ﻿using Azure.Core;
 using EducationalPlatform.Application.DTOs.Courses;
+using EducationalPlatform.Application.DTOs.Lessons;
+using EducationalPlatform.Application.DTOs.Quiz;
 using EducationalPlatform.Application.DTOs.Review;
 using EducationalPlatform.Application.Interfaces.External_services;
 using EducationalPlatform.Application.Interfaces.Repositories;
@@ -29,7 +31,7 @@ namespace EducationalPlatform.Infrastructure.Services
             // Upload image and get URL
             string imageUrl = await _imageService.SaveCourseImageAsync(createCourseDto.imageFile);
 
-            var course = new Course(createCourseDto.Title, createCourseDto.Description, createCourseDto.InstructorId, createCourseDto.EstimatedDurationHours, createCourseDto.IsActive, imageUrl, createCourseDto.Price);
+            var course = new Course(createCourseDto.Title, createCourseDto.Description, createCourseDto.InstructorId, createCourseDto.EstimatedDurationHours, createCourseDto.IsActive, imageUrl, createCourseDto.Price , createCourseDto.NumberOfSections);
             await _courseRepository.AddAsync(course);
 
             var request = _httpContextAccessor.HttpContext.Request;
@@ -106,9 +108,6 @@ namespace EducationalPlatform.Infrastructure.Services
 
                 courseDto.Quizzes = course.Lessons.SelectMany(l => l.Quizzes).Select(q => new QuizSummaryDto
                 {
-                    Id = q.Id,
-                    Title = q.Title,
-                    DurationMinutes = q.DurationMinutes
                 }).ToList();
             }
 
@@ -162,6 +161,8 @@ namespace EducationalPlatform.Infrastructure.Services
             course.IsActive = updateCourseDto.IsActive;
             course.Image_URl = imageUrl;
             course.UpdatedAt = DateTime.UtcNow;
+            course.Price = updateCourseDto.Price;
+            course.NumberOfSections = updateCourseDto.NumberOfSections;
             await _courseRepository.UpdateAsync(course);
 
             var request = _httpContextAccessor.HttpContext.Request;

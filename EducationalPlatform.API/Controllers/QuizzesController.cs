@@ -20,7 +20,7 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpPost(Routes.Routes.Quizzes.CreateQuiz)]
-        [Authorize]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<IActionResult> Create([FromBody] CreateQuizDto createQuizDto)
         {
             var quizId = await _quizService.CreateQuizAsync(createQuizDto);
@@ -28,6 +28,7 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpGet(Routes.Routes.Quizzes.GetAllQuizzes)]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
             var quizzes = await _quizService.GetQuizzesAsync();
@@ -35,6 +36,7 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpGet(Routes.Routes.Quizzes.GetQuizById)]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(Guid quizId)
         {
             var quiz = await _quizService.GetQuizByIdAsync(quizId);
@@ -57,7 +59,7 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpPut(Routes.Routes.Quizzes.UpdateQuiz)]
-        [Authorize]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<IActionResult> Update(Guid quizId, UpdateQuizDto updateQuizDto)
         {
             await _quizService.UpdateQuizAsync(quizId, updateQuizDto);
@@ -65,7 +67,7 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpDelete(Routes.Routes.Quizzes.DeleteQuiz)]
-        [Authorize]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<IActionResult> Delete(Guid quizId)
         {
             await _quizService.DeleteQuizAsync(quizId);
@@ -73,7 +75,7 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpPost("{quizId}/publish")]
-        [Authorize]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<IActionResult> Publish(Guid quizId)
         {
             var quiz = await _quizService.GetQuizByIdAsync(quizId);

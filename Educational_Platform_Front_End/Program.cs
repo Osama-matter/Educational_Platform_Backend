@@ -6,6 +6,7 @@ using Educational_Platform_Front_End.Services.Quizzes;
 using Educational_Platform_Front_End.Services.Reviews;
 using Educational_Platform_Front_End.Services.Enrollments;
 using Educational_Platform_Front_End.Services.Forum;
+using Educational_Platform_Front_End.Services.Admin;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,8 @@ builder.Services.AddAuthentication("Cookies")
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
 builder.Services.AddTransient<AuthHeaderHandler>();
+
+builder.Services.AddScoped<IAdminAuthService, AdminAuthService>();
 
 // Configure HttpClient for API services
 var apiBaseUrl = builder.Configuration["ApiConfig:BaseUrl"] ?? "https://matterhub.runasp.net";

@@ -2,6 +2,8 @@ using System;
 using EducationalPlatform.Domain.Entities.Course;
 using EducationalPlatform.Application.DTOs.Review;
 using System.Collections.Generic;
+using EducationalPlatform.Application.DTOs.Lessons;
+using EducationalPlatform.Application.DTOs.Quiz;
 
 namespace EducationalPlatform.Application.DTOs.Courses
 {
@@ -17,6 +19,7 @@ namespace EducationalPlatform.Application.DTOs.Courses
         public decimal Price { get; set; }
         public int? EstimatedDurationHours { get; set; }
         public bool IsActive { get; set; }
+        public int NumberOfSections { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public List<LessonDetailsDto> Lessons { get; set; } = new();

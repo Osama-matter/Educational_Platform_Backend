@@ -16,7 +16,11 @@ namespace Educational_Platform_Front_End.Services.QuizAttempts
         public async Task<Guid> CreateQuizAttemptAsync(CreateQuizAttemptDto createDto)
         {
             var response = await _httpClient.PostAsJsonAsync("api/QuizAttempts", createDto);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorBody = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException($"Failed to start quiz attempt ({(int)response.StatusCode} {response.ReasonPhrase}). {errorBody}");
+            }
             return await response.Content.ReadFromJsonAsync<Guid>();
         }
 

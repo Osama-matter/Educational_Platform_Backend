@@ -26,7 +26,7 @@ namespace EducationalPlatform.API.Controllers
         }
 
         [HttpGet(Routes.Routes.Lessons.GetLessonById)]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> GetLessonById(Guid lessonId)
         {
             var lesson = await _lessonService.GetByIdAsync(lessonId);

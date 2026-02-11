@@ -1,6 +1,7 @@
 using Educational_Platform_Front_End.Models.Lessons;
 using EducationalPlatform.Application.DTOs.Enrollments;
 using EducationalPlatform.Application.DTOs.Progress;
+using EducationalPlatform.Application.DTOs.Quiz;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -33,15 +34,14 @@ namespace Educational_Platform_Front_End.Pages.Lessons
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
             var token = Request.Cookies["jwt_token"];
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                return RedirectToPage("/Account/Login");
-            }
-
+            
             var baseUrl = _configuration["ApiConfig:BaseUrl"] ?? "https://matterhub.runasp.net";
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                if (!string.IsNullOrWhiteSpace(token))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
                 
                 // 1. Get Lesson Details
                 var response = await client.GetAsync($"{baseUrl}/api/lessons/{id}");
@@ -60,7 +60,36 @@ namespace Educational_Platform_Front_End.Pages.Lessons
 
                 var content = await response.Content.ReadAsStringAsync();
                 Lesson = JsonSerializer.Deserialize<LessonViewModel>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                
+
+                if (Lesson != null)
+                {
+                    try
+                    {
+                        var quizzesResponse = await client.GetAsync($"{baseUrl}/api/quizzes");
+                        if (quizzesResponse.IsSuccessStatusCode)
+                        {
+                            var quizzesJson = await quizzesResponse.Content.ReadAsStringAsync();
+                            var quizzes = JsonSerializer.Deserialize<List<QuizDto>>(quizzesJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+                                         ?? new List<QuizDto>();
+
+                            Lesson.Quizzes = quizzes
+                                .Where(q => q.LessonId == Lesson.Id)
+                                .Select(q => new QuizSummaryDto
+                                {
+                                    Id = q.Id,
+                                    Title = q.Title,
+                                    DurationMinutes = q.DurationMinutes,
+                                    LessonId = q.LessonId
+                                })
+                                .ToList();
+                        }
+                    }
+                    catch
+                    {
+                        // ignore quiz fetch failures; lesson page should still render
+                    }
+                }
+
                 return Page();
             }
         }

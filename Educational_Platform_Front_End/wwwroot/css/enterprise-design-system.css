@@ -156,6 +156,29 @@
 }
 
 /* ============================================
+   RESPONSIVE BASE OVERRIDES
+   ============================================ */
+@media (max-width: 768px) {
+  :root {
+    --font-size-4xl: 2rem;
+    --font-size-3xl: 1.75rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-xl: 1.25rem;
+    --space-8: 1.5rem;
+    --space-12: 2rem;
+    --header-height: 3.5rem;
+  }
+
+  html {
+    font-size: 15px; /* Slightly smaller base for mobile */
+  }
+
+  body {
+    overflow-x: hidden; /* Prevent horizontal scroll */
+  }
+}
+
+/* ============================================
    DARK MODE TOKENS
    ============================================ */
 [data-theme="dark"] {

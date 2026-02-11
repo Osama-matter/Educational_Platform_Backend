@@ -1,3 +1,5 @@
+using EducationalPlatform.Application.DTOs.Quiz;
+
 namespace Educational_Platform_Front_End.Models.Lessons
 {
     public class LessonViewModel
@@ -8,7 +10,7 @@ namespace Educational_Platform_Front_End.Models.Lessons
         public string Content { get; set; }
         public int OrderIndex { get; set; }
         public int? DurationMinutes { get; set; }
-        public List<EducationalPlatform.Application.DTOs.Courses.QuizSummaryDto> Quizzes { get; set; } = new();
+        public List<QuizSummaryDto> Quizzes { get; set; } = new();
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string Status => string.IsNullOrWhiteSpace(Content) ? "Draft" : "Published";

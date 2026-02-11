@@ -45,6 +45,7 @@ namespace Educational_Platform_Front_End.Pages.Courses
                     }
                     content.Add(new StringContent(Course.IsActive.ToString()), "IsActive");
                     content.Add(new StringContent(Course.Price.ToString()), "Price");
+                    content.Add(new StringContent(Course.NumberOfSections.ToString()), "NumberOfSections");
 
                     if (Course.ImageFile != null)
                     {

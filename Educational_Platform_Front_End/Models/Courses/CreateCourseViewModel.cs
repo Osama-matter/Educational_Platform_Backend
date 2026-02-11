@@ -19,6 +19,10 @@ namespace Educational_Platform_Front_End.Models.Courses
         [Range(0, 1000000)]
         public decimal Price { get; set; }
 
+        [Required]
+        [Range(0, 100)]
+        public int NumberOfSections { get; set; }
+
         public IFormFile ImageFile { get; set; }
     }
 }

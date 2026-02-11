@@ -35,8 +35,9 @@
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <form method="post" asp-page-handler="@(Model.IsSubscribed ? "Unsubscribe" : "Subscribe")" class="mt-4">
-                                    <button type="submit" class="btn--ghost" title="@(Model.IsSubscribed ? "Unsubscribe from this thread" : "Subscribe to this thread")">
-                                        <i class="lucide-bookmark @(Model.IsSubscribed ? "text-primary" : "")"></i>
+                                    <button type="submit" class="btn @(Model.IsSubscribed ? "btn--secondary" : "btn--primary") btn--sm flex items-center gap-2" title="@(Model.IsSubscribed ? "Unsubscribe from this thread" : "Subscribe to this thread")">
+                                        <i class="lucide-bell @(Model.IsSubscribed ? "fill-current" : "")" style="width: 16px; height: 16px;"></i>
+                                        <span>@(Model.IsSubscribed ? "Subscribed" : "Subscribe")</span>
                                     </button>
                                 </form>
                             }
